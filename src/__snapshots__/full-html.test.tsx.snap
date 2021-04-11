@@ -1,0 +1,354 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test full html Render final HTML 1`] = `
+<div
+  data-fid="2:2"
+  data-fname="Home"
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+      "boxSizing": "border-box",
+      "position": "absolute",
+    }
+  }
+>
+  <div
+    data-fid="28:1"
+    data-fname="Arrow 1"
+    style={
+      Object {
+        "boxSizing": "border-box",
+        "height": 81,
+        "left": 245,
+        "position": "absolute",
+        "top": 26,
+        "width": 70,
+        "zIndex": 1,
+      }
+    }
+  >
+    <div
+      className="vector"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"72\\" height=\\"82\\" viewBox=\\"0 0 72 82\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<path d=\\"M71.0269 0.464673C71.0068 0.18868 70.7667 -0.0187591 70.4907 0.00134421L65.9931 0.328987C65.7171 0.34909 65.5097 0.589126 65.5298 0.865125C65.5499 1.14112 65.7899 1.34856 66.0659 1.32845L70.0638 1.03722L70.355 5.03508C70.3751 5.31108 70.6152 5.51852 70.8912 5.49841C71.1672 5.4783 71.3746 5.23827 71.3545 4.96227L71.0269 0.464673ZM0.758214 82L70.9062 0.828701L70.148 0.173455L8.66095e-07 81.3448L0.758214 82Z\\" fill=\\"black\\"/>
+</svg>
+",
+        }
+      }
+    />
+  </div>
+  <div
+    data-fid="2:5"
+    data-fname="Frame 2"
+    style={
+      Object {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "boxSizing": "border-box",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": 22,
+        "height": 122,
+        "left": 97,
+        "position": "absolute",
+        "top": 53,
+        "width": 101,
+        "zIndex": 0,
+      }
+    }
+  >
+    <div
+      data-fid="2:3"
+      data-fname="Rectangle 1"
+      style={
+        Object {
+          "alignSelf": "inherit",
+          "backgroundColor": "#c4c4c4",
+          "boxSizing": "border-box",
+          "flexGrow": 0,
+          "height": 50,
+          "position": "relative",
+          "width": 101,
+          "zIndex": 0,
+        }
+      }
+    />
+    <div
+      data-fid="2:4"
+      data-fname="Rectangle 2"
+      style={
+        Object {
+          "alignSelf": "inherit",
+          "backgroundColor": "#c4c4c4",
+          "boxSizing": "border-box",
+          "flexGrow": 0,
+          "height": 50,
+          "position": "relative",
+          "width": 101,
+          "zIndex": 1,
+        }
+      }
+    />
+  </div>
+  <div
+    data-fid="31:5"
+    data-fname="Frame 3"
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "boxSizing": "border-box",
+        "display": "flex",
+        "flexDirection": "row",
+        "gap": 11,
+        "height": 28,
+        "left": 220,
+        "position": "absolute",
+        "top": 215,
+        "width": 95,
+        "zIndex": 2,
+      }
+    }
+  >
+    <div
+      data-fid="31:2"
+      data-fname="Ellipse 1"
+      style={
+        Object {
+          "alignSelf": "inherit",
+          "boxSizing": "border-box",
+          "flexGrow": 0,
+          "height": 28,
+          "position": "relative",
+          "width": 28,
+          "zIndex": 0,
+        }
+      }
+    >
+      <div
+        className="vector"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
+</svg>
+",
+          }
+        }
+      />
+    </div>
+    <div
+      data-fid="31:3"
+      data-fname="aaaaaa"
+      style={
+        Object {
+          "alignSelf": "inherit",
+          "boxSizing": "border-box",
+          "color": "#000000",
+          "flexGrow": 0,
+          "fontFamily": "\\"Roboto\\"",
+          "fontSize": 12,
+          "fontStyle": "normal",
+          "fontWeight": 400,
+          "height": 14,
+          "letterSpacing": "0px",
+          "lineHeight": "125%",
+          "position": "relative",
+          "textAlign": "left",
+          "width": 40,
+          "zIndex": 1,
+        }
+      }
+    >
+      <span
+        style={Object {}}
+      >
+        aaaaaa
+      </span>
+    </div>
+  </div>
+  <div
+    data-fid="31:5"
+    data-fname="Frame 3"
+    style={
+      Object {
+        "alignItems": "flex-end",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "boxSizing": "border-box",
+        "display": "flex",
+        "flexDirection": "row",
+        "gap": 11,
+        "height": 28,
+        "justifyContent": "center",
+        "left": 220,
+        "position": "absolute",
+        "top": 259,
+        "width": 95,
+        "zIndex": 3,
+      }
+    }
+  >
+    <div
+      data-fid="31:2"
+      data-fname="Ellipse 1"
+      style={
+        Object {
+          "alignSelf": "inherit",
+          "boxSizing": "border-box",
+          "flexGrow": 0,
+          "height": 28,
+          "position": "relative",
+          "width": 28,
+          "zIndex": 0,
+        }
+      }
+    >
+      <div
+        className="vector"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
+</svg>
+",
+          }
+        }
+      />
+    </div>
+    <div
+      data-fid="31:3"
+      data-fname="aaaaaa"
+      style={
+        Object {
+          "alignSelf": "inherit",
+          "boxSizing": "border-box",
+          "color": "#000000",
+          "flexGrow": 0,
+          "fontFamily": "\\"Roboto\\"",
+          "fontSize": 12,
+          "fontStyle": "normal",
+          "fontWeight": 400,
+          "height": 14,
+          "letterSpacing": "0px",
+          "lineHeight": "125%",
+          "position": "relative",
+          "textAlign": "left",
+          "width": 40,
+          "zIndex": 1,
+        }
+      }
+    >
+      <span
+        style={Object {}}
+      >
+        aaaaaa
+      </span>
+    </div>
+  </div>
+  <div
+    data-fid="45:3"
+    data-fname="floating"
+    style={
+      Object {
+        "alignItems": "flex-end",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "boxSizing": "border-box",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": 10,
+        "height": 145,
+        "left": 61,
+        "position": "absolute",
+        "top": 333,
+        "width": 184,
+        "zIndex": 4,
+      }
+    }
+  >
+    <div
+      data-fid="45:4"
+      data-fname="Rectangle 7"
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": "#c4c4c4",
+          "boxSizing": "border-box",
+          "flexGrow": 1,
+          "height": 41.66666793823242,
+          "position": "relative",
+          "width": 184,
+          "zIndex": 0,
+        }
+      }
+    />
+    <div
+      data-fid="47:0"
+      data-fname="Rectangle 8"
+      style={
+        Object {
+          "alignSelf": "inherit",
+          "backgroundColor": "#c4c4c4",
+          "boxSizing": "border-box",
+          "flexGrow": 1,
+          "height": 41.66666793823242,
+          "position": "relative",
+          "width": 92,
+          "zIndex": 1,
+        }
+      }
+    />
+    <div
+      data-fid="45:5"
+      data-fname="Frame 4"
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "boxSizing": "border-box",
+          "display": "flex",
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "gap": 10,
+          "height": 41.66666793823242,
+          "position": "relative",
+          "width": 184,
+          "zIndex": 2,
+        }
+      }
+    >
+      <div
+        data-fid="45:6"
+        data-fname="Rectangle 8"
+        style={
+          Object {
+            "alignSelf": "stretch",
+            "backgroundColor": "#c4c4c4",
+            "boxSizing": "border-box",
+            "flexGrow": 1,
+            "height": 41.66666793823242,
+            "position": "relative",
+            "width": 128,
+            "zIndex": 0,
+          }
+        }
+      />
+      <div
+        data-fid="45:7"
+        data-fname="Rectangle 9"
+        style={
+          Object {
+            "alignSelf": "stretch",
+            "backgroundColor": "#c4c4c4",
+            "boxSizing": "border-box",
+            "flexGrow": 0,
+            "position": "relative",
+            "width": 46,
+            "zIndex": 1,
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
