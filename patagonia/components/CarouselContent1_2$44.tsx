@@ -29,7 +29,7 @@ export const CarouselContent1_2$44: FC<{
           transform: " translateY(-50%) translateX(-50%)",
           height: 42,
           left: "50%",
-          width: 109,
+          width: 119,
           color: "#ffffff",
           fontSize: 36,
           fontWeight: 700,
@@ -39,10 +39,10 @@ export const CarouselContent1_2$44: FC<{
           letterSpacing: "0px",
           textAlign: "center",
         }}
-        data-fname="asdfas"
+        data-fname="sample"
       >
         <span style={{}} key="end">
-          asdfas
+          sample
         </span>
       </div>
     </div>

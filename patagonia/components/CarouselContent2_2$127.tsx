@@ -29,8 +29,8 @@ export const CarouselContent2_2$127: FC<{
           top: "44%",
           transform: " translateY(-50%)",
           height: 42,
-          left: 36,
-          width: 109,
+          left: 34,
+          width: 122,
           color: "#ffffff",
           fontSize: 36,
           fontWeight: 700,
@@ -38,12 +38,12 @@ export const CarouselContent2_2$127: FC<{
           fontStyle: "normal",
           lineHeight: "125%",
           letterSpacing: "0px",
-          textAlign: "center",
+          textAlign: "left",
         }}
-        data-fname="asdfas"
+        data-fname="Sample"
       >
         <span style={{}} key="end">
-          asdfas
+          Sample
         </span>
       </div>
       <div className="maxer">
