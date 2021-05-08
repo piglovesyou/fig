@@ -346,6 +346,7 @@ function applyNodeTypeStyle(
             if (!url) throw new Error('Something wrong with Figma API');
             styles.backgroundImage = `url(${url})`; // TODO: Sanitize
             styles.backgroundSize = backgroundSize(lastFill.scaleMode!);
+            styles.backgroundPosition = 'center';
             break;
           case 'GRADIENT_LINEAR':
             styles.background = paintToLinearGradient(lastFill);

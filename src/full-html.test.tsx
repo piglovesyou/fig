@@ -11,7 +11,7 @@ const outDir = join(process.cwd(), `./__generated__/${name}`);
 const fileKey = 'QAIja81RKgYhQnIIJ0h9PJ';
 
 let useCache = false;
-useCache = true; // Comment out to update cache
+// useCache = true; // Comment out to update cache
 
 if (useCache) {
   jest
