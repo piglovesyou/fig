@@ -483,12 +483,12 @@ export const Home_1$4: FC<{
                 letterSpacing: "0px",
                 textAlign: "justify",
               }}
-              data-fname="Figg is another “Figma to React” platform designed for AST-based code generation of multiple template languages and synchronization to keep code up-to-date"
+              data-fname="Figg is another “Figma to React” platform designed as AST-based code generation, the pluggable architecture for multiple template languages, and synchronization to keep code up-to-date"
             >
               <span style={{}} key="end">
-                Figg is another “Figma to React” platform designed for AST-based
-                code generation of multiple template languages and
-                synchronization to keep code up-to-date
+                Figg is another “Figma to React” platform designed as AST-based
+                code generation, the pluggable architecture for multiple
+                template languages, and synchronization to keep code up-to-date
               </span>
             </div>
           </div>
