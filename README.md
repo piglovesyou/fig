@@ -16,6 +16,7 @@ Compare the site and the source Figma file. Not perfect, but it appears pretty n
 
 - [ ] Publish alpha release to generate simple React component source
 - [ ] Make it pluggable to prepare multiple template language source
+- [ ] Support another Stylesheet strategy perhaps to support Tailwind CSS
 - [ ] Beta that supports another language, maybe Vue.js?
 
 ## Contributions
