@@ -36,6 +36,7 @@ export const Home_1$4: FC<{
           backgroundImage:
             "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
           backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
         data-fname="TopTop"
       >
@@ -398,11 +399,11 @@ export const Home_1$4: FC<{
             alignItems: "center",
             position: "absolute",
             boxSizing: "border-box",
-            top: "56%",
+            top: "59%",
             transform: " translateY(-50%) translateX(-50%)",
-            height: 382.6690979003906,
+            height: 494.6690979003906,
             left: "50%",
-            width: 371,
+            width: 359,
             backgroundColor: "rgba(0, 0, 0, 0)",
           }}
           data-fname="header-text"
@@ -420,7 +421,7 @@ export const Home_1$4: FC<{
               flexGrow: 0,
               alignSelf: "inherit",
               width: 289,
-              height: 308,
+              height: 344,
               backgroundColor: "rgba(0, 0, 0, 0)",
             }}
             data-fname="Frame 6"
@@ -472,7 +473,7 @@ export const Home_1$4: FC<{
                 flexGrow: 0,
                 alignSelf: "inherit",
                 width: 289,
-                height: 180,
+                height: 216,
                 color: "#ffffff",
                 fontSize: 18,
                 fontWeight: 400,
@@ -482,111 +483,245 @@ export const Home_1$4: FC<{
                 letterSpacing: "0px",
                 textAlign: "justify",
               }}
-              data-fname="Figg is another “Figma to React” platform, designed to be AST-based code generation of multiple template language and keep the output up-to-date"
+              data-fname="Figg is another “Figma to React” platform designed for AST-based code generation of multiple template languages and synchronization to keep code up-to-date"
             >
               <span style={{}} key="end">
-                Figg is another “Figma to React” platform, designed to be
-                AST-based code generation of multiple template language and keep
-                the output up-to-date
+                Figg is another “Figma to React” platform designed for AST-based
+                code generation of multiple template languages and
+                synchronization to keep code up-to-date
               </span>
             </div>
           </div>
           <div
-            data-fid="47:35"
+            data-fid="50:31"
             style={{
               zIndex: 1,
               display: "flex",
               flexDirection: "row",
-              paddingTop: 16,
-              paddingRight: 32,
-              paddingBottom: 16,
-              paddingLeft: 32,
-              gap: 2,
-              justifyContent: "center",
-              alignItems: "center",
+              gap: 10,
               position: "relative",
               boxSizing: "border-box",
               flexGrow: 0,
               alignSelf: "inherit",
-              width: 371,
-              height: 54.669097900390625,
-              backgroundColor: "#ffffff",
-              borderRadius: "68px 68px 68px 68px",
+              width: 359,
+              height: 56,
+              backgroundColor: "rgba(0, 0, 0, 0)",
             }}
-            data-fname="Button"
+            data-fname="Frame 19"
           >
             <div
-              data-fid="47:37"
+              data-fid="47:35"
               style={{
                 zIndex: 0,
+                display: "flex",
+                flexDirection: "row",
+                paddingTop: 16,
+                paddingRight: 32,
+                paddingBottom: 16,
+                paddingLeft: 32,
+                gap: 2,
+                justifyContent: "center",
+                alignItems: "center",
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 0,
                 alignSelf: "inherit",
-                width: 18,
-                height: 18,
-                color: "#000000",
-                fontSize: 18,
-                fontWeight: 400,
-                fontFamily: '"Roboto"',
-                fontStyle: "normal",
-                lineHeight: "125%",
-                letterSpacing: "0px",
-                textAlign: "center",
+                width: 359,
+                height: 56,
+                backgroundColor: "#ffffff",
+                borderRadius: "68px 68px 68px 68px",
               }}
-              data-fname="🐝"
-            >
-              <span style={{}} key="end">
-                🐝
-              </span>
-            </div>
-            <div
-              data-fid="47:36"
-              style={{
-                zIndex: 1,
-                position: "relative",
-                boxSizing: "border-box",
-                flexGrow: 0,
-                alignSelf: "inherit",
-                width: 263,
-                height: 17,
-                color: "#000000",
-                fontSize: 14.399999618530273,
-                fontWeight: 400,
-                fontFamily: '"Roboto"',
-                fontStyle: "normal",
-                lineHeight: "125%",
-                letterSpacing: "0px",
-                textAlign: "center",
-              }}
-              data-fname="asdfa sdfasdf"
-            >
-              <span style={{}} key="end">
-                Coming soon (go to GitHub project page)
-              </span>
-            </div>
-            <div
-              data-fid="47:40"
-              style={{
-                zIndex: 2,
-                position: "relative",
-                boxSizing: "border-box",
-                flexGrow: 0,
-                alignSelf: "inherit",
-                width: 22,
-                height: 22.669099807739258,
-              }}
-              data-fname="Vector"
+              data-fname="Figma Link"
             >
               <div
-                className="vector"
-                dangerouslySetInnerHTML={{
-                  __html: `<svg preserveAspectRatio="none" width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                data-fid="52:2"
+                style={{
+                  zIndex: 2,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 18,
+                  height: 18,
+                  color: "#000000",
+                  fontSize: 18,
+                  fontWeight: 400,
+                  fontFamily: '"Roboto"',
+                  fontStyle: "normal",
+                  lineHeight: "125%",
+                  letterSpacing: "0px",
+                  textAlign: "center",
+                }}
+                data-fname="🚀"
+              >
+                <span style={{}} key="end">
+                  🚀
+                </span>
+              </div>
+              <div
+                data-fid="47:36"
+                style={{
+                  zIndex: 1,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 256,
+                  height: 17,
+                  color: "#000000",
+                  fontSize: 14.399999618530273,
+                  fontWeight: 400,
+                  fontFamily: '"Roboto"',
+                  fontStyle: "normal",
+                  lineHeight: "125%",
+                  letterSpacing: "0px",
+                  textAlign: "center",
+                }}
+                data-fname="Check Figma design screen of this page"
+              >
+                <span style={{}} key="end">
+                  Check Figma design screen of this page
+                </span>
+              </div>
+              <div
+                data-fid="52:1"
+                style={{
+                  zIndex: 0,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 17,
+                  height: 24,
+                }}
+                data-fname="Vector"
+              >
+                <div
+                  className="vector"
+                  dangerouslySetInnerHTML={{
+                    __html: `<svg preserveAspectRatio="none" width="17" height="24" viewBox="0 0 17 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.7506 8.00156C13.8776 8.00156 14.9585 7.58005 15.7554 6.82976C16.5523 6.07947 17 5.06185 17 4.00078C17 2.93971 16.5523 1.92209 15.7554 1.1718C14.9585 0.42151 13.8776 0 12.7506 0L4.25187 0C3.12552 0 2.04531 0.421263 1.24886 1.17112C0.452419 1.92097 0.00497992 2.93799 0.00497992 3.99844C0.00497992 5.05889 0.452419 6.07591 1.24886 6.82576C2.04531 7.57561 3.12552 7.99687 4.25187 7.99687C3.12486 7.99687 2.04402 8.41838 1.2471 9.16868C0.450191 9.91897 0.00249058 10.9366 0.00249058 11.9977C0.00249058 13.0587 0.450191 14.0763 1.2471 14.8266C2.04402 15.5769 3.12486 15.9984 4.25187 15.9984C3.41142 15.998 2.5897 16.2322 1.89062 16.6714C1.19154 17.1106 0.6465 17.7351 0.32442 18.466C0.00233966 19.1969 -0.0823126 20.0013 0.0811676 20.7774C0.244648 21.5536 0.648918 22.2667 1.24286 22.8265C1.83679 23.3864 2.59372 23.7678 3.41792 23.9227C4.24213 24.0775 5.09658 23.9987 5.87324 23.6964C6.6499 23.394 7.31389 22.8815 7.78122 22.2239C8.24856 21.5662 8.49826 20.7928 8.49875 20.0016V8.00156H12.7506ZM12.7506 8.00156C11.9107 8.00156 11.0896 8.23607 10.3912 8.67542C9.69278 9.11477 9.14844 9.73924 8.82701 10.4699C8.50557 11.2005 8.42147 12.0044 8.58534 12.7801C8.7492 13.5557 9.15368 14.2681 9.74762 14.8273C10.3416 15.3865 11.0983 15.7673 11.9221 15.9216C12.7459 16.0759 13.5998 15.9967 14.3758 15.6941C15.1519 15.3914 15.8151 14.879 16.2818 14.2214C16.7484 13.5639 16.9975 12.7908 16.9975 12C16.9974 10.9396 16.5499 9.92264 15.7535 9.17281C14.9571 8.42299 13.8769 8.00169 12.7506 8.00156Z" fill="black"/>
+</svg>
+`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            data-fid="50:37"
+            style={{
+              zIndex: 2,
+              display: "flex",
+              flexDirection: "row",
+              gap: 10,
+              position: "relative",
+              boxSizing: "border-box",
+              flexGrow: 0,
+              alignSelf: "inherit",
+              width: 274,
+              height: 54.669097900390625,
+              backgroundColor: "rgba(0, 0, 0, 0)",
+            }}
+            data-fname="Frame 21"
+          >
+            <div
+              data-fid="50:38"
+              style={{
+                zIndex: 0,
+                display: "flex",
+                flexDirection: "row",
+                paddingTop: 16,
+                paddingRight: 32,
+                paddingBottom: 16,
+                paddingLeft: 32,
+                gap: 2,
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                boxSizing: "border-box",
+                flexGrow: 0,
+                alignSelf: "inherit",
+                width: 274,
+                height: 54.669097900390625,
+                backgroundColor: "#ffffff",
+                borderRadius: "68px 68px 68px 68px",
+              }}
+              data-fname="Button"
+            >
+              <div
+                data-fid="50:39"
+                style={{
+                  zIndex: 0,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 18,
+                  height: 18,
+                  color: "#000000",
+                  fontSize: 18,
+                  fontWeight: 400,
+                  fontFamily: '"Roboto"',
+                  fontStyle: "normal",
+                  lineHeight: "125%",
+                  letterSpacing: "0px",
+                  textAlign: "center",
+                }}
+                data-fname="🐝"
+              >
+                <span style={{}} key="end">
+                  🐝
+                </span>
+              </div>
+              <div
+                data-fid="50:40"
+                style={{
+                  zIndex: 1,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 166,
+                  height: 17,
+                  color: "#000000",
+                  fontSize: 14.399999618530273,
+                  fontWeight: 400,
+                  fontFamily: '"Roboto"',
+                  fontStyle: "normal",
+                  lineHeight: "125%",
+                  letterSpacing: "0px",
+                  textAlign: "center",
+                }}
+                data-fname="Go to GitHub project page"
+              >
+                <span style={{}} key="end">
+                  Go to GitHub project page
+                </span>
+              </div>
+              <div
+                data-fid="50:41"
+                style={{
+                  zIndex: 2,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 22,
+                  height: 22.669099807739258,
+                }}
+                data-fname="Vector"
+              >
+                <div
+                  className="vector"
+                  dangerouslySetInnerHTML={{
+                    __html: `<svg preserveAspectRatio="none" width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.35847 18.2531C7.35847 18.3469 7.25645 18.4219 7.12782 18.4219C6.98145 18.4359 6.87944 18.3609 6.87944 18.2531C6.87944 18.1594 6.98145 18.0844 7.11008 18.0844C7.24314 18.0703 7.35847 18.1453 7.35847 18.2531ZM5.97903 18.0422C5.94798 18.1359 6.03669 18.2437 6.16976 18.2719C6.28508 18.3187 6.41815 18.2719 6.44476 18.1781C6.47137 18.0844 6.3871 17.9766 6.25403 17.9344C6.13871 17.9016 6.01008 17.9484 5.97903 18.0422ZM7.93952 17.9625C7.81089 17.9953 7.72218 18.0844 7.73548 18.1922C7.74879 18.2859 7.86411 18.3469 7.99718 18.3141C8.12581 18.2812 8.21452 18.1922 8.20121 18.0984C8.1879 18.0094 8.06814 17.9484 7.93952 17.9625ZM10.8581 0C4.70605 0 0 4.93594 0 11.4375C0 16.6359 3.09597 21.0844 7.51815 22.65C8.08589 22.7578 8.28548 22.3875 8.28548 22.0828C8.28548 21.7922 8.27218 20.1891 8.27218 19.2047C8.27218 19.2047 5.16734 19.9078 4.51532 17.8078C4.51532 17.8078 4.00968 16.4437 3.28226 16.0922C3.28226 16.0922 2.26653 15.3562 3.35323 15.3703C3.35323 15.3703 4.45766 15.4641 5.06532 16.5797C6.03669 18.3891 7.66452 17.8687 8.29879 17.5594C8.40081 16.8094 8.68911 16.2891 9.00847 15.9797C6.52903 15.6891 4.02742 15.3094 4.02742 10.8C4.02742 9.51094 4.36452 8.86406 5.07419 8.03906C4.95887 7.73438 4.58185 6.47812 5.18952 4.85625C6.11653 4.55156 8.25 6.12188 8.25 6.12188C9.1371 5.85938 10.0907 5.72344 11.0355 5.72344C11.9802 5.72344 12.9339 5.85938 13.821 6.12188C13.821 6.12188 15.9544 4.54688 16.8815 4.85625C17.4891 6.48281 17.1121 7.73438 16.9968 8.03906C17.7065 8.86875 18.1411 9.51562 18.1411 10.8C18.1411 15.3234 15.5286 15.6844 13.0492 15.9797C13.4573 16.35 13.8032 17.0531 13.8032 18.1547C13.8032 19.7344 13.7899 21.6891 13.7899 22.0734C13.7899 22.3781 13.994 22.7484 14.5573 22.6406C18.9927 21.0844 22 16.6359 22 11.4375C22 4.93594 17.0101 0 10.8581 0ZM4.31129 16.1672C4.25363 16.2141 4.26694 16.3219 4.34234 16.4109C4.41331 16.4859 4.51532 16.5188 4.57298 16.4578C4.63064 16.4109 4.61734 16.3031 4.54194 16.2141C4.47097 16.1391 4.36895 16.1062 4.31129 16.1672ZM3.83226 15.7875C3.80121 15.8484 3.84556 15.9234 3.93427 15.9703C4.00524 16.0172 4.09395 16.0031 4.125 15.9375C4.15605 15.8766 4.11169 15.8016 4.02298 15.7547C3.93427 15.7266 3.86331 15.7406 3.83226 15.7875ZM5.26935 17.4562C5.19839 17.5172 5.225 17.6578 5.32702 17.7469C5.42903 17.8547 5.55766 17.8687 5.61532 17.7938C5.67298 17.7328 5.64637 17.5922 5.55766 17.5031C5.46008 17.3953 5.32702 17.3813 5.26935 17.4562ZM4.76371 16.7672C4.69274 16.8141 4.69274 16.9359 4.76371 17.0438C4.83468 17.1516 4.95444 17.1984 5.0121 17.1516C5.08306 17.0906 5.08306 16.9688 5.0121 16.8609C4.95 16.7531 4.83468 16.7063 4.76371 16.7672Z" fill="black"/>
 </svg>
 `,
-                }}
-              />
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -701,6 +836,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="carousel content 1"
@@ -719,6 +855,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="Frame 11"
@@ -737,6 +874,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="Frame 12"
@@ -755,6 +893,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="Frame 13"
@@ -815,6 +954,7 @@ export const Home_1$4: FC<{
           backgroundImage:
             "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
           backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
         data-fname="Second section"
       >
@@ -1101,6 +1241,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="Frame 8"
@@ -1119,6 +1260,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="Frame 9"
@@ -1137,6 +1279,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="Frame 10"
@@ -1155,6 +1298,7 @@ export const Home_1$4: FC<{
               backgroundImage:
                 "url(https://s3-alpha-sig.figma.com/img/bc1a/04d9/6e40f86b35e43b1121d9c766114cb456?Expires=1621209600&Signature=AO1Khjh~89aPV-miKwbEjUH4Ne2lPuaTxkdXaKmXz~MZ-OfWZKHNZ9~qGpWLM2FC1yCJTMn4lFwu4xFP42-nsR6QvQfF1EYG9ebg-7UytgaP1O-~fxa3c6GBy9H0lYW260jIoO5KsbJyYyhRUT6D1Xuwh2saDom-mSELRdC-WR4YEtYO8FcchJO5MzsK8d8Vjxg8tIz0DPWAC1QKdz58Ygd5BxQnbF5v86ihqyPKjkB63FAHm-DJ0egUyHCC9eFpHbVwFYmtrBufwyj89yZ1WqcZIq-Dzr~Mt0hv-4OIB7~CC-xyEy-svRZfYf2bwgU1Nt7n7rWnyM-FLYqeZ3s0fw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
               backgroundSize: "cover",
+              backgroundPosition: "center",
               borderRadius: "6.75px 6.75px 6.75px 6.75px",
             }}
             data-fname="Frame 11"

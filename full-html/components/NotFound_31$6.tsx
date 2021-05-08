@@ -8,7 +8,7 @@ export const NotFound_31$6: FC<{
       data-fid="31:6"
       style={{
         ...{
-          zIndex: 2,
+          zIndex: 0,
           display: "flex",
           flexDirection: "row",
           gap: 11,
