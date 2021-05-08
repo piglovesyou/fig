@@ -884,7 +884,7 @@
                           },
                           {
                             "id": "1:43",
-                            "name": "Figg is another “Figma to React” platform designed for AST-based code generation of multiple template languages and synchronization to keep code up-to-date",
+                            "name": "Figg is another “Figma to React” platform designed as AST-based code generation, the pluggable architecture for multiple template languages, and synchronization to keep code up-to-date",
                             "type": "TEXT",
                             "blendMode": "PASS_THROUGH",
                             "absoluteBoundingBox": {
@@ -915,7 +915,7 @@
                             "strokeWeight": 1,
                             "strokeAlign": "OUTSIDE",
                             "effects": [],
-                            "characters": "Figg is another “Figma to React” platform designed for AST-based code generation of multiple template languages and synchronization to keep code up-to-date",
+                            "characters": "Figg is another “Figma to React” platform designed as AST-based code generation, the pluggable architecture for multiple template languages, and synchronization to keep code up-to-date",
                             "style": {
                               "fontFamily": "Roboto",
                               "fontPostScriptName": null,
@@ -6042,8 +6042,8 @@
     }
   },
   "name": "Patagonia",
-  "lastModified": "2021-05-08T12:24:51Z",
+  "lastModified": "2021-05-08T12:51:41Z",
   "thumbnailUrl": "https://s3-alpha-sig.figma.com/thumbnails/3e78f02d-5429-4b51-9f08-5d7601581dfb?Expires=1621209600&Signature=GO9zPJ8QNxNE6Zf9YVltRBg~aOzB-qu~8xboyHOv-UxkJBrMzWVywqcAO57vULSG~OqHMjzCcmMFu8UQHpMgRCi8Bo~CdLkkZ73~tgI4MJ3KbfKSOl72XwTD2lQlOfi9zZ9fQu4avzpmAk0y79PMyjiUhn50ROe~1QDxy7OfHXMsgFShpZzrpwTngUv0MSXvLuH~ZjiT9xyLvyoUPH2GcMg36BimL-bCkCS9-fF3gzCNgSJWh02dUeG5wYumWGq4NC2P-JbeKP902q2APLW9u2olQuKTWrbDk7QpKGvjXqdh9q3hm8XC6lwYlt7OxHH4VhYhC0LnMn6Ph-dHDxIfdg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-  "version": "837156955",
+  "version": "837196925",
   "role": "owner"
 }
