@@ -399,11 +399,11 @@ export const Home_1$4: FC<{
             alignItems: "center",
             position: "absolute",
             boxSizing: "border-box",
-            top: "59%",
+            top: "57%",
             transform: " translateY(-50%) translateX(-50%)",
-            height: 494.6690979003906,
+            height: 418.6690979003906,
             left: "50%",
-            width: 359,
+            width: 289,
             backgroundColor: "rgba(0, 0, 0, 0)",
           }}
           data-fname="header-text"
@@ -493,7 +493,7 @@ export const Home_1$4: FC<{
             </div>
           </div>
           <div
-            data-fid="50:31"
+            data-fid="50:37"
             style={{
               zIndex: 1,
               display: "flex",
@@ -503,123 +503,7 @@ export const Home_1$4: FC<{
               boxSizing: "border-box",
               flexGrow: 0,
               alignSelf: "inherit",
-              width: 359,
-              height: 56,
-              backgroundColor: "rgba(0, 0, 0, 0)",
-            }}
-            data-fname="Frame 19"
-          >
-            <div
-              data-fid="47:35"
-              style={{
-                zIndex: 0,
-                display: "flex",
-                flexDirection: "row",
-                paddingTop: 16,
-                paddingRight: 32,
-                paddingBottom: 16,
-                paddingLeft: 32,
-                gap: 2,
-                justifyContent: "center",
-                alignItems: "center",
-                position: "relative",
-                boxSizing: "border-box",
-                flexGrow: 0,
-                alignSelf: "inherit",
-                width: 359,
-                height: 56,
-                backgroundColor: "#ffffff",
-                borderRadius: "68px 68px 68px 68px",
-              }}
-              data-fname="Figma Link"
-            >
-              <div
-                data-fid="52:2"
-                style={{
-                  zIndex: 2,
-                  position: "relative",
-                  boxSizing: "border-box",
-                  flexGrow: 0,
-                  alignSelf: "inherit",
-                  width: 18,
-                  height: 18,
-                  color: "#000000",
-                  fontSize: 18,
-                  fontWeight: 400,
-                  fontFamily: '"Roboto"',
-                  fontStyle: "normal",
-                  lineHeight: "125%",
-                  letterSpacing: "0px",
-                  textAlign: "center",
-                }}
-                data-fname="🚀"
-              >
-                <span style={{}} key="end">
-                  🚀
-                </span>
-              </div>
-              <div
-                data-fid="47:36"
-                style={{
-                  zIndex: 1,
-                  position: "relative",
-                  boxSizing: "border-box",
-                  flexGrow: 0,
-                  alignSelf: "inherit",
-                  width: 256,
-                  height: 17,
-                  color: "#000000",
-                  fontSize: 14.399999618530273,
-                  fontWeight: 400,
-                  fontFamily: '"Roboto"',
-                  fontStyle: "normal",
-                  lineHeight: "125%",
-                  letterSpacing: "0px",
-                  textAlign: "center",
-                }}
-                data-fname="Check Figma design screen of this page"
-              >
-                <span style={{}} key="end">
-                  Check Figma design screen of this page
-                </span>
-              </div>
-              <div
-                data-fid="52:1"
-                style={{
-                  zIndex: 0,
-                  position: "relative",
-                  boxSizing: "border-box",
-                  flexGrow: 0,
-                  alignSelf: "inherit",
-                  width: 17,
-                  height: 24,
-                }}
-                data-fname="Vector"
-              >
-                <div
-                  className="vector"
-                  dangerouslySetInnerHTML={{
-                    __html: `<svg preserveAspectRatio="none" width="17" height="24" viewBox="0 0 17 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.7506 8.00156C13.8776 8.00156 14.9585 7.58005 15.7554 6.82976C16.5523 6.07947 17 5.06185 17 4.00078C17 2.93971 16.5523 1.92209 15.7554 1.1718C14.9585 0.42151 13.8776 0 12.7506 0L4.25187 0C3.12552 0 2.04531 0.421263 1.24886 1.17112C0.452419 1.92097 0.00497992 2.93799 0.00497992 3.99844C0.00497992 5.05889 0.452419 6.07591 1.24886 6.82576C2.04531 7.57561 3.12552 7.99687 4.25187 7.99687C3.12486 7.99687 2.04402 8.41838 1.2471 9.16868C0.450191 9.91897 0.00249058 10.9366 0.00249058 11.9977C0.00249058 13.0587 0.450191 14.0763 1.2471 14.8266C2.04402 15.5769 3.12486 15.9984 4.25187 15.9984C3.41142 15.998 2.5897 16.2322 1.89062 16.6714C1.19154 17.1106 0.6465 17.7351 0.32442 18.466C0.00233966 19.1969 -0.0823126 20.0013 0.0811676 20.7774C0.244648 21.5536 0.648918 22.2667 1.24286 22.8265C1.83679 23.3864 2.59372 23.7678 3.41792 23.9227C4.24213 24.0775 5.09658 23.9987 5.87324 23.6964C6.6499 23.394 7.31389 22.8815 7.78122 22.2239C8.24856 21.5662 8.49826 20.7928 8.49875 20.0016V8.00156H12.7506ZM12.7506 8.00156C11.9107 8.00156 11.0896 8.23607 10.3912 8.67542C9.69278 9.11477 9.14844 9.73924 8.82701 10.4699C8.50557 11.2005 8.42147 12.0044 8.58534 12.7801C8.7492 13.5557 9.15368 14.2681 9.74762 14.8273C10.3416 15.3865 11.0983 15.7673 11.9221 15.9216C12.7459 16.0759 13.5998 15.9967 14.3758 15.6941C15.1519 15.3914 15.8151 14.879 16.2818 14.2214C16.7484 13.5639 16.9975 12.7908 16.9975 12C16.9974 10.9396 16.5499 9.92264 15.7535 9.17281C14.9571 8.42299 13.8769 8.00169 12.7506 8.00156Z" fill="black"/>
-</svg>
-`,
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-          <div
-            data-fid="50:37"
-            style={{
-              zIndex: 2,
-              display: "flex",
-              flexDirection: "row",
-              gap: 10,
-              position: "relative",
-              boxSizing: "border-box",
-              flexGrow: 0,
-              alignSelf: "inherit",
-              width: 274,
+              width: 234,
               height: 54.669097900390625,
               backgroundColor: "rgba(0, 0, 0, 0)",
             }}
@@ -642,7 +526,7 @@ export const Home_1$4: FC<{
                 boxSizing: "border-box",
                 flexGrow: 0,
                 alignSelf: "inherit",
-                width: 274,
+                width: 234,
                 height: 54.669097900390625,
                 backgroundColor: "#ffffff",
                 borderRadius: "68px 68px 68px 68px",
@@ -650,9 +534,34 @@ export const Home_1$4: FC<{
               data-fname="Button"
             >
               <div
-                data-fid="50:39"
+                data-fid="55:0"
                 style={{
                   zIndex: 0,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 18,
+                  height: 18,
+                  color: "#000000",
+                  fontSize: 18,
+                  fontWeight: 400,
+                  fontFamily: '"Roboto"',
+                  fontStyle: "normal",
+                  lineHeight: "125%",
+                  letterSpacing: "0px",
+                  textAlign: "center",
+                }}
+                data-fname="🍜"
+              >
+                <span style={{}} key="end">
+                  🍜
+                </span>
+              </div>
+              <div
+                data-fid="50:39"
+                style={{
+                  zIndex: 1,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
@@ -675,14 +584,39 @@ export const Home_1$4: FC<{
                 </span>
               </div>
               <div
-                data-fid="50:40"
+                data-fid="52:4"
                 style={{
-                  zIndex: 1,
+                  zIndex: 4,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
                   alignSelf: "inherit",
-                  width: 166,
+                  width: 18,
+                  height: 18,
+                  color: "#000000",
+                  fontSize: 18,
+                  fontWeight: 400,
+                  fontFamily: '"Roboto"',
+                  fontStyle: "normal",
+                  lineHeight: "125%",
+                  letterSpacing: "0px",
+                  textAlign: "center",
+                }}
+                data-fname="🚨"
+              >
+                <span style={{}} key="end">
+                  🚨
+                </span>
+              </div>
+              <div
+                data-fid="50:40"
+                style={{
+                  zIndex: 2,
+                  position: "relative",
+                  boxSizing: "border-box",
+                  flexGrow: 0,
+                  alignSelf: "inherit",
+                  width: 86,
                   height: 17,
                   color: "#000000",
                   fontSize: 14.399999618530273,
@@ -693,16 +627,16 @@ export const Home_1$4: FC<{
                   letterSpacing: "0px",
                   textAlign: "center",
                 }}
-                data-fname="Go to GitHub project page"
+                data-fname="Coming soon"
               >
                 <span style={{}} key="end">
-                  Go to GitHub project page
+                  Coming soon
                 </span>
               </div>
               <div
                 data-fid="50:41"
                 style={{
-                  zIndex: 2,
+                  zIndex: 3,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
