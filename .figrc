@@ -1,0 +1,7 @@
+baseDir: __generated__
+componentsDir: components
+pagesDir: pages
+htmlDir: public
+strategy: react
+fileKeys:
+  - pC6EOjjdZpS7PVsPTgjNLL

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx-style-utils.test.ts append import 1`] = `
+"import { a } from \\"./source\\";
+import React, { PureComponent } from \\"react\\";
+export class CFrame1 extends PureComponent {
+  render() {
+    return <div></div>;
+  }
+}
+"
+`;
