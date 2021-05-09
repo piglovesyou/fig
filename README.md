@@ -1,4 +1,4 @@
-** Coming soon**
+**Coming soon**
 
 ---
 # figg
