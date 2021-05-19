@@ -12,7 +12,7 @@ export async function gen(config: FigConfig) {
 
     // TODO: for dev
     await writeFile(
-      `${__dirname}/__fixtures/${fileKey}.file.json`,
+      `${process.cwd()}/__tests__/__fixtures/${fileKey}.file.json`,
       JSON.stringify(figmaFile, undefined, 2)
     );
     const genContext = await makeGenContext(figmaFile, fileKey, baseDir);

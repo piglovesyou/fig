@@ -1,11 +1,11 @@
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 import React from 'react';
-import * as api from './api';
-import { applyDefaultConfig } from './config';
-import { shouldRefresh } from './env';
-import { gen } from './gen';
-import { renderInHtml } from './__tools/fns';
+import * as api from '../src/api';
+import { applyDefaultConfig } from '../src/config';
+import { shouldRefresh } from '../src/env';
+import { gen } from '../src/gen';
+import { readJson, renderInHtml } from '../src/__tools/fns';
 
 async function read(rel: string) {
   return JSON.parse(await readFile(join(__dirname, rel), 'utf-8'));
@@ -17,7 +17,9 @@ const fileKey = 'pC6EOjjdZpS7PVsPTgjNLL';
 if (!shouldRefresh) {
   jest
     .spyOn(api, 'requestFile')
-    .mockImplementation(() => read(`./__fixtures/${fileKey}.file.json`));
+    .mockImplementation(() =>
+      readJson(__dirname, `__fixtures/${fileKey}.file.json`)
+    );
   // jest
   //   .spyOn(api, 'requestImages')
   //   .mockImplementation(() => read('./__fixtures/patagonia.images.json'));

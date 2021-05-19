@@ -2,11 +2,11 @@ import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import React from 'react';
 import renderer from 'react-test-renderer';
-import * as api from './api';
-import { applyDefaultConfig } from './config';
-import { shouldRefresh } from './env';
-import { gen } from './gen';
-import { readFixtureJson, renderInHtml } from './__tools/fns';
+import * as api from '../src/api';
+import { applyDefaultConfig } from '../src/config';
+import { shouldRefresh } from '../src/env';
+import { gen } from '../src/gen';
+import { readJson, renderInHtml } from '../src/__tools/fns';
 
 const name = 'full-html';
 const baseDir = join(process.cwd(), `./__generated__/${name}`);
@@ -21,7 +21,7 @@ if (!shouldRefresh) {
   jest
     .spyOn(api, 'requestFile')
     .mockImplementation(() =>
-      readFixtureJson(`./__fixtures/${fileKey}.file.json`)
+      readJson(process.cwd(), `__tests__/__fixtures/${fileKey}.file.json`)
     );
 }
 

@@ -39,6 +39,7 @@ body > * {
 </html>`;
 }
 
-export async function readFixtureJson(rel: string) {
-  return JSON.parse(await readFile(join(process.cwd(), 'src', rel), 'utf-8'));
+export async function readJson(...paths: string[]) {
+  const fullPath = join(...paths);
+  return JSON.parse(await readFile(fullPath, 'utf-8'));
 }
