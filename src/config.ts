@@ -2,7 +2,7 @@ import { cosmiconfig } from 'cosmiconfig';
 
 const MODULE_NAME = 'fig';
 
-interface FigUserConfig {
+export interface FigUserConfig {
   baseDir?: string;
   componentsDir?: string;
   pagesDir?: string;
