@@ -100,7 +100,7 @@ export class CFrame1 extends PureComponent {
         stringLiteral('./source')
       )
     );
-    let code1 = format(generate(program.node).code);
+    const code1 = format(generate(program.node).code, { parser: 'babel' });
     expect(code1).toMatchSnapshot();
   });
 });
