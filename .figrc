@@ -1,0 +1,6 @@
+baseDir: __generated__
+componentsDir: components
+pagesDir: pages
+htmlDir: public
+fileKeys:
+  - xxx

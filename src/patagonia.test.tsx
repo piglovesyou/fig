@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 import React from 'react';
 import * as api from './api';
+import { applyDefaultConfig } from './config';
 import { gen } from './gen';
 import { renderInHtml } from './__tools/fns';
 
@@ -26,19 +27,23 @@ if (useCache) {
   //   .mockImplementation(() => read('./__fixtures/patagonia.images.json'));
 }
 
-const outDir = join(process.cwd(), `./__generated__/${name}`);
+const baseDir = join(process.cwd(), `./__generated__/${name}`);
+const config = applyDefaultConfig({
+  baseDir,
+  fileKeys: [fileKey],
+});
 
 describe('patagonia.test.tsx', () => {
   test(
     'full html',
     async () => {
-      await gen(outDir, fileKey);
+      await gen(config);
       const componentName = 'Home_1$4';
       const { [componentName]: Home } = await import(
         `../__generated__/${name}/components/${componentName}`
       );
 
-      await writeFile(join(outDir, 'index.html'), renderInHtml(<Home />));
+      await writeFile(join(baseDir, 'index.html'), renderInHtml(<Home />));
     },
     1000 * 60 * 60
   );

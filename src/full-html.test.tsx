@@ -3,12 +3,18 @@ import { join } from 'path';
 import React from 'react';
 import renderer from 'react-test-renderer';
 import * as api from './api';
+import { applyDefaultConfig } from './config';
 import { gen } from './gen';
 import { readFixtureJson, renderInHtml } from './__tools/fns';
 
 const name = 'full-html';
-const outDir = join(process.cwd(), `./__generated__/${name}`);
+const baseDir = join(process.cwd(), `./__generated__/${name}`);
+
 const fileKey = 'QAIja81RKgYhQnIIJ0h9PJ';
+const config = applyDefaultConfig({
+  baseDir,
+  fileKeys: [fileKey],
+});
 
 let useCache = false;
 useCache = true; // Comment out to update cache
@@ -25,7 +31,7 @@ describe('Test full html', () => {
   test(
     'Render final HTML',
     async () => {
-      await gen(outDir, fileKey);
+      await gen(config);
       const componentName = 'Home_2$2';
       const { [componentName]: Home } = await import(
         `../__generated__/${name}/components/${componentName}`
@@ -33,7 +39,10 @@ describe('Test full html', () => {
 
       const element = <Home />;
 
-      await writeFile(join(outDir, `index.html`), renderInHtml(<Home />));
+      await writeFile(
+        join(config.baseDir!, `index.html`),
+        renderInHtml(<Home />)
+      );
 
       const component = renderer.create(element);
       expect(component.toJSON()).toMatchSnapshot();
