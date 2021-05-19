@@ -4,6 +4,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import * as api from './api';
 import { applyDefaultConfig } from './config';
+import { shouldRefresh } from './env';
 import { gen } from './gen';
 import { readFixtureJson, renderInHtml } from './__tools/fns';
 
@@ -16,10 +17,7 @@ const config = applyDefaultConfig({
   fileKeys: [fileKey],
 });
 
-let useCache = false;
-useCache = true; // Comment out to update cache
-
-if (useCache) {
+if (!shouldRefresh) {
   jest
     .spyOn(api, 'requestFile')
     .mockImplementation(() =>
