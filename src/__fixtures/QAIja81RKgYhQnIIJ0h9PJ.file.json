@@ -511,7 +511,6 @@
                             "layoutMode": "HORIZONTAL",
                             "itemSpacing": 11,
                             "counterAxisAlignItems": "CENTER",
-                            "primaryAxisAlignItems": "CENTER",
                             "effects": [],
                             "componentId": "31:5"
                           },
@@ -631,7 +630,6 @@
                             "layoutMode": "HORIZONTAL",
                             "itemSpacing": 11,
                             "counterAxisAlignItems": "CENTER",
-                            "primaryAxisAlignItems": "CENTER",
                             "effects": [],
                             "componentId": "31:5"
                           },
@@ -751,7 +749,6 @@
                             "layoutMode": "HORIZONTAL",
                             "itemSpacing": 11,
                             "counterAxisAlignItems": "CENTER",
-                            "primaryAxisAlignItems": "CENTER",
                             "effects": [],
                             "componentId": "31:5"
                           }
@@ -1868,8 +1865,8 @@
   "schemaVersion": 0,
   "styles": {},
   "name": "yeah",
-  "lastModified": "2021-05-08T11:06:44Z",
-  "thumbnailUrl": "https://s3-alpha-sig.figma.com/thumbnails/5f99fb6d-db24-4fb8-8d5a-58d8119c5870?Expires=1621209600&Signature=BDqGjdCDhbSZTIqkHbszH304OhbFijxY6mxLzrETns6aHOr~wJULNg1ogGQ-SYHJM~l8E0RIIyfghM31gZoQhHwRWt~hGqpm56uNeXbbw-nYCiR18nr0v-lMSQO4UuWSu5fKywa~K6B4rTrNrHj28r1mkqY4-8ip4Kn43qmYRSpZ9IWDNEXRdyMLhhDN4lfOkfElT84aQlC0bBqpSNH3MeouZciKKVq6zEZ7wbCCPTrhLmd8fmmV24DVYJ4XnASlc~h9McrsiIpz3AkQ2z6cqoih3IXGnpwxTwKSKwiYwTTQpB150OdhE6ZVAhx85V9oi9oylQitMMLNkiW0cOHQDg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+  "lastModified": "2021-05-08T11:12:07Z",
+  "thumbnailUrl": "https://s3-alpha-sig.figma.com/thumbnails/97c30d2c-4fa8-4098-8b28-c27601436b10?Expires=1622419200&Signature=LB7Zy5Wjgwm7Mljx~SRDibyiku7YrpvtMRCppA3d8taV50qMZmbFY6zxpMNg4v4Ap1Q8~T2riPH39tJ7gcoE2u4Itk8gVgn~en4uuroJiqGut9g7Ut-ex0g4DY57igiV4pvnWKSPaunI9oi8tVarijATDVZW~zjqDvVlWSisqZczpW0qT1dgBP4S1j2HlD~GdAoYiD8q3Kc1WTWWbQcXWQtzI3Yfes8meCSetjoPXrVr9ZadesHIi~Odo5qSpCwagMMkxw8lLerkjbH2xz7RD7Cwtg2Smi43D26DOYN9J1sYWHiAR64pF1IEiCxaxpXAfaRJx~oadAQzzgac40cJaw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
   "version": "837107339",
   "role": "owner"
 }
