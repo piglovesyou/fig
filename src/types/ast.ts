@@ -717,7 +717,7 @@ export type Node<NType extends NodeType = NodeType> = {
   type: NType;
   id: string;
   name: string;
-  visible: boolean;
+  visible?: boolean;
 
   // XXX: Added by myself. Possibly wrong.
   constraints?: LayoutConstraint;

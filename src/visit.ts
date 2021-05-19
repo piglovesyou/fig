@@ -595,7 +595,10 @@ function visitComponentOrInstance(
   const program = cursor.findParent((path) =>
     isProgram(path.node)
   )! as NodePath<Program>;
-  const importSource = `./${componentName}`;
+  const importFromPage = context.parentNode?.type === 'FRAME';
+  const importSource = `${
+    importFromPage ? `../${genContext.config.componentsDir}` : '.'
+  }/${componentName}`;
   const alreadyImported = program.node.body.some(
     (node) => isImportDeclaration(node) && node.source.value === importSource
   );

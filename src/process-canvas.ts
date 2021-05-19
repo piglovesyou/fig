@@ -15,7 +15,7 @@ function makeLayoutForReact(
   fid: string,
   name: string
 ): [File, NodePath<JSXElement>] {
-  const template = `
+  const root = parseAsRoot(`
     import React, {FC, CSSProperties} from "react"
     
     export const ${name}: FC<{style: CSSProperties}> = (props) => {
@@ -23,8 +23,7 @@ function makeLayoutForReact(
         <__PLACEHOLDER__ ${TEMP_REF_ATTR}></__PLACEHOLDER__>
       )
     }
-    `;
-  const root = parseAsRoot(template);
+  `);
   const cursor = findTempRefJsxElement(root);
   if (!cursor) throw new Error('should be found');
   return [root, cursor];
@@ -38,7 +37,12 @@ export async function processComponent(
 
   const { baseDir } = genContext;
   const name = makeComponentName(node);
-  const componetsDir = join(baseDir, 'components');
+  const componetsDir = join(
+    baseDir,
+    node.type === 'FRAME'
+      ? genContext.config.pagesDir
+      : genContext.config.componentsDir
+  );
   await makeDir(componetsDir);
   const fullPath = join(componetsDir, `${name}.tsx`);
 
