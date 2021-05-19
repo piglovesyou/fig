@@ -8,346 +8,947 @@ exports[`Test full html Render final HTML 1`] = `
     Object {
       "backgroundColor": "#ffffff",
       "boxSizing": "border-box",
+      "display": "flex",
+      "flexDirection": "row",
+      "gap": 10,
+      "paddingBottom": 37,
+      "paddingLeft": 48,
+      "paddingRight": 48,
+      "paddingTop": 37,
       "position": "absolute",
     }
   }
 >
   <div
-    data-fid="28:1"
-    data-fname="Arrow 1"
+    data-fid="53:42"
+    data-fname="Frame 13"
     style={
       Object {
-        "boxSizing": "border-box",
-        "height": 81,
-        "left": 245,
-        "position": "absolute",
-        "top": 26,
-        "width": 70,
-        "zIndex": 1,
-      }
-    }
-  >
-    <div
-      className="vector"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"72\\" height=\\"82\\" viewBox=\\"0 0 72 82\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
-<path d=\\"M71.0269 0.464673C71.0068 0.18868 70.7667 -0.0187591 70.4907 0.00134421L65.9931 0.328987C65.7171 0.34909 65.5097 0.589126 65.5298 0.865125C65.5499 1.14112 65.7899 1.34856 66.0659 1.32845L70.0638 1.03722L70.355 5.03508C70.3751 5.31108 70.6152 5.51852 70.8912 5.49841C71.1672 5.4783 71.3746 5.23827 71.3545 4.96227L71.0269 0.464673ZM0.758214 82L70.9062 0.828701L70.148 0.173455L8.66095e-07 81.3448L0.758214 82Z\\" fill=\\"black\\"/>
-</svg>
-",
-        }
-      }
-    />
-  </div>
-  <div
-    data-fid="2:5"
-    data-fname="Frame 2"
-    style={
-      Object {
+        "alignSelf": "inherit",
         "backgroundColor": "rgba(0, 0, 0, 0)",
         "boxSizing": "border-box",
         "display": "flex",
-        "flexDirection": "column",
-        "gap": 22,
-        "height": 122,
-        "left": 97,
-        "position": "absolute",
-        "top": 53,
-        "width": 101,
+        "flexDirection": "row",
+        "flexGrow": 0,
+        "height": 635,
+        "position": "relative",
+        "width": 544,
         "zIndex": 0,
       }
     }
   >
     <div
-      data-fid="2:3"
-      data-fname="Rectangle 1"
+      data-fid="53:34"
+      data-fname="Frame 8"
       style={
         Object {
           "alignSelf": "inherit",
-          "backgroundColor": "#c4c4c4",
-          "boxSizing": "border-box",
-          "flexGrow": 0,
-          "height": 50,
-          "position": "relative",
-          "width": 101,
-          "zIndex": 0,
-        }
-      }
-    />
-    <div
-      data-fid="2:4"
-      data-fname="Rectangle 2"
-      style={
-        Object {
-          "alignSelf": "inherit",
-          "backgroundColor": "#c4c4c4",
-          "boxSizing": "border-box",
-          "flexGrow": 0,
-          "height": 50,
-          "position": "relative",
-          "width": 101,
-          "zIndex": 1,
-        }
-      }
-    />
-  </div>
-  <div
-    data-fid="31:5"
-    data-fname="Frame 3"
-    style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "rgba(0, 0, 0, 0)",
-        "boxSizing": "border-box",
-        "display": "flex",
-        "flexDirection": "row",
-        "gap": 11,
-        "height": 28,
-        "left": 220,
-        "position": "absolute",
-        "top": 215,
-        "width": 95,
-        "zIndex": 2,
-      }
-    }
-  >
-    <div
-      data-fid="31:2"
-      data-fname="Ellipse 1"
-      style={
-        Object {
-          "alignSelf": "inherit",
-          "boxSizing": "border-box",
-          "flexGrow": 0,
-          "height": 28,
-          "position": "relative",
-          "width": 28,
-          "zIndex": 0,
-        }
-      }
-    >
-      <div
-        className="vector"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
-<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
-</svg>
-",
-          }
-        }
-      />
-    </div>
-    <div
-      data-fid="31:3"
-      data-fname="aaaaaa"
-      style={
-        Object {
-          "alignSelf": "inherit",
-          "boxSizing": "border-box",
-          "color": "#000000",
-          "flexGrow": 0,
-          "fontFamily": "\\"Roboto\\"",
-          "fontSize": 12,
-          "fontStyle": "normal",
-          "fontWeight": 400,
-          "height": 14,
-          "letterSpacing": "0px",
-          "lineHeight": "125%",
-          "position": "relative",
-          "textAlign": "left",
-          "width": 40,
-          "zIndex": 1,
-        }
-      }
-    >
-      <span
-        style={Object {}}
-      >
-        aaaaaa
-      </span>
-    </div>
-  </div>
-  <div
-    data-fid="31:5"
-    data-fname="Frame 3"
-    style={
-      Object {
-        "alignItems": "flex-end",
-        "backgroundColor": "rgba(0, 0, 0, 0)",
-        "boxSizing": "border-box",
-        "display": "flex",
-        "flexDirection": "row",
-        "gap": 11,
-        "height": 28,
-        "justifyContent": "center",
-        "left": 220,
-        "position": "absolute",
-        "top": 259,
-        "width": 95,
-        "zIndex": 3,
-      }
-    }
-  >
-    <div
-      data-fid="31:2"
-      data-fname="Ellipse 1"
-      style={
-        Object {
-          "alignSelf": "inherit",
-          "boxSizing": "border-box",
-          "flexGrow": 0,
-          "height": 28,
-          "position": "relative",
-          "width": 28,
-          "zIndex": 0,
-        }
-      }
-    >
-      <div
-        className="vector"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
-<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
-</svg>
-",
-          }
-        }
-      />
-    </div>
-    <div
-      data-fid="31:3"
-      data-fname="aaaaaa"
-      style={
-        Object {
-          "alignSelf": "inherit",
-          "boxSizing": "border-box",
-          "color": "#000000",
-          "flexGrow": 0,
-          "fontFamily": "\\"Roboto\\"",
-          "fontSize": 12,
-          "fontStyle": "normal",
-          "fontWeight": 400,
-          "height": 14,
-          "letterSpacing": "0px",
-          "lineHeight": "125%",
-          "position": "relative",
-          "textAlign": "left",
-          "width": 40,
-          "zIndex": 1,
-        }
-      }
-    >
-      <span
-        style={Object {}}
-      >
-        aaaaaa
-      </span>
-    </div>
-  </div>
-  <div
-    data-fid="45:3"
-    data-fname="floating"
-    style={
-      Object {
-        "alignItems": "flex-end",
-        "backgroundColor": "rgba(0, 0, 0, 0)",
-        "boxSizing": "border-box",
-        "display": "flex",
-        "flexDirection": "column",
-        "gap": 10,
-        "height": 145,
-        "left": 61,
-        "position": "absolute",
-        "top": 333,
-        "width": 184,
-        "zIndex": 4,
-      }
-    }
-  >
-    <div
-      data-fid="45:4"
-      data-fname="Rectangle 7"
-      style={
-        Object {
-          "alignSelf": "stretch",
-          "backgroundColor": "#c4c4c4",
-          "boxSizing": "border-box",
-          "flexGrow": 1,
-          "height": 41.66666793823242,
-          "position": "relative",
-          "width": 184,
-          "zIndex": 0,
-        }
-      }
-    />
-    <div
-      data-fid="47:0"
-      data-fname="Rectangle 8"
-      style={
-        Object {
-          "alignSelf": "inherit",
-          "backgroundColor": "#c4c4c4",
-          "boxSizing": "border-box",
-          "flexGrow": 1,
-          "height": 41.66666793823242,
-          "position": "relative",
-          "width": 92,
-          "zIndex": 1,
-        }
-      }
-    />
-    <div
-      data-fid="45:5"
-      data-fname="Frame 4"
-      style={
-        Object {
-          "alignSelf": "stretch",
           "backgroundColor": "rgba(0, 0, 0, 0)",
           "boxSizing": "border-box",
           "display": "flex",
-          "flexDirection": "row",
-          "flexGrow": 1,
-          "gap": 10,
-          "height": 41.66666793823242,
+          "flexDirection": "column",
+          "flexGrow": 0,
+          "gap": 41,
+          "height": 509,
           "position": "relative",
-          "width": 184,
-          "zIndex": 2,
+          "width": 243,
+          "zIndex": 0,
         }
       }
     >
       <div
-        data-fid="45:6"
-        data-fname="Rectangle 8"
+        data-fid="53:6"
+        data-fname="floating"
         style={
           Object {
-            "alignSelf": "stretch",
-            "backgroundColor": "#c4c4c4",
+            "alignSelf": "inherit",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
             "boxSizing": "border-box",
-            "flexGrow": 1,
-            "height": 41.66666793823242,
+            "display": "flex",
+            "flexDirection": "column",
+            "flexGrow": 0,
+            "gap": 10,
+            "height": 145,
             "position": "relative",
-            "width": 128,
+            "width": 184,
             "zIndex": 0,
           }
         }
-      />
+      >
+        <div
+          data-fid="53:7"
+          data-fname="Rectangle 7"
+          style={
+            Object {
+              "alignSelf": "stretch",
+              "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/458a/aaf9/87b33ef96249a089c1049f2e2be23e35?Expires=1622419200&Signature=bT7jjXhYUXh0T6ocvzRFiBDqQee3CTeGJi4Q3jva9vPyPlrn4kQFwvFJb3Ly6Yz1Kix1oWzWMEIedsydRyCMenbQq09clOjUUx7Ru~shzXLAkDrRlGF4n3DwBX4wweNlzZnGQ6TJ5tk-J~TAH0UdJe6mLx-Mo6XV3hrapA1zie-kP1a2yxpMESeER~Mjqsz48L1FO4kjgzEsgjNXqXlznsLscMfwOx4eIUpw72H0PtIACE0lCppMKEEtb7dV4~XCOp6IoeUzUgZTLH3jxfDfhtFkVLrY6B5uAuMUua~cyDD7rKN~8XojOdHpsXiXZJ4MybuLTmyOje~KPxI3DM8MtA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+              "backgroundPosition": "center",
+              "backgroundSize": "cover",
+              "boxSizing": "border-box",
+              "flexGrow": 1,
+              "height": 41.66666793823242,
+              "position": "relative",
+              "width": 184,
+              "zIndex": 0,
+            }
+          }
+        />
+        <div
+          data-fid="53:8"
+          data-fname="Rectangle 8"
+          style={
+            Object {
+              "alignSelf": "inherit",
+              "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/96f9/6f08/396a91c1bef7d9df4f7b470a59d65a60?Expires=1622419200&Signature=NfIowEQqX9k4-fCwtgfn83-btUn605g0hus1dw0UZkK08zw~22AdyJ2mgNXZF6bKE6sVSMYfyGB21BD2I-4-cE2H5dQHhw4vh2rKCX~lnL3UQY5-qTuvQIebXQETjC9YJYtvMnI2gHW7h9LVJ0XjzmL1g-s88n2cposMlHnYw5wuX0lLbAIr0h8sUIzp4kd0vHKXm6iTnBYUpEPMHfsATIsM5QHFp~Dt9oo2ljzz24uT8gaoln5xltFesJVUi6gSSY85EPpK2PjF9akoxxmA86SNCCAqTOk5fclq7aqMHBA7QTX1zVKq-KPxWKxM81TEbPAHmoRagMB1EaRLbzduGQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+              "backgroundPosition": "center",
+              "backgroundSize": "cover",
+              "boxSizing": "border-box",
+              "flexGrow": 1,
+              "height": 41.66666793823242,
+              "position": "relative",
+              "width": 92,
+              "zIndex": 1,
+            }
+          }
+        />
+        <div
+          data-fid="53:9"
+          data-fname="Frame 4"
+          style={
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "gap": 10,
+              "height": 41.66666793823242,
+              "position": "relative",
+              "width": 184,
+              "zIndex": 2,
+            }
+          }
+        >
+          <div
+            data-fid="53:10"
+            data-fname="Rectangle 8"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/d2b9/03a4/ebd24d2b7af135bf12f20724d0736442?Expires=1622419200&Signature=XqjfOKkWikSTsrc-S0sTxNn3L4BgmG4AXS~R1oVogZ99KrSanUbc2QgE1Smz~nxdOLHMWlXMnR6LPQQKiMMQq8kdKyVGIYFu7t3mmWi5UjDas2c6BQmWwV1bPXaNIKGXIx8S3y1hX-Yd9jk5Jk~EdRqSWTsbeL7G6NkfX~IIOMMhfQLwKnKACyx9NI3dAcqYDOR7hpBDLnRs1a5MJQk5OHcD5KgDNhZvbP8qrDaLqaao92cgrSLYX0bgBabcYEihPwmegwy7-e3GovnYYFbOp~AmeTzPaYGQ~HhLjq-uBkFmNP0P2p80Ob2bGz7k4Or3e4IQpEfkrUFl-~NsFj-9DQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 1,
+                "height": 41.66666793823242,
+                "position": "relative",
+                "width": 128,
+                "zIndex": 0,
+              }
+            }
+          />
+          <div
+            data-fid="53:11"
+            data-fname="Rectangle 9"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/b28d/4257/25024c6a7a46f9be3fb168e1137fcbc6?Expires=1622419200&Signature=KPvSWH19ROQAHO~20vKVVHlz-wTZHoDuaDvef6OoTVmCbZEO6CCJHXV1R-kdfmNILYdvHfwL2-Pp47~XmRWOuZWsO-URXhiXH5pXSRFIrIZgvRtA5nekvsDAKASvH6kjiuFH6X5J28c-QM4Xqx2iiXxb7stsSQvy5YJ79DtCfywd9vVLtgJ2jgmfbUxHs5~7TrlbQKAewcWRkuw3RrStgTmceh31gMj1GRbNWAfoKaFlO-wdhpLoP8ZSB0lfGc48SjGTsf7J2Gk6WJ8KFQL6OYOG0jUCp9P-6FWOCPtVgUgZf8842HmtBuaNPXAOm1FQ-1bucMyytNVw7UOZhk5jbA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "position": "relative",
+                "width": 46,
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
       <div
-        data-fid="45:7"
-        data-fname="Rectangle 9"
+        data-fid="53:27"
+        data-fname="Frame 6"
         style={
           Object {
-            "alignSelf": "stretch",
-            "backgroundColor": "#c4c4c4",
+            "alignSelf": "inherit",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
             "boxSizing": "border-box",
+            "display": "flex",
+            "flexDirection": "column",
             "flexGrow": 0,
+            "gap": 16,
+            "height": 160,
             "position": "relative",
-            "width": 46,
+            "width": 219,
             "zIndex": 1,
           }
         }
-      />
+      >
+        <div
+          data-fid="31:5"
+          data-fname="Frame 3"
+          style={
+            Object {
+              "alignItems": "center",
+              "alignSelf": "inherit",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "row",
+              "flexGrow": 0,
+              "gap": 11,
+              "height": 28,
+              "position": "relative",
+              "width": 219,
+              "zIndex": 0,
+            }
+          }
+        >
+          <div
+            data-fid="31:2"
+            data-fname="Ellipse 1"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 28,
+                "position": "relative",
+                "width": 28,
+                "zIndex": 0,
+              }
+            }
+          >
+            <div
+              className="vector"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
+</svg>
+",
+                }
+              }
+            />
+          </div>
+          <div
+            data-fid="31:3"
+            data-fname="aaaaaa"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "color": "#000000",
+                "flexGrow": 0,
+                "fontFamily": "\\"Roboto\\"",
+                "fontSize": 12,
+                "fontStyle": "normal",
+                "fontWeight": 400,
+                "height": 14,
+                "letterSpacing": "0px",
+                "lineHeight": "125%",
+                "position": "relative",
+                "textAlign": "left",
+                "width": 40,
+                "zIndex": 1,
+              }
+            }
+          >
+            <span
+              style={Object {}}
+            >
+              aaaaaa
+            </span>
+          </div>
+        </div>
+        <div
+          data-fid="31:5"
+          data-fname="Frame 3"
+          style={
+            Object {
+              "alignItems": "center",
+              "alignSelf": "inherit",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "row",
+              "flexGrow": 0,
+              "gap": 11,
+              "height": 28,
+              "position": "relative",
+              "width": 131,
+              "zIndex": 1,
+            }
+          }
+        >
+          <div
+            data-fid="31:2"
+            data-fname="Ellipse 1"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 28,
+                "position": "relative",
+                "width": 28,
+                "zIndex": 0,
+              }
+            }
+          >
+            <div
+              className="vector"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
+</svg>
+",
+                }
+              }
+            />
+          </div>
+          <div
+            data-fid="31:3"
+            data-fname="aaaaaa"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "color": "#000000",
+                "flexGrow": 0,
+                "fontFamily": "\\"Roboto\\"",
+                "fontSize": 12,
+                "fontStyle": "normal",
+                "fontWeight": 400,
+                "height": 14,
+                "letterSpacing": "0px",
+                "lineHeight": "125%",
+                "position": "relative",
+                "textAlign": "left",
+                "width": 40,
+                "zIndex": 1,
+              }
+            }
+          >
+            <span
+              style={Object {}}
+            >
+              aaaaaa
+            </span>
+          </div>
+        </div>
+        <div
+          data-fid="31:5"
+          data-fname="Frame 3"
+          style={
+            Object {
+              "alignItems": "center",
+              "alignSelf": "inherit",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "row",
+              "flexGrow": 0,
+              "gap": 11,
+              "height": 28,
+              "position": "relative",
+              "width": 100,
+              "zIndex": 2,
+            }
+          }
+        >
+          <div
+            data-fid="31:2"
+            data-fname="Ellipse 1"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 28,
+                "position": "relative",
+                "width": 28,
+                "zIndex": 0,
+              }
+            }
+          >
+            <div
+              className="vector"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
+</svg>
+",
+                }
+              }
+            />
+          </div>
+          <div
+            data-fid="31:3"
+            data-fname="aaaaaa"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "color": "#000000",
+                "flexGrow": 0,
+                "fontFamily": "\\"Roboto\\"",
+                "fontSize": 12,
+                "fontStyle": "normal",
+                "fontWeight": 400,
+                "height": 14,
+                "letterSpacing": "0px",
+                "lineHeight": "125%",
+                "position": "relative",
+                "textAlign": "left",
+                "width": 40,
+                "zIndex": 1,
+              }
+            }
+          >
+            <span
+              style={Object {}}
+            >
+              aaaaaa
+            </span>
+          </div>
+        </div>
+        <div
+          data-fid="31:5"
+          data-fname="Frame 3"
+          style={
+            Object {
+              "alignItems": "center",
+              "alignSelf": "inherit",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "row",
+              "flexGrow": 0,
+              "gap": 11,
+              "height": 28,
+              "position": "relative",
+              "width": 205,
+              "zIndex": 3,
+            }
+          }
+        >
+          <div
+            data-fid="31:2"
+            data-fname="Ellipse 1"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 28,
+                "position": "relative",
+                "width": 28,
+                "zIndex": 0,
+              }
+            }
+          >
+            <div
+              className="vector"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"28\\" height=\\"28\\" viewBox=\\"0 0 28 28\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<circle cx=\\"14\\" cy=\\"14\\" r=\\"14\\" fill=\\"#C4C4C4\\"/>
+</svg>
+",
+                }
+              }
+            />
+          </div>
+          <div
+            data-fid="31:3"
+            data-fname="aaaaaa"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "boxSizing": "border-box",
+                "color": "#000000",
+                "flexGrow": 0,
+                "fontFamily": "\\"Roboto\\"",
+                "fontSize": 12,
+                "fontStyle": "normal",
+                "fontWeight": 400,
+                "height": 14,
+                "letterSpacing": "0px",
+                "lineHeight": "125%",
+                "position": "relative",
+                "textAlign": "left",
+                "width": 40,
+                "zIndex": 1,
+              }
+            }
+          >
+            <span
+              style={Object {}}
+            >
+              aaaaaa
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        data-fid="53:41"
+        data-fname="Frame 12"
+        style={
+          Object {
+            "alignSelf": "inherit",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "boxSizing": "border-box",
+            "display": "flex",
+            "flexDirection": "row",
+            "flexGrow": 0,
+            "gap": 41,
+            "height": 122,
+            "position": "relative",
+            "width": 243,
+            "zIndex": 2,
+          }
+        }
+      >
+        <div
+          data-fid="2:5"
+          data-fname="Frame 2"
+          style={
+            Object {
+              "alignSelf": "inherit",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "column",
+              "flexGrow": 0,
+              "gap": 22,
+              "height": 122,
+              "position": "relative",
+              "width": 101,
+              "zIndex": 0,
+            }
+          }
+        >
+          <div
+            data-fid="2:3"
+            data-fname="Rectangle 1"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/ce3c/24f7/d182b6aa99a7ecd7313b0d84038e39b0?Expires=1622419200&Signature=gsKLbnYLQUyNVCe8VMG1LZAOjKfxyI~q3SsBHYY43cUCa7HO-8QOE9clBd53kgsb3FxlgNWsyFBUKpkKuWO9ic7bda2Q8QGaAkGWmrFcf~mzn7hcv9JmpdeeRkgXRdy2Tw6SZal7x14rOMjnLo5LIkNv-Av4RgajLyzkkh5WMoWOJHxhCNNlALsHm7e44zAoHyShwhBSoqQ5bFexwrxYYwxhl4lFa7GPrnaDHCbBS8YHTOfwxfGizeqFrQ4Oo6sxHtOJ7B~5ihugyhrMLzzy1lksmzfgJyVB9WhyxyREe~0-t6cDMXv4nnUYwywyt5VqV1lxYaUOHWNPl2h5tffygg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 50,
+                "position": "relative",
+                "width": 101,
+                "zIndex": 0,
+              }
+            }
+          />
+          <div
+            data-fid="2:4"
+            data-fname="Rectangle 2"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/2531/6439/7acefafd2a163e886c1f2f6bced05607?Expires=1622419200&Signature=b~ZB5LStrdUlGq~xlATtg4uxByTrSUx2JEamoT7kmUCf9qybd9960T0J6NZg6OPQV39bs4xjjT9LPq~8XUrjY9j6IX7ES2gMitYxhNZUfIM-5h1h4BMV-RHwXaKutwtFrjzZU3rqdC1fTz4kVAhDrR8EaUbHPt~V0BYPRDlf9294zVNsXunMeftY~ZyNvX5fufNh5Qbx21If3kTR4zfjuJdeRFprjA5kWJKksCMVNK9lPyH5FDPy4RDnT9EP1TIj8T28hVG49yV7l5~6~nfCPUrNGdulS91Wl4visGSUTzXrJvGOTXHmOhZ1R6HhfCbFAGqDgU37NdBrTMt-1hBG2g__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 50,
+                "position": "relative",
+                "width": 101,
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+        <div
+          data-fid="53:38"
+          data-fname="Frame 7"
+          style={
+            Object {
+              "alignSelf": "inherit",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "column",
+              "flexGrow": 0,
+              "gap": 22,
+              "height": 122,
+              "position": "relative",
+              "width": 101,
+              "zIndex": 1,
+            }
+          }
+        >
+          <div
+            data-fid="53:39"
+            data-fname="Rectangle 1"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/068f/9bc8/6223c18ba3aa8a28ae4d5767a6188ef8?Expires=1622419200&Signature=RgvoiRnvXgt2Q46n1e6F-GzSUUz~MtdjHduzrQI9d9rDZ9kDnffYABh9ZvC5X4AwcJUNbegLrimxO51Lyprj-7FhNcSsPnaq45JT1HxVrRlD0Weq1gY3k6m12lrtDhZ80Q3qvLCVFpZKrHKE7b0hnY~YsjN15Z5EMdNzmIca-K~8E~kVAJPgGTDxCBPXX6OjCh-~r4I9wwQc4dqQ1P-kqVCQVjHcs2jlpfnhSN6cvSUFa8tOzLpKipeKgpWtZHYT1R9DHaWUOQi0yP~myqSddgZkx8zqyAfSg5ivl2LJzMmDNl3ks2PeXlfFXn-Orv-7N6PkyD6qS0nDivMmmowkEQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 50,
+                "position": "relative",
+                "width": 101,
+                "zIndex": 0,
+              }
+            }
+          />
+          <div
+            data-fid="53:40"
+            data-fname="Rectangle 2"
+            style={
+              Object {
+                "alignSelf": "inherit",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/f7db/4932/449efdad4b1df53dce67a6b56e8dc4e2?Expires=1622419200&Signature=XrXLp24rXm5dp05Rp4YJTD2hCCbQVydf1KlpSRs1FNXZxIjaqleMJX-9y7b9umfHNrD48E8ERXH0meYJoekLvhDinb-UxZnrjIY1P5KELGtHipqTztzHPc4kSsOgDdTY~kfSrGXw22ujWhv36jHhT3x3T-RVSZR307dGt9asT0s5WfMmjI4eYXgasjPh0xO0Gqb1hNSJn4dZgkSuzvvlIo5fHgCngHF-Ih1nAqkN~2EAEF5PLlrKM3cuWTcBu3RmVUvC90Q40Wr4cfS9BfTIaLmY2qJpioDZl1oPOmkcc4izfmHEEJ6w~7E2IYp1DjWB66fhedHAVf6k6f1E~O04ag__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "height": 50,
+                "position": "relative",
+                "width": 101,
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      data-fid="53:36"
+      data-fname="Frame 10"
+      style={
+        Object {
+          "alignItems": "flex-end",
+          "alignSelf": "inherit",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "boxSizing": "border-box",
+          "display": "flex",
+          "flexDirection": "column",
+          "flexGrow": 0,
+          "gap": 69,
+          "height": 635,
+          "position": "relative",
+          "width": 301,
+          "zIndex": 1,
+        }
+      }
+    >
+      <div
+        data-fid="45:3"
+        data-fname="floating"
+        style={
+          Object {
+            "alignItems": "flex-end",
+            "alignSelf": "inherit",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "boxSizing": "border-box",
+            "display": "flex",
+            "flexDirection": "column",
+            "flexGrow": 0,
+            "gap": 10,
+            "height": 271,
+            "position": "relative",
+            "width": 301,
+            "zIndex": 0,
+          }
+        }
+      >
+        <div
+          data-fid="45:4"
+          data-fname="Rectangle 7"
+          style={
+            Object {
+              "alignSelf": "stretch",
+              "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/80da/ce8f/5730c909b8f07945df7fa36a53a2bd52?Expires=1622419200&Signature=I3kSm0PT1wTO~rv9KEsqPncOPBq9ZQ0mfcQrvXIyvZ68STKlGyipp8ypsBlwQioHW9VS5ZUOtyhLW1wQkEh75rvVhq1vFbt082S4Weps6d7H5aDMf-Z1eG5S6Kpedsx4KC5rNUVFF1H2soCl2bggtZ0h1qwk-C4NbAlYh5IQ7jxLiqV~NMRPWiFyDaATI28ApwCnq0EMXzGWMjkDSl5lbQ~0Jr1zY3hJlins4ygZhCvIThbp8rnlB7OeOjGdAcjhXDrgeb4-r44KSa-cJ03iaC7yjKs1vFUymkBM-oJs6naIDp~-iITNamjl93w8NZ6qNswyHO5EyHZJjV3x8sLluA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+              "backgroundPosition": "center",
+              "backgroundSize": "cover",
+              "boxSizing": "border-box",
+              "flexGrow": 1,
+              "height": 92,
+              "position": "relative",
+              "width": 301,
+              "zIndex": 0,
+            }
+          }
+        />
+        <div
+          data-fid="47:0"
+          data-fname="Rectangle 8"
+          style={
+            Object {
+              "alignSelf": "inherit",
+              "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/85c0/d314/7490378d2984a6349ef95f8074ed87a6?Expires=1622419200&Signature=Hl9VKZjz7PjNLwDL1Zhr7O3cpxgn2zfXFFtlpjc8pQWbqdi6dpuQCi6h2MYDiZskejjtJ3BN5csSvGi2J~u4HbFDzWaHMk0PPJnl~DgbaoxB~wMqlqhH8mRQfKs4rxqlmXQSvzrCxBC-ZKb--4B26BQvhx73-QoW2Awgq1501N-fFIhC3EVp0psK61vTCNVONjSB478wMevRrIhwzOlcdpKu6o5deflSCOKqcBDTVy-RWGX4Ejku-qr-GT1-gANU8oPBfZb47Vd1igx0DIjn2oRnawGmRgim9h9dJdrWnZAMMhuRq5VjYOHeEAGofcd0IXEz7QvyVbfHTAUSQ~xmxw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+              "backgroundPosition": "center",
+              "backgroundSize": "cover",
+              "boxSizing": "border-box",
+              "flexGrow": 0,
+              "height": 67,
+              "position": "relative",
+              "width": 74,
+              "zIndex": 1,
+            }
+          }
+        />
+        <div
+          data-fid="45:5"
+          data-fname="Frame 4"
+          style={
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "gap": 10,
+              "height": 92,
+              "position": "relative",
+              "width": 301,
+              "zIndex": 2,
+            }
+          }
+        >
+          <div
+            data-fid="45:6"
+            data-fname="Rectangle 8"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/2531/6439/7acefafd2a163e886c1f2f6bced05607?Expires=1622419200&Signature=b~ZB5LStrdUlGq~xlATtg4uxByTrSUx2JEamoT7kmUCf9qybd9960T0J6NZg6OPQV39bs4xjjT9LPq~8XUrjY9j6IX7ES2gMitYxhNZUfIM-5h1h4BMV-RHwXaKutwtFrjzZU3rqdC1fTz4kVAhDrR8EaUbHPt~V0BYPRDlf9294zVNsXunMeftY~ZyNvX5fufNh5Qbx21If3kTR4zfjuJdeRFprjA5kWJKksCMVNK9lPyH5FDPy4RDnT9EP1TIj8T28hVG49yV7l5~6~nfCPUrNGdulS91Wl4visGSUTzXrJvGOTXHmOhZ1R6HhfCbFAGqDgU37NdBrTMt-1hBG2g__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 1,
+                "height": 92,
+                "position": "relative",
+                "width": 245,
+                "zIndex": 0,
+              }
+            }
+          />
+          <div
+            data-fid="45:7"
+            data-fname="Rectangle 9"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/bfe5/8b21/510ca86917b9c3ccc0913f92357582be?Expires=1622419200&Signature=A19dHKJ~g4ft-7TUFsWLme4wcBPcH77BxXg3FgELM729OWkGEdjXLC~Ah5CwLtXxP3JP7uKAqzo0mHw0YMNgaX2jacJ~Jhnv76r9~4qkR~wndTMwsX9uizk03GSyTdBsLwv76LJMvdmjRBLC4ai079BiQH9-iChkH4Td7sNYlzY~FzRdJ77wXlTrJ2kwb9M5RXwUyfNS7ujujVBykKw3H5P-m~KaXnrXgCXWda5~Gu0BqXSpArP5LvGhNM5Yg9tLBNdNXLrngjPI8NzFDivUhoWsE0EZ8xokHbxi-C67qepePdKdh401jLfHxeonQ2GCfRyBjpx7pTSGVQMa~QMBng__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "position": "relative",
+                "width": 46,
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
+      <div
+        data-fid="53:35"
+        data-fname="Frame 9"
+        style={
+          Object {
+            "alignSelf": "inherit",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "boxSizing": "border-box",
+            "display": "flex",
+            "flexDirection": "row",
+            "flexGrow": 0,
+            "gap": 57,
+            "height": 81,
+            "position": "relative",
+            "width": 197,
+            "zIndex": 1,
+          }
+        }
+      >
+        <div
+          data-fid="28:1"
+          data-fname="Arrow 1"
+          style={
+            Object {
+              "alignSelf": "inherit",
+              "boxSizing": "border-box",
+              "flexGrow": 0,
+              "height": 81,
+              "position": "relative",
+              "width": 70,
+              "zIndex": 0,
+            }
+          }
+        >
+          <div
+            className="vector"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"72\\" height=\\"82\\" viewBox=\\"0 0 72 82\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<path d=\\"M71.0269 0.464681C71.0068 0.188688 70.7667 -0.0187514 70.4907 0.00135186L65.9931 0.328994C65.7171 0.349097 65.5097 0.589134 65.5298 0.865132C65.5499 1.14113 65.79 1.34856 66.0659 1.32846L70.0638 1.03722L70.355 5.03509C70.3752 5.31108 70.6152 5.51852 70.8912 5.49842C71.1672 5.47831 71.3746 5.23827 71.3545 4.96228L71.0269 0.464681ZM0.758218 82L70.9062 0.828708L70.148 0.173462L4.68886e-06 81.3448L0.758218 82Z\\" fill=\\"black\\"/>
+</svg>
+",
+              }
+            }
+          />
+        </div>
+        <div
+          data-fid="53:24"
+          data-fname="Arrow 2"
+          style={
+            Object {
+              "alignSelf": "inherit",
+              "boxSizing": "border-box",
+              "flexGrow": 0,
+              "height": 81,
+              "position": "relative",
+              "width": 70,
+              "zIndex": 1,
+            }
+          }
+        >
+          <div
+            className="vector"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<svg preserveAspectRatio=\\"none\\" width=\\"72\\" height=\\"82\\" viewBox=\\"0 0 72 82\\" fill=\\"none\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+<path d=\\"M71.0269 0.464681C71.0068 0.188688 70.7667 -0.0187514 70.4907 0.00135186L65.9931 0.328994C65.7171 0.349097 65.5097 0.589134 65.5298 0.865132C65.5499 1.14113 65.7899 1.34856 66.0659 1.32846L70.0638 1.03722L70.355 5.03509C70.3751 5.31108 70.6152 5.51852 70.8912 5.49842C71.1672 5.47831 71.3746 5.23827 71.3545 4.96228L71.0269 0.464681ZM0.758202 82L70.9062 0.828708L70.148 0.173462L-1.06022e-05 81.3448L0.758202 82Z\\" fill=\\"black\\"/>
+</svg>
+",
+              }
+            }
+          />
+        </div>
+      </div>
+      <div
+        data-fid="53:18"
+        data-fname="floating"
+        style={
+          Object {
+            "alignItems": "flex-end",
+            "alignSelf": "inherit",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "boxSizing": "border-box",
+            "display": "flex",
+            "flexDirection": "column",
+            "flexGrow": 0,
+            "gap": 10,
+            "height": 145,
+            "position": "relative",
+            "width": 184,
+            "zIndex": 2,
+          }
+        }
+      >
+        <div
+          data-fid="53:19"
+          data-fname="Rectangle 7"
+          style={
+            Object {
+              "alignSelf": "stretch",
+              "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/6710/bdab/68f7a437257d3db4b42e46f492cf572c?Expires=1622419200&Signature=GsEkZ31UYrX-5sQy10JsWe9suRybLyeqETyXFUKAy1ijQV2ae7wpHUTZQPv7l~vt72OL-DqyBbQ-B20hC8CJCERlE8~Fzbl-FX9VB06kfd9xllHYpkrTVWBPyAsAbbFRm9OyRNITAofMHSeYYKwaeKYEqtKbP9cio41SvRM7lLnpxmj7F0GMrcvqMW9hHj1-BxZl0OspixqDeB5xQic4J6H0AmxyST9dHPRAOHOHw5QhFZyVgyHymsb3ak9X9Oy97OOhtJAhye95qGd3ilXqBLm1CDGU7ALdTXWVmDTtjcAafqBNlAjCnuR8rxZ-vT~Yxqac8qDVrbhSYlR1vwDZVA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+              "backgroundPosition": "center",
+              "backgroundSize": "cover",
+              "boxSizing": "border-box",
+              "flexGrow": 1,
+              "height": 41.66666793823242,
+              "position": "relative",
+              "width": 184,
+              "zIndex": 0,
+            }
+          }
+        />
+        <div
+          data-fid="53:20"
+          data-fname="Rectangle 8"
+          style={
+            Object {
+              "alignSelf": "inherit",
+              "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/050f/cb08/72479ecf4fbc184997e6c64370a1d501?Expires=1622419200&Signature=fxo9nWyZjRMkWPzju1-7gnb9jYHM-E05ncV554gKtFdGyFht9oybEGEjBlt0uBwLf-w~ad3x2X8n8ttfXB00oqgM4KVIROCorpZlTYkjT6Vq6CJBGAG6jzEjhUjz3pCHevCMQqDxPzFuWX2R-vXej5Np~7F2kUmSEC7XAtU7Adik5rkojwfqYgQM7AzKsOTq4Y9YDEtDAWCs9iu3Z4~3hGVvr2I~iQLesKAJCtkmvIrsp46FlHAlWvFupOogJj4ReNxmJFzQzL1kq3JmyrQ3ET4z31JP8jV3r~b2mlw~AQK524d4wjaN2irHRKXtXvnLCTMUh-9LXiWrTNTvFgPQMg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+              "backgroundPosition": "center",
+              "backgroundSize": "cover",
+              "boxSizing": "border-box",
+              "flexGrow": 1,
+              "height": 41.66666793823242,
+              "position": "relative",
+              "width": 92,
+              "zIndex": 1,
+            }
+          }
+        />
+        <div
+          data-fid="53:21"
+          data-fname="Frame 4"
+          style={
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/ce3c/24f7/d182b6aa99a7ecd7313b0d84038e39b0?Expires=1622419200&Signature=gsKLbnYLQUyNVCe8VMG1LZAOjKfxyI~q3SsBHYY43cUCa7HO-8QOE9clBd53kgsb3FxlgNWsyFBUKpkKuWO9ic7bda2Q8QGaAkGWmrFcf~mzn7hcv9JmpdeeRkgXRdy2Tw6SZal7x14rOMjnLo5LIkNv-Av4RgajLyzkkh5WMoWOJHxhCNNlALsHm7e44zAoHyShwhBSoqQ5bFexwrxYYwxhl4lFa7GPrnaDHCbBS8YHTOfwxfGizeqFrQ4Oo6sxHtOJ7B~5ihugyhrMLzzy1lksmzfgJyVB9WhyxyREe~0-t6cDMXv4nnUYwywyt5VqV1lxYaUOHWNPl2h5tffygg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+              "backgroundPosition": "center",
+              "backgroundSize": "cover",
+              "boxSizing": "border-box",
+              "display": "flex",
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "gap": 10,
+              "height": 41.66666793823242,
+              "position": "relative",
+              "width": 184,
+              "zIndex": 2,
+            }
+          }
+        >
+          <div
+            data-fid="53:22"
+            data-fname="Rectangle 8"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/6b43/98cb/745ec0e8245735e73aad5aa08a283215?Expires=1622419200&Signature=VtBvIrhnJjZlnR0IC4T3Ld9oR5MnNPEKRblbHfhz~qEzUuxk6Lp2oUcYlhfVNL3r~nZkj24hh7s8Dj3gcdJDhrGgCIYd0m5qWVLaYXfadUW2rsAh~d8o~i7nS5FeTB2XryuOsa3lqW7mYvYMQ249zUmVHiw6LL-7~xq0mX1iwTs-wcAuHD17jb93A2SUyB7mEJy9F0qoL1Kzpd0jKYdeQ~hAn~XkowaYMqpGaQsZSAa5D2Pd5ZI6R2YgJ9OOSFfnHDd6F4gIf3A1IgPl03t0hSlaVSVW-eqMl0q3CWPNPLexBvOvfOJXcPi0WbaDk38wdOetHRO6a~HoChDX41Xgyw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 1,
+                "height": 41.66666793823242,
+                "position": "relative",
+                "width": 128,
+                "zIndex": 0,
+              }
+            }
+          />
+          <div
+            data-fid="53:23"
+            data-fname="Rectangle 9"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "backgroundImage": "url(https://s3-alpha-sig.figma.com/img/bfe5/8b21/510ca86917b9c3ccc0913f92357582be?Expires=1622419200&Signature=A19dHKJ~g4ft-7TUFsWLme4wcBPcH77BxXg3FgELM729OWkGEdjXLC~Ah5CwLtXxP3JP7uKAqzo0mHw0YMNgaX2jacJ~Jhnv76r9~4qkR~wndTMwsX9uizk03GSyTdBsLwv76LJMvdmjRBLC4ai079BiQH9-iChkH4Td7sNYlzY~FzRdJ77wXlTrJ2kwb9M5RXwUyfNS7ujujVBykKw3H5P-m~KaXnrXgCXWda5~Gu0BqXSpArP5LvGhNM5Yg9tLBNdNXLrngjPI8NzFDivUhoWsE0EZ8xokHbxi-C67qepePdKdh401jLfHxeonQ2GCfRyBjpx7pTSGVQMa~QMBng__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)",
+                "backgroundPosition": "center",
+                "backgroundSize": "cover",
+                "boxSizing": "border-box",
+                "flexGrow": 0,
+                "position": "relative",
+                "width": 46,
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>

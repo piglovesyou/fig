@@ -8,10 +8,10 @@ import { readFixtureJson, renderInHtml } from './__tools/fns';
 
 const name = 'full-html';
 const outDir = join(process.cwd(), `./__generated__/${name}`);
-const fileKey = 'pC6EOjjdZpS7PVsPTgjNLL';
+const fileKey = 'QAIja81RKgYhQnIIJ0h9PJ';
 
 let useCache = false;
-// useCache = true; // Comment out to update cache
+useCache = true; // Comment out to update cache
 
 if (useCache) {
   jest
