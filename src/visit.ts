@@ -19,6 +19,7 @@ import {
   parseExpression,
   TEMP_REF_ATTR,
 } from './make-ast';
+import { GenContext } from './make-gen-context';
 import { processComponent } from './process-canvas';
 import {
   Bound,
@@ -31,7 +32,6 @@ import {
   TypeStyle,
 } from './types';
 import { Node } from './types/ast';
-import { GenContext } from './types/gen-context';
 import {
   backgroundSize,
   colorString,

@@ -15,7 +15,7 @@ export async function gen(config: FigConfig) {
       `${process.cwd()}/__tests__/__fixtures/${fileKey}.file.json`,
       JSON.stringify(figmaFile, undefined, 2)
     );
-    const genContext = await makeGenContext(figmaFile, fileKey, baseDir);
+    const genContext = await makeGenContext(figmaFile, fileKey, config);
 
     for (const canvas of figmaFile.document.children as Canvas[])
       await processCanvas(canvas, genContext);

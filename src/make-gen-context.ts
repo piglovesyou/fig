@@ -1,8 +1,14 @@
+import { isAbsolute, join } from 'path';
 import { appendVectorsMap, isComplexPaintRequired } from './append-vectors-map';
+import { FigConfig } from './config';
 import { makeImagesMap } from './make-images-map';
 import { Canvas, FigmaFile } from './types';
 import { ComposableNode, isVectorTypeNode } from './types/ast';
-import { initComponentsMap, isValidComponentNode } from './utils';
+import {
+  ComponentsMap,
+  initComponentsMap,
+  isValidComponentNode,
+} from './utils';
 
 // TODO: Use it for "visitNode" too
 function walkNodeTree(
@@ -29,11 +35,21 @@ function removeFromZombieCandidates(
   if (node.type === 'COMPONENT') zombieComponentCandidates.delete(node.id);
 }
 
+export type GenContext = {
+  componentsMap: ComponentsMap;
+  imagesMap: Map<string, string>;
+  vectorsMap: Map<string, string>;
+  baseDir: string;
+  config: FigConfig;
+  // mode: 'generate' | 'edit'
+};
+
 export async function makeGenContext(
   figmaFile: FigmaFile,
   fileKey: string,
-  outDir: string
-) {
+  config: FigConfig
+): Promise<GenContext> {
+  const { baseDir } = config;
   // TODO: We should collect all components first to avoid async in visit function.
   const componentsMap = initComponentsMap(figmaFile.components);
   // TODO: Refactor. Call them only if needed.
@@ -69,6 +85,7 @@ export async function makeGenContext(
     componentsMap,
     imagesMap,
     vectorsMap,
-    outDir,
+    baseDir: isAbsolute(baseDir) ? baseDir : join(process.cwd(), baseDir),
+    config,
   };
 }

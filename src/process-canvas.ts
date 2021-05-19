@@ -6,8 +6,8 @@ import makeDir from 'make-dir';
 import { join } from 'path';
 import { format } from 'prettier';
 import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
+import { GenContext } from './make-gen-context';
 import { Canvas, ComposableNode } from './types';
-import { GenContext } from './types/gen-context';
 import { isValidComponentNode, makeComponentName } from './utils';
 import { visitNode } from './visit';
 
@@ -36,9 +36,9 @@ export async function processComponent(
 ) {
   if (!isValidComponentNode(node)) throw new Error('never');
 
-  const { outDir } = genContext;
+  const { baseDir } = genContext;
   const name = makeComponentName(node);
-  const componetsDir = join(outDir, 'components');
+  const componetsDir = join(baseDir, 'components');
   await makeDir(componetsDir);
   const fullPath = join(componetsDir, `${name}.tsx`);
 
