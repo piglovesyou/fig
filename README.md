@@ -1,7 +1,7 @@
 **Coming soon**
 
 ---
-# figg
+# fig
 
 Figg is another “Figma to React” platform designed as AST-based code generation, the pluggable architecture for multiple template languages, and synchronization to keep code up-to-date.
 
