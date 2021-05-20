@@ -86,16 +86,16 @@ async function makeExistingFileMap(
   return new Map(existingFiles);
 }
 
-export async function makeGenContext(
-  figmaFile: FigmaFile,
-  fileKey: string,
-  config: FigConfig
-): Promise<GenContext> {
-  const paths = makePaths(config);
-
-  // TODO: We should collect all components first to avoid async in visit function.
-  const componentsMap = initComponentsMap(figmaFile.components);
-
+async function makeImagesMap(
+  paths: {
+    htmlFullDir: string;
+    componentsFullDir: string;
+    pagesFullDir: string;
+    baseFullDir: string;
+    imagesFullDir: string;
+  },
+  fileKey: string
+) {
   // TODO: Refactor. Call them only if needed.
   const { imagesFullDir } = paths;
   const imagesMap = new Map<string, string>();
@@ -119,17 +119,19 @@ export async function makeGenContext(
     imagesMap.set(key, imageFullPath);
     await pipeline(res.body, createWriteStream(imageFullPath));
   });
-  // for (const [key, u] of ) {
-  //   const imageUrl = new URL(u);
-  //   const base = basename(imageUrl.pathname);
-  //   // We need header to know file extension
-  //   const res = await fetch(imageUrl.href);
-  //   const ext = extension(res.headers.get('content-type') || 'bin');
-  //   const imageFullPath = join(imagesFullDir, `${base}.${ext}`);
-  //   imagesMap.set(key, imageFullPath);
-  //   if (existsSync(imageFullPath)) continue;
-  //   await pipeline(res.body, createWriteStream(imageFullPath));
-  // }
+  return imagesMap;
+}
+
+export async function makeGenContext(
+  figmaFile: FigmaFile,
+  fileKey: string,
+  config: FigConfig
+): Promise<GenContext> {
+  const paths = makePaths(config);
+
+  // TODO: We should collect all components first to avoid async in visit function.
+  const componentsMap = initComponentsMap(figmaFile.components);
+  const imagesMap = await makeImagesMap(paths, fileKey);
 
   const vectorsMap = new Map<string, string>();
 

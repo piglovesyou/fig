@@ -6,7 +6,7 @@ import { processCanvas } from './process-canvas';
 import { Canvas, FigmaFile } from './types';
 
 export async function gen(config: FigConfig) {
-  const { fileKeys, baseDir } = config;
+  const { fileKeys } = config;
   for (const fileKey of fileKeys) {
     const figmaFile: FigmaFile = await requestFile(fileKey);
 
