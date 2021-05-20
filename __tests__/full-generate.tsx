@@ -1,4 +1,5 @@
 import { writeFile } from 'fs/promises';
+import makeDir from 'make-dir';
 import { join } from 'path';
 import React from 'react';
 import * as api from '../src/api';
@@ -38,7 +39,12 @@ describe('Test full html', () => {
         `./__generated__/${name}/pages/${componentName}`
       );
 
-      await writeFile(join(baseDir, 'index.html'), renderInHtml(<Home />));
+      // TODO: use gen context
+      await makeDir(join(baseDir, 'public'));
+      await writeFile(
+        join(baseDir, 'public/index.html'),
+        renderInHtml(<Home />)
+      );
     },
     1000 * 60 * 30
   );

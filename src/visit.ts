@@ -11,6 +11,7 @@ import {
   Program,
   stringLiteral,
 } from '@babel/types';
+import { relative } from 'path';
 import { CSSProperties } from 'react';
 import {
   findTempRefJsxElement,
@@ -320,9 +321,10 @@ export function expandChildren(context: VisitContext, offset: number) {
 }
 
 function applyNodeTypeStyle(
-  { styles, node }: VisitContext,
+  context: VisitContext,
   genContext: GenContext
 ): void {
+  const { styles, node, outFullDir } = context;
   // if (node.name === 'Frame 2') debugger;
   // if (node.id === '1:46') debugger;
   const { imagesMap } = genContext;
@@ -343,9 +345,14 @@ function applyNodeTypeStyle(
             styles.opacity = lastFill.opacity;
             break;
           case 'IMAGE':
-            const url = imagesMap.get(lastFill.imageRef || '');
-            if (!url) throw new Error('Something wrong with Figma API');
-            styles.backgroundImage = `url(${url})`; // TODO: Sanitize
+            const imageFullPath = imagesMap.get(lastFill.imageRef || '');
+            if (!imageFullPath)
+              throw new Error('Something wrong with Figma API');
+            const imageRelPath = relative(
+              genContext.htmlFullDir,
+              imageFullPath
+            );
+            styles.backgroundImage = `url(${imageRelPath})`; // TODO: Sanitize
             styles.backgroundSize = backgroundSize(lastFill.scaleMode!);
             styles.backgroundPosition = 'center';
             break;
