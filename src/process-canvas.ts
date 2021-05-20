@@ -35,10 +35,10 @@ export async function processComponent(
 ) {
   if (!isValidComponentNode(node)) throw new Error('never');
 
-  const { baseDir } = genContext;
+  const { baseFullDir } = genContext;
   const name = makeComponentName(node);
   const componetsDir = join(
-    baseDir,
+    baseFullDir,
     node.type === 'FRAME'
       ? genContext.config.pagesDir
       : genContext.config.componentsDir

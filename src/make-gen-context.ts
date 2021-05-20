@@ -1,7 +1,13 @@
-import { isAbsolute, join } from 'path';
+import { createWriteStream, existsSync } from 'fs';
+import makeDir from 'make-dir';
+import { extension } from 'mime-types';
+import fetch from 'node-fetch';
+import pMap from 'p-map';
+import { basename, isAbsolute, join } from 'path';
+import { pipeline } from 'stream/promises';
 import { appendVectorsMap, isComplexPaintRequired } from './append-vectors-map';
 import { FigConfig } from './config';
-import { makeImagesMap } from './make-images-map';
+import { makeImagesRawMap } from './make-images-map';
 import { Canvas, FigmaFile } from './types';
 import { ComposableNode, isVectorTypeNode } from './types/ast';
 import {
@@ -39,21 +45,71 @@ export type GenContext = {
   componentsMap: ComponentsMap;
   imagesMap: Map<string, string>;
   vectorsMap: Map<string, string>;
-  baseDir: string;
   config: FigConfig;
+
+  baseFullDir: string;
+  componentsFullDir: string;
+  pagesFullDir: string;
+  htmlFullDir: string;
+  imagesFullDir: string;
   // mode: 'generate' | 'edit'
 };
+
+function makePaths(config: FigConfig) {
+  const { baseDir } = config;
+  const baseFullDir = isAbsolute(baseDir)
+    ? baseDir
+    : join(process.cwd(), baseDir);
+  const componentsFullDir = join(baseFullDir, config.componentsDir);
+  const pagesFullDir = join(baseFullDir, config.pagesDir);
+  const htmlFullDir = join(baseFullDir, config.htmlDir);
+  const imagesFullDir = join(baseFullDir, config.imagesDir);
+  return {
+    baseFullDir,
+    componentsFullDir,
+    pagesFullDir,
+    htmlFullDir,
+    imagesFullDir,
+  };
+}
 
 export async function makeGenContext(
   figmaFile: FigmaFile,
   fileKey: string,
   config: FigConfig
 ): Promise<GenContext> {
-  const { baseDir } = config;
+  const paths = makePaths(config);
+
   // TODO: We should collect all components first to avoid async in visit function.
   const componentsMap = initComponentsMap(figmaFile.components);
+
   // TODO: Refactor. Call them only if needed.
-  const imagesMap = await makeImagesMap(fileKey);
+  const { imagesFullDir } = paths;
+  const imagesMap = new Map<string, string>();
+  await makeDir(imagesFullDir);
+  await pMap(await makeImagesRawMap(fileKey), async ([key, u]) => {
+    const imageUrl = new URL(u);
+    const base = basename(imageUrl.pathname);
+    // We need header to know file extension
+    const res = await fetch(imageUrl.href);
+    const ext = extension(res.headers.get('content-type') || 'bin');
+    const imageFullPath = join(imagesFullDir, `${base}.${ext}`);
+    imagesMap.set(key, imageFullPath);
+    if (existsSync(imageFullPath)) return;
+    await pipeline(res.body, createWriteStream(imageFullPath));
+  });
+  // for (const [key, u] of ) {
+  //   const imageUrl = new URL(u);
+  //   const base = basename(imageUrl.pathname);
+  //   // We need header to know file extension
+  //   const res = await fetch(imageUrl.href);
+  //   const ext = extension(res.headers.get('content-type') || 'bin');
+  //   const imageFullPath = join(imagesFullDir, `${base}.${ext}`);
+  //   imagesMap.set(key, imageFullPath);
+  //   if (existsSync(imageFullPath)) continue;
+  //   await pipeline(res.body, createWriteStream(imageFullPath));
+  // }
+
   const vectorsMap = new Map<string, string>();
 
   const vectorList: string[] = []; // TODO: Use Set
@@ -80,12 +136,11 @@ export async function makeGenContext(
     // Don't worry the components, the first instance will create the component file.
     componentsMap.delete(zombieId);
   }
-
   return {
     componentsMap,
     imagesMap,
     vectorsMap,
-    baseDir: isAbsolute(baseDir) ? baseDir : join(process.cwd(), baseDir),
     config,
+    ...paths,
   };
 }

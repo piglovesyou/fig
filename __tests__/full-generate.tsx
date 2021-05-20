@@ -23,7 +23,7 @@ describe('Test full html', () => {
         jest
           .spyOn(api, 'requestFile')
           .mockImplementation(() =>
-            readJson(process.cwd(), `__tests__/__fixtures/${fileKey}.file.json`)
+            readJson(__dirname, `__fixtures/${fileKey}.file.json`)
           );
       }
 
@@ -35,11 +35,12 @@ describe('Test full html', () => {
       await gen(config);
 
       const { [componentName]: Home } = await import(
-        `./__generated__/${name}/components/${componentName}`
+        `./__generated__/${name}/pages/${componentName}`
       );
 
       await writeFile(join(baseDir, 'index.html'), renderInHtml(<Home />));
-    }
+    },
+    1000 * 60 * 30
   );
 
   // test(

@@ -53,6 +53,7 @@ type VisitContext = {
   minChildren: ComposableNode[];
   centerChildren: ComposableNode[];
   maxChildren: ComposableNode[];
+  outFullDir: string;
 };
 
 function applyAutolayoutConstraintsStyle({ node, styles }: VisitContext) {
@@ -522,9 +523,11 @@ function applyStyles(context: VisitContext, genContext: GenContext) {
 
 function makeVisitContext(
   node: ComposableNode,
-  parentNode: ComposableNode | null
+  parentContext: VisitContext | null,
   // lastVertical: number | null
+  genContext: GenContext
 ): VisitContext {
+  const parentNode = parentContext?.node || null;
   const minChildren: ComposableNode[] = [];
   const centerChildren: ComposableNode[] = [];
   const maxChildren: ComposableNode[] = [];
@@ -540,6 +543,24 @@ function makeVisitContext(
   const styles: CSSProperties = {};
   const classNames: string[] = [];
 
+  // Get outFullDir
+  let outFullDir: string;
+  switch (node.type) {
+    case 'FRAME':
+      outFullDir = genContext.pagesFullDir;
+      break;
+    case 'COMPONENT':
+    case 'INSTANCE':
+      outFullDir = genContext.pagesFullDir;
+      break;
+    default:
+      if (!parentContext?.outFullDir)
+        throw new Error(
+          `Node ${node.name} is neither FRAME, COMPONENT, INSTANCE but doesn't have a parent node.`
+        );
+      outFullDir = parentContext.outFullDir;
+  }
+
   return {
     node,
     parentNode,
@@ -550,6 +571,7 @@ function makeVisitContext(
     nodeBounds,
     styles,
     classNames,
+    outFullDir,
   };
 }
 
@@ -648,11 +670,12 @@ function appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
 export function visitNode(
   cursor: NodePath<JSXElement>,
   node: ComposableNode,
-  parentNode: ComposableNode | null,
+  parentContext: VisitContext | null,
   genContext: GenContext
 ): void {
   const { vectorsMap } = genContext;
-  const context = makeVisitContext(node, parentNode);
+  const parentNode = parentContext?.node;
+  const context = makeVisitContext(node, parentContext, genContext);
   const { minChildren, maxChildren, centerChildren, styles } = context;
 
   expandChildren(context, 0);
@@ -691,12 +714,12 @@ export function visitNode(
 
   // let first = true;
   for (const child of minChildren) {
-    visitNode(cursor, child, node, genContext);
+    visitNode(cursor, child, context, genContext);
     // first = false;
   }
 
   for (const child of centerChildren)
-    visitNode(cursor, child, node, genContext);
+    visitNode(cursor, child, context, genContext);
 
   if (maxChildren.length > 0) {
     // outerClass.push('maxer');
@@ -706,7 +729,7 @@ export function visitNode(
     cursor = appendMaxerElement(cursor);
     // first = true;
     for (const child of maxChildren) {
-      visitNode(cursor, child, node, genContext);
+      visitNode(cursor, child, context, genContext);
       // first = false;
     }
   }

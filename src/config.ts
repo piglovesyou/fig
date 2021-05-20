@@ -7,6 +7,7 @@ export interface FigUserConfig {
   componentsDir?: string;
   pagesDir?: string;
   htmlDir?: string;
+  imagesDir?: string;
   fileKeys: string[];
 }
 
@@ -17,6 +18,7 @@ const DEFAULT_FIG_CONFIG: FigConfig = {
   componentsDir: 'components',
   pagesDir: 'pages',
   htmlDir: 'html',
+  imagesDir: 'images',
   fileKeys: [],
 };
 

@@ -1,6 +1,6 @@
 import { requestImages } from './api';
 
-export async function makeImagesMap(
+export async function makeImagesRawMap(
   fileKey: string
 ): Promise<Map<string, string>> {
   const res = await requestImages(fileKey);
