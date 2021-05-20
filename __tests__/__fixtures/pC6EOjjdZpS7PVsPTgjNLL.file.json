@@ -546,7 +546,7 @@
                             "type": "TEXT",
                             "blendMode": "PASS_THROUGH",
                             "absoluteBoundingBox": {
-                              "x": 3661.5,
+                              "x": 3672,
                               "y": 2892,
                               "width": 11,
                               "height": 11
@@ -622,7 +622,7 @@
                             "type": "TEXT",
                             "blendMode": "PASS_THROUGH",
                             "absoluteBoundingBox": {
-                              "x": 3674.5,
+                              "x": 3685,
                               "y": 2892,
                               "width": 175,
                               "height": 13
@@ -675,7 +675,7 @@
                             "type": "TEXT",
                             "blendMode": "PASS_THROUGH",
                             "absoluteBoundingBox": {
-                              "x": 3851.5,
+                              "x": 3862,
                               "y": 2892,
                               "width": 5,
                               "height": 13
@@ -724,7 +724,7 @@
                           }
                         ],
                         "absoluteBoundingBox": {
-                          "x": 3661.5,
+                          "x": 3672,
                           "y": 2892,
                           "width": 195,
                           "height": 13
@@ -815,7 +815,7 @@
                             "type": "RECTANGLE",
                             "blendMode": "PASS_THROUGH",
                             "absoluteBoundingBox": {
-                              "x": 3728.5,
+                              "x": 3729.5,
                               "y": 3074.66552734375,
                               "width": 80,
                               "height": 44
@@ -838,7 +838,7 @@
                             "type": "TEXT",
                             "blendMode": "PASS_THROUGH",
                             "absoluteBoundingBox": {
-                              "x": 3729.5,
+                              "x": 3730.5,
                               "y": 3122.66552734375,
                               "width": 78,
                               "height": 76
@@ -888,7 +888,7 @@
                             "type": "TEXT",
                             "blendMode": "PASS_THROUGH",
                             "absoluteBoundingBox": {
-                              "x": 3624,
+                              "x": 3625,
                               "y": 3202.66552734375,
                               "width": 289,
                               "height": 216
@@ -938,7 +938,7 @@
                           }
                         ],
                         "absoluteBoundingBox": {
-                          "x": 3624,
+                          "x": 3625,
                           "y": 3074.66552734375,
                           "width": 289,
                           "height": 344
@@ -985,7 +985,7 @@
                                 "type": "TEXT",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                  "x": 3683.5,
+                                  "x": 3684.5,
                                   "y": 3457,
                                   "width": 18,
                                   "height": 18
@@ -1058,7 +1058,7 @@
                                 "type": "TEXT",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                  "x": 3703.5,
+                                  "x": 3704.5,
                                   "y": 3457,
                                   "width": 18,
                                   "height": 18
@@ -1131,7 +1131,7 @@
                                 "type": "TEXT",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                  "x": 3723.5,
+                                  "x": 3724.5,
                                   "y": 3457.5,
                                   "width": 86,
                                   "height": 17
@@ -1184,7 +1184,7 @@
                                 "type": "VECTOR",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                  "x": 3811.5,
+                                  "x": 3812.5,
                                   "y": 3454.66552734375,
                                   "width": 22,
                                   "height": 22.669099807739258
@@ -1218,7 +1218,7 @@
                                 "type": "TEXT",
                                 "blendMode": "PASS_THROUGH",
                                 "absoluteBoundingBox": {
-                                  "x": 3835.5,
+                                  "x": 3836.5,
                                   "y": 3457,
                                   "width": 18,
                                   "height": 18
@@ -1287,7 +1287,7 @@
                               }
                             ],
                             "absoluteBoundingBox": {
-                              "x": 3651.5,
+                              "x": 3652.5,
                               "y": 3438.66552734375,
                               "width": 234,
                               "height": 54.669097900390625
@@ -1352,7 +1352,7 @@
                           }
                         ],
                         "absoluteBoundingBox": {
-                          "x": 3651.5,
+                          "x": 3652.5,
                           "y": 3438.66552734375,
                           "width": 234,
                           "height": 54.669097900390625
@@ -1382,7 +1382,7 @@
                       }
                     ],
                     "absoluteBoundingBox": {
-                      "x": 3624,
+                      "x": 3625,
                       "y": 3074.66552734375,
                       "width": 289,
                       "height": 418.6690979003906
@@ -5988,8 +5988,8 @@
     }
   },
   "name": "Patagonia",
-  "lastModified": "2021-05-20T05:44:54Z",
-  "thumbnailUrl": "https://s3-alpha-sig.figma.com/thumbnails/fd072fe9-5887-4912-8570-dc46d53b8321?Expires=1622419200&Signature=SWzx7zX4evPM7C8KWV19EoPXJew0DJlpSECLYU8shaO5csEx51aDVFE9hxGBdPj2nEWFq8IhU1raE4SZ-qWilm~BbdvjpXO2KMKa24-Vos-ij19G26rbOXgV70a5scntdcgHvfGXa156kzUCmNw3n3aWS6XAQ0-r71xSAs1BHILo-dEozy8xyAQLVa4-cPzbsjUxl0tOSM5SXfJ6tmUYvcZfgP6526dRcFUvvevFrvtzCBe0OB68y~LbeYuE51nzObATCuOXQ0NQPJSDqaKs3HBxLl5ADkIcEuARMst4VVM8Cwkiy9kr0zPeoz9D0krfgF~axSAcG5z2y3IsKPuapQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+  "lastModified": "2021-05-20T05:49:58Z",
+  "thumbnailUrl": "https://s3-alpha-sig.figma.com/thumbnails/5ab75be6-4a92-46ba-890e-933c1e038e28?Expires=1622419200&Signature=Lx9XqoEonIXeSeFvPAK7II0NlF0vuZyABJNyXR-f7K1EsFuk0wr8-Ni2NSSwThdnp4uk26KzO4Yf5M-l7Mac8r09LYN607zxcqfQ0hiSslsBX3ipoUIKE28yH4~4oUQIe6vHnfxpb4-Z9orn5Jxwr8LzPyhxpDl8ogNveyio5Q980ulYA2y4GD7a3EklmXg3C2KDaBj7Rf-yCdTRmisxH9kaMh1xch1JpIDJx2mHqZn-SpxuSL~iJFf293RO456QWalAhDtxXs3PJu4zJJ2KJVJan5xPNv7-X4EYjXho5D5vuHZg7FTTqQun6nlGTbrB5LDdTesTXE6TRGluXb9exw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
   "version": "860547419",
   "role": "owner"
 }
