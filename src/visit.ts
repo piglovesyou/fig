@@ -292,10 +292,7 @@ export function expandChildren(context: VisitContext, offset: number) {
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
     // TODO: Do we want this?
-    if (
-      parentNode != null &&
-      (node.type === 'COMPONENT' || node.type === 'INSTANCE')
-    ) {
+    if (parentNode && (node.type === 'COMPONENT' || node.type === 'INSTANCE')) {
       child.constraints = {
         vertical: LayoutConstraintVertical.TOP_BOTTOM,
         horizontal: LayoutConstraintHorizontal.LEFT_RIGHT,
@@ -304,13 +301,13 @@ export function expandChildren(context: VisitContext, offset: number) {
 
     child.order = i + order;
 
-    if (child.constraints?.vertical === 'TOP') {
-      minChildren.push(child);
-    } else if (child.constraints?.vertical === 'BOTTOM') {
-      maxChildren.push(child);
-    } else {
-      centerChildren.push(child);
-    }
+    // if (child.constraints?.vertical === 'TOP') {
+    //   minChildren.push(child);
+    // } else if (child.constraints?.vertical === 'BOTTOM') {
+    //   maxChildren.push(child);
+    // } else {
+    centerChildren.push(child);
+    // }
   }
 
   minChildren.sort(sortByYAxis);
@@ -534,14 +531,15 @@ function makeVisitContext(
   genContext: GenContext
 ): VisitContext {
   const parentNode = parentContext?.node || null;
-  const minChildren: ComposableNode[] = [];
   const centerChildren: ComposableNode[] = [];
+  // Do we want these?? Probably not.
+  const minChildren: ComposableNode[] = [];
   const maxChildren: ComposableNode[] = [];
 
   let bounds: Bound | null = null;
   let nodeBounds: Rectangle | null = null;
 
-  if (parentNode != null) {
+  if (parentNode) {
     nodeBounds = node.absoluteBoundingBox;
     bounds = makeBounds(parentNode, nodeBounds);
   }
@@ -644,6 +642,7 @@ function appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
   const content = makeTextContent(node);
   if (node.name.startsWith('$')) {
     const varName = node.name.substring(1);
+    // TODO: Handle variables.
     cursor.node.children.push(
       jsxExpressionContainer(
         parseExpression(
@@ -679,6 +678,7 @@ export function visitNode(
   const context = makeVisitContext(node, parentContext, genContext);
   const { minChildren, maxChildren, centerChildren, styles } = context;
 
+  // TODO: Rethink whether we want this.
   expandChildren(context, 0);
 
   if (node.order != null) {
@@ -713,25 +713,25 @@ export function visitNode(
     return;
   }
 
-  // let first = true;
-  for (const child of minChildren) {
-    visitNode(cursor, child, context, genContext);
-    // first = false;
-  }
+  // // let first = true;
+  // for (const child of minChildren) {
+  //   visitNode(cursor, child, context, genContext);
+  //   // first = false;
+  // }
 
   for (const child of centerChildren)
     visitNode(cursor, child, context, genContext);
 
-  if (maxChildren.length > 0) {
-    // outerClass.push('maxer');
-    // styles.width = '100%';
-    // styles.pointerEvents = 'none';
-    // delete styles.backgroundColor;
-    cursor = appendMaxerElement(cursor);
-    // first = true;
-    for (const child of maxChildren) {
-      visitNode(cursor, child, context, genContext);
-      // first = false;
-    }
-  }
+  // if (maxChildren.length > 0) {
+  //   // outerClass.push('maxer');
+  //   // styles.width = '100%';
+  //   // styles.pointerEvents = 'none';
+  //   // delete styles.backgroundColor;
+  //   cursor = appendMaxerElement(cursor);
+  //   // first = true;
+  //   for (const child of maxChildren) {
+  //     visitNode(cursor, child, context, genContext);
+  //     // first = false;
+  //   }
+  // }
 }

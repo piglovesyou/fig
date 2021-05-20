@@ -135,15 +135,6 @@ export type ComponentInfo = {
 };
 export type ComponentsMap = Map<string, ComponentInfo>;
 
-// export function initComponentsMap(
-//   components: FigmaFile['components']
-// ): ComponentsMap {
-//   const map: ComponentsMap = new Map();
-//   for (const [id, { name }] of Object.entries(components))
-//     map.set(id, { name: makeComponentNameFromId(id, name), written: false });
-//   return map;
-// }
-
 export function isValidComponentNode(
   node: ComposableNode
 ): node is Node<'FRAME'> | Node<'COMPONENT'> | Node<'INSTANCE'> {
@@ -153,4 +144,15 @@ export function isValidComponentNode(
       node.type === 'INSTANCE') &&
     node.visible !== false
   );
+}
+
+export function walkNodeTree(
+  node: ComposableNode,
+  fn: (node: ComposableNode) => void | boolean
+): void {
+  const result = fn(node);
+  if (result === false) return;
+  for (const child of node.children || []) {
+    walkNodeTree(child, fn);
+  }
 }

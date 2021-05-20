@@ -23,7 +23,7 @@ export function isComplexPaintRequired(node: ComposableNode) {
   const v = node as Node<'VECTOR'>;
   if (paintsRequireRender(v.fills)) return true;
   if (paintsRequireRender(v.strokes)) return true;
-  if (v.blendMode != null && !['PASS_THROUGH', 'NORMAL'].includes(v.blendMode))
+  if (v.blendMode && !['PASS_THROUGH', 'NORMAL'].includes(v.blendMode))
     return true;
   return false;
 }
