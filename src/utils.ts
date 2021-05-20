@@ -1,6 +1,6 @@
 import camelCase from 'camelcase';
 import _ from 'lodash';
-import { FigmaFile, Node } from './types';
+import { Node } from './types';
 import {
   Color,
   ComposableNode,
@@ -129,16 +129,21 @@ export function makeComponentName(node: ComposableNode): string | never {
   }
 }
 
-export type ComponentsMap = Map<string, { name: string; written: boolean }>;
+export type ComponentMapValue = {
+  name: string;
+  written: boolean;
+  nodeRef: ComposableNode;
+};
+export type ComponentsMap = Map<string, ComponentMapValue>;
 
-export function initComponentsMap(
-  components: FigmaFile['components']
-): ComponentsMap {
-  const map: ComponentsMap = new Map();
-  for (const [id, { name }] of Object.entries(components))
-    map.set(id, { name: makeComponentNameFromId(id, name), written: false });
-  return map;
-}
+// export function initComponentsMap(
+//   components: FigmaFile['components']
+// ): ComponentsMap {
+//   const map: ComponentsMap = new Map();
+//   for (const [id, { name }] of Object.entries(components))
+//     map.set(id, { name: makeComponentNameFromId(id, name), written: false });
+//   return map;
+// }
 
 export function isValidComponentNode(
   node: ComposableNode

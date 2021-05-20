@@ -12,9 +12,10 @@ import { FigConfig } from './config';
 import { Canvas, FigmaFile } from './types';
 import { ComposableNode, isVectorTypeNode } from './types/ast';
 import {
+  ComponentMapValue,
   ComponentsMap,
-  initComponentsMap,
   isValidComponentNode,
+  makeComponentName,
 } from './utils';
 
 // TODO: Use it for "visitNode" too
@@ -28,14 +29,17 @@ function walkNodeTree(
   }
 }
 
-function appendVectorList(node: ComposableNode, vectorList: string[]) {
+function appendVectorListIfNecessary(
+  node: ComposableNode,
+  vectorList: string[]
+) {
   // If it's complex to draw by DOM, use SVG
   if (isVectorTypeNode(node) || isComplexPaintRequired(node)) {
     vectorList.push(node.id);
   }
 }
 
-function removeFromZombieCandidates(
+function removeFromZombieCandidatesIfNecessary(
   zombieComponentCandidates: Set<string>,
   node: ComposableNode
 ) {
@@ -122,6 +126,62 @@ async function makeImagesMap(
   return imagesMap;
 }
 
+function appendComponentsMap(
+  node: ComposableNode,
+  componentsMap: ComponentsMap
+) {
+  switch (node.type) {
+    case 'INSTANCE':
+    case 'COMPONENT':
+    case 'FRAME':
+      const val: ComponentMapValue = {
+        written: false,
+        name: makeComponentName(node),
+        nodeRef: node,
+      };
+      switch (node.type) {
+        case 'INSTANCE':
+          // Note: There can be no COMPONENT for an INSTANCE.
+          if (!componentsMap.has(node.componentId))
+            componentsMap.set(node.componentId, val);
+          break;
+        case 'COMPONENT':
+          if (
+            !componentsMap.has(node.id) ||
+            // We overwrite INSTANCE if it's held already
+            componentsMap.get(node.id)!.nodeRef.type === 'INSTANCE'
+          )
+            componentsMap.set(node.id, val);
+          break;
+        case 'FRAME':
+          if (!componentsMap.has(node.id)) componentsMap.set(node.id, val);
+          break;
+        default:
+          break;
+      }
+  }
+  //
+  // switch (node.type) {
+  //   case 'INSTANCE':
+  //     if (!componentsMap.has(node.componentId)) {
+  //       componentsMap.set(node.componentId, {
+  //         written: false,
+  //         name: makeComponentName(node),
+  //       });
+  //     }
+  //     break;
+  //
+  //   case 'COMPONENT':
+  //   case 'FRAME':
+  //     componentsMap.set(node.id, {
+  //       written: false,
+  //       name: makeComponentName(node),
+  //     });
+  //     break;
+  //   default:
+  //     break;
+  // }
+}
 export async function makeGenContext(
   figmaFile: FigmaFile,
   fileKey: string,
@@ -129,36 +189,44 @@ export async function makeGenContext(
 ): Promise<GenContext> {
   const paths = makePaths(config);
 
+  const componentsMap: ComponentsMap = new Map();
+
   // TODO: We should collect all components first to avoid async in visit function.
-  const componentsMap = initComponentsMap(figmaFile.components);
+  // const componentsMap = initComponentsMap(figmaFile.components); // We don't trust you zombies
   const imagesMap = await makeImagesMap(paths, fileKey);
 
   const vectorsMap = new Map<string, string>();
 
   const vectorList: string[] = []; // TODO: Use Set
-  // Some component can be listed in figmaFile.components but no node in the tree.
-  // To avoid making instance orphan, we clean them up first.
-  const zombieComponentCandidates = new Set<string>(
-    Array.from(componentsMap).map(([id]) => id)
-  );
+
+  // // Some component can be listed in figmaFile.components but no node in the tree.
+  // // To avoid making instance orphan, we clean them up first.
+  // const zombieComponentCandidates = new Set<string>(
+  //   Array.from(componentsMap).map(([id]) => id)
+  // );
 
   for (const canvas of figmaFile.document.children as Canvas[])
     for (const screen of canvas.children)
       if (isValidComponentNode(screen)) {
         walkNodeTree(screen, (node) => {
+          appendComponentsMap(node, componentsMap);
+
           // if (node.name.includes('shopping-bag')) debugger;
-          appendVectorList(node, vectorList);
-          removeFromZombieCandidates(zombieComponentCandidates, node);
+          appendVectorListIfNecessary(node, vectorList);
+          // removeFromZombieCandidatesIfNecessary(
+          //   zombieComponentCandidates,
+          //   node
+          // );
         });
       }
 
   await appendVectorsMap(vectorsMap, vectorList, fileKey);
 
-  for (const zombieId of zombieComponentCandidates) {
-    // We found zombies that should not appear in componentsMap. Clean them up.
-    // Don't worry the components, the first instance will create the component file.
-    componentsMap.delete(zombieId);
-  }
+  // for (const zombieId of zombieComponentCandidates) {
+  //   // We found zombies that should not appear in componentsMap. Clean them up.
+  //   // Don't worry the components, the first instance will create the component file.
+  //   componentsMap.delete(zombieId);
+  // }
   return {
     componentsMap,
     imagesMap,

@@ -7,7 +7,7 @@ import { join } from 'path';
 import { format } from 'prettier';
 import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
 import { GenContext } from './make-gen-context';
-import { Canvas, ComposableNode } from './types';
+import { ComposableNode } from './types';
 import { isValidComponentNode, makeComponentName } from './utils';
 import { visitNode } from './visit';
 
@@ -79,13 +79,13 @@ export async function processComponent(
   );
 }
 
-// TODO: Similar to preprocess. Refactor
-export async function processCanvas(
-  canvas: Canvas,
-  genContext: GenContext
-): Promise<void> {
-  for (const screen of canvas.children) {
-    if (isValidComponentNode(screen))
-      await processComponent(screen, genContext);
-  }
-}
+// // TODO: Similar to preprocess. Refactor
+// export async function processCanvas(
+//   canvas: Canvas,
+//   genContext: GenContext
+// ): Promise<void> {
+//   for (const screen of canvas.children) {
+//     if (isValidComponentNode(screen))
+//       await processComponent(screen, genContext);
+//   }
+// }

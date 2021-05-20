@@ -1,9 +1,10 @@
 import { writeFile } from 'fs/promises';
+import pMap from 'p-map';
 import { requestFile } from './api';
 import { FigConfig } from './config';
 import { makeGenContext } from './make-gen-context';
-import { processCanvas } from './process-canvas';
-import { Canvas, FigmaFile } from './types';
+import { processComponent } from './process-canvas';
+import { FigmaFile } from './types';
 
 export async function gen(config: FigConfig) {
   const { fileKeys } = config;
@@ -17,8 +18,12 @@ export async function gen(config: FigConfig) {
     );
 
     const genContext = await makeGenContext(figmaFile, fileKey, config);
+    const { componentsMap } = genContext;
 
-    for (const canvas of figmaFile.document.children as Canvas[])
-      await processCanvas(canvas, genContext);
+    await pMap(componentsMap, async ([, { nodeRef: node }]) => {
+      await processComponent(node, genContext);
+    });
+    // for (const canvas of figmaFile.document.children as Canvas[])
+    //   await processCanvas(canvas, genContext);
   }
 }
