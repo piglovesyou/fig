@@ -13,7 +13,7 @@ const outDir = join(__dirname, '__generated__');
 type CaseArg = [name: string, componentName: string, fileKey: string];
 const caseArgs: CaseArg[] = [
   ['basic', 'Home_2$2', 'QAIja81RKgYhQnIIJ0h9PJ'],
-  ['patagonia', 'Home_1$4', 'pC6EOjjdZpS7PVsPTgjNLL'],
+  // ['patagonia', 'Home_1$4', 'pC6EOjjdZpS7PVsPTgjNLL'],
 ];
 
 describe('Test full html', () => {
