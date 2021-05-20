@@ -12,6 +12,7 @@ const outDir = join(__dirname, '__generated__');
 
 type CaseArg = [name: string, componentName: string, fileKey: string];
 const caseArgs: CaseArg[] = [
+  ['mini', 'Home_1$2', 'MhB9ljAxaGlIk1IttXa09f'],
   ['basic', 'Home_2$2', 'QAIja81RKgYhQnIIJ0h9PJ'],
   ['patagonia', 'Home_1$4', 'pC6EOjjdZpS7PVsPTgjNLL'],
 ];
@@ -48,26 +49,4 @@ describe('Test full html', () => {
     },
     1000 * 60 * 30
   );
-
-  // test(
-  //   'Render final HTML',
-  //   async () => {
-  //     await gen(config);
-  //     const componentName = 'Home_2$2';
-  //     const { [componentName]: Home } = await import(
-  //       `../__generated__/${name}/components/${componentName}`
-  //     );
-  //
-  //     const element = <Home />;
-  //
-  //     await writeFile(
-  //       join(config.baseDir!, `index.html`),
-  //       renderInHtml(<Home />)
-  //     );
-  //
-  //     const component = renderer.create(element);
-  //     expect(component.toJSON()).toMatchSnapshot();
-  //   },
-  //   1000 * 60 * 30
-  // );
 });

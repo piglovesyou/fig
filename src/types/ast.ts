@@ -436,6 +436,8 @@ export type TypeStyle = {
   lineHeightPercentFontSize?: number;
   /** The unit of the line height value specified by the user. */
   lineHeightUnit: LineHeightUnit;
+
+  textAutoResize: 'WIDTH_AND_HEIGHT' | string;
 };
 export type StyleType = 'FILL' | 'TEXT' | 'EFFECT' | 'GRID';
 /** Data on the frame a component resides in */
