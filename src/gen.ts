@@ -20,10 +20,8 @@ export async function gen(config: FigConfig) {
     const genContext = await makeGenContext(figmaFile, fileKey, config);
     const { componentsMap } = genContext;
 
-    await pMap(componentsMap, async ([, { nodeRef: node }]) => {
-      await processComponent(node, genContext);
+    await pMap(componentsMap, async ([, componentInfo]) => {
+      await processComponent(componentInfo, genContext);
     });
-    // for (const canvas of figmaFile.document.children as Canvas[])
-    //   await processCanvas(canvas, genContext);
   }
 }

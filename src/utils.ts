@@ -131,7 +131,7 @@ export function makeComponentName(node: ComposableNode): string | never {
 
 export type ComponentInfo = {
   name: string;
-  nodeRef: ComposableNode;
+  node: ComposableNode;
 };
 export type ComponentsMap = Map<string, ComponentInfo>;
 

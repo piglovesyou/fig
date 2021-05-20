@@ -136,7 +136,7 @@ function appendComponentsMap(
     case 'FRAME':
       const val: ComponentInfo = {
         name: makeComponentName(node),
-        nodeRef: node,
+        node: node,
       };
       switch (node.type) {
         case 'INSTANCE':
@@ -148,7 +148,7 @@ function appendComponentsMap(
           if (
             !componentsMap.has(node.id) ||
             // We overwrite INSTANCE if it's held already
-            componentsMap.get(node.id)!.nodeRef.type === 'INSTANCE'
+            componentsMap.get(node.id)!.node.type === 'INSTANCE'
           )
             componentsMap.set(node.id, val);
           break;

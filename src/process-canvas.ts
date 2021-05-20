@@ -7,8 +7,7 @@ import { join } from 'path';
 import { format } from 'prettier';
 import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
 import { GenContext } from './make-gen-context';
-import { ComposableNode } from './types';
-import { isValidComponentNode, makeComponentName } from './utils';
+import { ComponentInfo, isValidComponentNode } from './utils';
 import { visitNode } from './visit';
 
 function makeLayoutForReact(
@@ -30,13 +29,13 @@ function makeLayoutForReact(
 }
 
 export async function processComponent(
-  node: ComposableNode,
+  componentInfo: ComponentInfo,
   genContext: GenContext
 ) {
+  const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
 
   const { baseFullDir } = genContext;
-  const name = makeComponentName(node);
   const componetsDir = join(
     baseFullDir,
     node.type === 'FRAME'
