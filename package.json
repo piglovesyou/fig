@@ -68,6 +68,6 @@
   "scripts": {
     "build": "tsc --declaration",
     "test": "jest",
-    "ghpages": "gh-pages -d __generated__"
+    "gh-pages": "gh-pages -d __tests__/__generated__"
   }
 }
