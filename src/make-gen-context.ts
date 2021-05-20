@@ -12,7 +12,7 @@ import { FigConfig } from './config';
 import { Canvas, FigmaFile } from './types';
 import { ComposableNode, isVectorTypeNode } from './types/ast';
 import {
-  ComponentMapValue,
+  ComponentInfo,
   ComponentsMap,
   isValidComponentNode,
   makeComponentName,
@@ -134,8 +134,7 @@ function appendComponentsMap(
     case 'INSTANCE':
     case 'COMPONENT':
     case 'FRAME':
-      const val: ComponentMapValue = {
-        written: false,
+      const val: ComponentInfo = {
         name: makeComponentName(node),
         nodeRef: node,
       };

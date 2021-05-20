@@ -21,7 +21,6 @@ import {
   TEMP_REF_ATTR,
 } from './make-ast';
 import { GenContext } from './make-gen-context';
-import { processComponent } from './process-canvas';
 import {
   Bound,
   ComposableNode,
@@ -597,29 +596,12 @@ function appendSvg(
   );
 }
 
-function visitComponentOrInstance(
-  genContext: GenContext,
-  node: ComposableNode,
+function appendImportDeclaration(
   cursor: NodePath<JSXElement>,
-  context: VisitContext
+  context: VisitContext,
+  genContext: GenContext,
+  componentName: string
 ) {
-  const componentInfo = genContext.componentsMap.get(
-    node.type === 'INSTANCE' ? node.componentId : node.id
-  );
-  if (!componentInfo) throw new Error('Should be a valid component');
-  const componentName = componentInfo.name;
-  if (componentName === 'Group1_1$15') debugger;
-
-  // Regardless of COMPONENT or INSTANCE, we're processing
-  // the first one as independent component
-  if (!componentInfo.written) {
-    // TODO: async function. Maybe we should processComponent in parallel, not sequentially.
-    processComponent(node, genContext);
-    componentInfo.written = true;
-  }
-
-  appendElement(cursor, context, componentName);
-
   // Import component if not exists
   const program = cursor.findParent((path) =>
     isProgram(path.node)
@@ -639,11 +621,23 @@ function visitComponentOrInstance(
       )
     );
   }
+}
 
-  // TODO: import it
+function importComponent(
+  genContext: GenContext,
+  node: ComposableNode,
+  cursor: NodePath<JSXElement>,
+  context: VisitContext
+): void {
+  const componentInfo = genContext.componentsMap.get(
+    node.type === 'INSTANCE' ? node.componentId : node.id
+  );
+  if (!componentInfo)
+    throw new Error('Never. It should appear in componentsMap.');
+  const componentName = componentInfo.name;
 
-  // visitScreen(node, name, vectorsMap);
-  return;
+  appendImportDeclaration(cursor, context, genContext, componentName);
+  appendElement(cursor, context, componentName);
 }
 
 function appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
@@ -699,9 +693,9 @@ export function visitNode(
       genContext.componentsMap.has(node.id)) ||
     (node.type === 'INSTANCE' &&
       genContext.componentsMap.has(node.componentId));
-  // if (node.type === 'COMPONENT') debugger;
+
   if (shouldImportComponent) {
-    visitComponentOrInstance(genContext, node, cursor, context);
+    importComponent(genContext, node, cursor, context);
     return;
   }
 

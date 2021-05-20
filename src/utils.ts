@@ -129,12 +129,11 @@ export function makeComponentName(node: ComposableNode): string | never {
   }
 }
 
-export type ComponentMapValue = {
+export type ComponentInfo = {
   name: string;
-  written: boolean;
   nodeRef: ComposableNode;
 };
-export type ComponentsMap = Map<string, ComponentMapValue>;
+export type ComponentsMap = Map<string, ComponentInfo>;
 
 // export function initComponentsMap(
 //   components: FigmaFile['components']
