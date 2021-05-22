@@ -63,8 +63,8 @@ export async function processComponent(
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
     walkNodeTree(
       node,
-      (node, parentResult) => {
-        return visitNode(node, parentResult, genContext);
+      (node, parentContext) => {
+        return visitNode(node, parentContext, genContext);
       },
       parentContext
     );

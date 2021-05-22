@@ -682,14 +682,13 @@ export function visitNode(
 
   // const parentCursor = parentContext.cursor;
   const context = makeVisitContext(node, parentContext, genContext);
-  const { styles } = context;
 
   // TODO: Rethink whether we want this.
   expandChildren(context, 0);
 
-  if (node?.order != null) {
-    styles.zIndex = node.order;
-  }
+  // if (node?.order != null) {
+  //   styles.zIndex = node.order;
+  // }
 
   applyStyles(context, genContext);
 
