@@ -5,29 +5,12 @@ import { readFile, writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import { format } from 'prettier';
-import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
+import { parseAsRoot } from './make-ast';
 import { GenContext } from './make-gen-context';
+import { makeLayout } from './plugins/jsx';
 import { ComponentInfo, isValidComponentNode, walkNodeTree } from './utils';
 import { visitNode } from './visit';
 import { EmptyVisitContext } from './visit/visit-context';
-
-function makeLayoutForReact(
-  fid: string,
-  name: string
-): [File, NodePath<JSXElement>] {
-  const root = parseAsRoot(`
-    import React, {FC, CSSProperties} from "react"
-    
-    export const ${name}: FC<{style: CSSProperties}> = (props) => {
-      return (
-        <__PLACEHOLDER__ ${TEMP_REF_ATTR}></__PLACEHOLDER__>
-      )
-    }
-  `);
-  const cursor = findTempRefJsxElement(root);
-  if (!cursor) throw new Error('should be found');
-  return [root, cursor];
-}
 
 export async function processComponent(
   componentInfo: ComponentInfo,
@@ -59,7 +42,7 @@ export async function processComponent(
     throw new Error('Implement');
   } else {
     // Create mode.
-    [rootAst, placeholderCursor] = makeLayoutForReact(node.id, name);
+    [rootAst, placeholderCursor] = makeLayout(node.id, name);
 
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
     walkNodeTree(
