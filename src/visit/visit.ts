@@ -1,5 +1,5 @@
 import { GenContext } from '../gen/make-gen-context';
-import { JsxStrategy } from '../strategies/jsx';
+import { StrategyInterface } from '../strategies/types';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
@@ -100,7 +100,7 @@ function checkShouldImportComponent(
 export function visitNode(
   node: ComposableNode,
   parentContext: ParentVisitContext,
-  strategy: JsxStrategy,
+  strategy: StrategyInterface,
   genContext: GenContext
 ): VisitContextWithCursor | null {
   const { vectorsMap } = genContext;

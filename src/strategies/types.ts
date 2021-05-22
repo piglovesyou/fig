@@ -1,13 +1,15 @@
 import { NodePath } from '@babel/traverse';
 import { JSXElement } from '@babel/types';
+import { ComponentInfo } from '../gen/components-map';
 import { GenContext } from '../gen/make-gen-context';
 import {
+  EmptyVisitContext,
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
 } from '../visit/visit-context';
 
-export interface Strategy {
+export interface StrategyInterface {
   makeLayout(): NodePath<JSXElement>;
   postWalk(): void;
   render(): string;
@@ -18,7 +20,7 @@ export interface Strategy {
   ): void;
   appendElement(
     context: VisitContext,
-    parentContext: VisitContextWithCursor,
+    parentContext: EmptyVisitContext,
     tagName?: string
   ): NodePath<JSXElement>;
   appendSvgElement(
@@ -30,4 +32,8 @@ export interface Strategy {
     context: VisitContext,
     parentContext: ParentVisitContext
   ): void;
+}
+
+export interface StrategyModule {
+  createStrategy: (componentInfo: ComponentInfo) => StrategyInterface;
 }

@@ -1,22 +1,22 @@
 import { cosmiconfig } from 'cosmiconfig';
-import pMap from 'p-map';
-import { Strategy } from '../strategies/types';
+import * as defaultStartegyModule from '../strategies/jsx';
+import { StrategyModule } from '../strategies/types';
 
 const MODULE_NAME = 'fig';
 
-interface _FigConfigBase<PluginType> {
+interface _FigConfigBase<StrategySpecifier> {
   baseDir?: string;
   componentsDir?: string;
   pagesDir?: string;
   htmlDir?: string;
   imagesDir?: string;
-  plugins: PluginType[];
+  strategy: StrategySpecifier;
   fileKeys: string[];
 }
 
 export type FigUserConfig = _FigConfigBase<string>;
 
-export type FigConfig = Required<_FigConfigBase<Strategy>>;
+export type FigConfig = Required<_FigConfigBase<StrategyModule>>;
 
 const DEFAULT_FIG_CONFIG: FigConfig = {
   baseDir: '.',
@@ -24,32 +24,36 @@ const DEFAULT_FIG_CONFIG: FigConfig = {
   pagesDir: 'pages',
   htmlDir: 'html',
   imagesDir: 'images',
-  plugins: [],
+  strategy: defaultStartegyModule,
   fileKeys: [],
 };
 
-export function applyDefaultConfig(c: FigUserConfig): FigConfig {
-  return Object.assign({}, DEFAULT_FIG_CONFIG, c);
+export async function applyDefaultConfig(
+  config: FigUserConfig
+): Promise<FigConfig> {
+  return {
+    ...DEFAULT_FIG_CONFIG,
+    ...config,
+    strategy: await loadStrategy(config.strategy),
+  };
 }
 
 export function verifyConfig(config: FigConfig) {
-  const { plugins } = config;
-  if (!plugins.length) throw new Error('Specify at least one plugin.');
+  const { strategy } = config;
+  if (!strategy) throw new Error('Specify strategy.');
 }
 
-function loadPlugins(pluginNames: FigUserConfig['plugins']): Promise<Plugin[]> {
-  return pMap(pluginNames, (name) => import(`./plugins/${name}`));
+async function loadStrategy(
+  strategyName: FigUserConfig['strategy']
+): Promise<StrategyModule> {
+  return await import(`../strategies/${strategyName}`);
 }
 
 export async function loadConfig(): Promise<FigConfig> {
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();
   if (!result) throw new Error(`.figrc is not found.`);
-  const config: FigConfig = {
-    ...DEFAULT_FIG_CONFIG,
-    ...result.config,
-    plugins: await loadPlugins(result.config.plugins),
-  };
+  const config: FigConfig = await applyDefaultConfig(result.config);
   verifyConfig(config);
   return config;
 }

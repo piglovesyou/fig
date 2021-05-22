@@ -2,5 +2,6 @@ baseDir: __generated__
 componentsDir: components
 pagesDir: pages
 htmlDir: public
+strategy: jsx
 fileKeys:
   - xxx

@@ -18,7 +18,7 @@ const caseArgs: CaseArg[] = [
 ];
 
 describe('Test full html', () => {
-  test.concurrent.each(caseArgs)(
+  test.each(caseArgs)(
     'Test %s',
     async (name, componentName, fileKey: string) => {
       if (!shouldRefresh) {
@@ -30,10 +30,10 @@ describe('Test full html', () => {
       }
 
       const baseDir = join(outDir, name);
-      const config = applyDefaultConfig({
+      const config = await applyDefaultConfig({
         fileKeys: [fileKey],
         baseDir,
-        plugins: ['jsx'],
+        strategy: 'jsx',
       });
       await gen(config);
 

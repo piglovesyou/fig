@@ -4,7 +4,6 @@ import { readFile, writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
-import { JsxStrategy } from '../strategies/jsx';
 import { parseAsRoot } from '../strategies/jsx/jsx-utils';
 import { visitNode } from '../visit/visit';
 import { EmptyVisitContext } from '../visit/visit-context';
@@ -18,7 +17,8 @@ export async function processComponent(
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
 
-  const strategy = new JsxStrategy(componentInfo);
+  const { createStrategy } = genContext.config.strategy;
+  const strategy = createStrategy(componentInfo);
 
   const { baseFullDir } = genContext;
   const componetsDir = join(

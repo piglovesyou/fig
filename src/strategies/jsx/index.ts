@@ -9,7 +9,7 @@ import {
   VisitContext,
   VisitContextWithCursor,
 } from '../../visit/visit-context';
-import { Strategy } from '../types';
+import { StrategyInterface } from '../types';
 import {
   appendComponentInstanceElement,
   appendElement,
@@ -19,7 +19,7 @@ import {
   makeLayout,
 } from './visit-utils';
 
-export class JsxStrategy implements Strategy {
+class JsxStrategy implements StrategyInterface {
   fid: string;
   name: string;
 
@@ -87,4 +87,6 @@ export class JsxStrategy implements Strategy {
   }
 }
 
-export {};
+export function createStrategy(componentInfo: ComponentInfo): JsxStrategy {
+  return new JsxStrategy(componentInfo);
+}
