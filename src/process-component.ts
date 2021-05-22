@@ -42,7 +42,7 @@ export async function processComponent(
     throw new Error('Implement');
   } else {
     // Create mode.
-    placeholderCursor = strategy.makeLayout(node.id, name);
+    placeholderCursor = strategy.makeLayout();
 
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
     walkNodeTree(

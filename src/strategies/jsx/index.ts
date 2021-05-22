@@ -37,11 +37,11 @@ export class JsxComponentStrategy implements ComponentStrategy {
     this.name = name;
   }
 
-  makeLayout(fid: string, name: string): NodePath<JSXElement> {
+  makeLayout(): NodePath<JSXElement> {
     const root = parseAsRoot(`
     import React, {FC, CSSProperties} from "react"
     
-    export const ${name}: FC<{style: CSSProperties}> = (props) => {
+    export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
       return (
         <__PLACEHOLDER__ ${TEMP_REF_ATTR}></__PLACEHOLDER__>
       )
