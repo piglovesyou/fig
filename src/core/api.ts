@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
+import { FigmaFile } from '../types/fig';
 import { devToken } from './env';
-import { FigmaFile } from './types/fig';
 
 const baseUrl = 'https://api.figma.com';
 const headers = { 'X-Figma-Token': devToken };

@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import * as api from '../api';
-import { RequestImagesResponse } from '../api';
+import * as api from '../core/api';
+import { RequestImagesResponse } from '../core/api';
 
 async function read(rel: string) {
   return JSON.parse(await readFile(join(__dirname, rel), 'utf-8'));

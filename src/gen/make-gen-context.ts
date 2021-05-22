@@ -1,5 +1,5 @@
 import { isAbsolute, join } from 'path';
-import { FigConfig } from '../config';
+import { FigConfig } from '../core/config';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { Canvas, FigmaFile } from '../types/fig';
 import { appendComponentsMap, ComponentsMap } from './components-map';

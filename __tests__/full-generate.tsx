@@ -2,9 +2,9 @@ import { writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import React from 'react';
-import * as api from '../src/api';
-import { applyDefaultConfig } from '../src/config';
-import { shouldRefresh } from '../src/env';
+import * as api from '../src/core/api';
+import { applyDefaultConfig } from '../src/core/config';
+import { shouldRefresh } from '../src/core/env';
 import { gen } from '../src/gen/gen';
 import { readJson, renderInHtml } from '../src/__tools/fns';
 

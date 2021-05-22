@@ -1,10 +1,10 @@
 import { writeFile } from 'fs/promises';
 import pMap from 'p-map';
-import { requestFile } from '../api';
-import { FigConfig } from '../config';
-import { processComponent } from '../process-component';
+import { requestFile } from '../core/api';
+import { FigConfig } from '../core/config';
 import { FigmaFile } from '../types/fig';
 import { makeGenContext } from './make-gen-context';
+import { processComponent } from './process-component';
 
 export async function gen(config: FigConfig) {
   const { fileKeys } = config;

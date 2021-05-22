@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import pMap from 'p-map';
-import { requestVectors } from '../api';
+import { requestVectors } from '../core/api';
 import { ComposableNode, Node, Paint } from '../types/ast';
 import { isVectorTypeNode } from '../types/fig';
 
