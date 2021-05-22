@@ -30,7 +30,7 @@ export class JsxComponentStrategy implements ComponentStrategy {
   name: string;
 
   // rootNode: Node | undefined;
-  placeholderCursor: NodePath<JSXElement> | undefined;
+  cursor: NodePath<JSXElement> | undefined;
 
   constructor({ node, name }: ComponentInfo) {
     this.fid = node.id;
@@ -49,20 +49,19 @@ export class JsxComponentStrategy implements ComponentStrategy {
   `);
     const cursor = findTempRefJsxElement(root);
     if (!cursor) throw new Error('should be found');
-    this.placeholderCursor = cursor;
+    this.cursor = cursor;
     return cursor;
   }
 
   postWalk() {
-    if (!this.placeholderCursor)
-      throw new Error(
-        `Never. placeholderCursor must be set on postWalk() hook.`
-      );
-    erasePlaceholderElement(this.placeholderCursor);
+    if (!this.cursor)
+      throw new Error(`Never. placeholderCursor must be set on postWalk() `);
+    erasePlaceholderElement(this.cursor);
   }
 
-  render(cursor: NodePath<any>): string {
-    const program: NodePath<Program> = cursor.findParent((path) =>
+  render(): string {
+    if (!this.cursor) throw new Error(`Never. cursor must be set on render().`);
+    const program: NodePath<Program> = this.cursor.findParent((path) =>
       isProgram(path.node)
     )! as NodePath<Program>;
     return format(generate(program.node).code, { parser: 'babel' });

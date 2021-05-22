@@ -55,7 +55,7 @@ export async function processComponent(
     strategy.postWalk();
   }
 
-  await writeFile(fullPath, strategy.render(placeholderCursor));
+  await writeFile(fullPath, strategy.render());
 }
 
 // // TODO: Similar to preprocess. Refactor
