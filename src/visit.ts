@@ -7,8 +7,8 @@ import {
 } from './types';
 import { applyStyles } from './visit/styles';
 import {
-  EmptyVisitContext,
   makeVisitContext,
+  ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
 } from './visit/visit-context';
@@ -78,7 +78,7 @@ export function expandChildren(context: VisitContext, offset: number) {
 
 function checkShouldImportComponent(
   context: VisitContext,
-  parentContext: VisitContextWithCursor | EmptyVisitContext,
+  parentContext: ParentVisitContext,
   genContext: GenContext
 ) {
   const { node: parentNode } = parentContext;
@@ -99,7 +99,7 @@ function checkShouldImportComponent(
 
 export function visitNode(
   node: ComposableNode,
-  parentContext: VisitContextWithCursor | EmptyVisitContext,
+  parentContext: ParentVisitContext,
   strategy: JsxStrategy,
   genContext: GenContext
 ): VisitContextWithCursor | null {

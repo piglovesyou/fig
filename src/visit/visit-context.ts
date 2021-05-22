@@ -44,6 +44,8 @@ export type VisitContextWithCursor = VisitContext & _WithCursor;
 // For parentContext of root node
 export type EmptyVisitContext = Partial<VisitContext> & _WithCursor;
 
+export type ParentVisitContext = VisitContextWithCursor | EmptyVisitContext;
+
 export function makeVisitContext(
   node: ComposableNode,
   parentContext: VisitContext | EmptyVisitContext,
