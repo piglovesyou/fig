@@ -1,10 +1,10 @@
-import { StrategyInterface } from '../strategies/types';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
   LayoutConstraintVertical,
 } from '../types/fig';
 import { GenContext } from '../types/gen';
+import { StrategyInterface } from '../types/strategy';
 import {
   ParentVisitContext,
   VisitContext,

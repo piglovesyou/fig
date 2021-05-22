@@ -3,13 +3,12 @@ import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { format } from 'prettier';
 import { ComponentInfo, GenContext } from '../../types/gen';
+import { StrategyInterface } from '../../types/strategy';
 import {
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
 } from '../../types/visit';
-import {} from '../../visit/visit-context';
-import { StrategyInterface } from '../types';
 import {
   appendComponentInstanceElement,
   appendElement,

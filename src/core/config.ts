@@ -1,6 +1,6 @@
 import { cosmiconfig } from 'cosmiconfig';
 import * as defaultStartegyModule from '../strategies/jsx';
-import { StrategyModule } from '../strategies/types';
+import { StrategyModule } from '../types/strategy';
 
 const MODULE_NAME = 'fig';
 

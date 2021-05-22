@@ -1,13 +1,12 @@
 import { NodePath } from '@babel/traverse';
 import { JSXElement } from '@babel/types';
-import { ComponentInfo, GenContext } from '../types/gen';
+import { ComponentInfo, GenContext } from './gen';
 import {
   EmptyVisitContext,
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
-} from '../types/visit';
-import {} from '../visit/visit-context';
+} from './visit';
 
 export interface StrategyInterface {
   makeLayout(): NodePath<JSXElement>;

@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
 import { FigmaFile } from '../types/fig';
-import { devToken } from './env';
+import { token } from './env';
 
 const baseUrl = 'https://api.figma.com';
-const headers = { 'X-Figma-Token': devToken };
+const headers = { 'X-Figma-Token': token };
 
 export async function requestVectors(fileKey: string, vectorList: string[]) {
   if (!vectorList.length) throw new Error('vectorList is empty');
