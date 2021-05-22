@@ -48,7 +48,7 @@ export type ParentVisitContext = VisitContextWithCursor | EmptyVisitContext;
 
 export function makeVisitContext(
   node: ComposableNode,
-  parentContext: VisitContext | EmptyVisitContext,
+  parentContext: ParentVisitContext,
   genContext: GenContext
   // lastVertical: number | null
 ): VisitContext {

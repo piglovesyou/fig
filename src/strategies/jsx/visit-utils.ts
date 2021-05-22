@@ -7,15 +7,19 @@ import {
   isProgram,
   isReturnStatement,
   JSXElement,
+  jsxExpressionContainer,
   Program,
   stringLiteral,
 } from '@babel/types';
 import { GenContext } from '../../make-gen-context';
+import { makeTextContent } from '../../visit/text';
 import { ParentVisitContext, VisitContext } from '../../visit/visit-context';
 import {
   appendJsxNode,
   findTempRefJsxElement,
+  getJsxCursor,
   makeFidAttr,
+  parseAsRoot,
   parseExpression,
   TEMP_REF_ATTR,
 } from './jsx-utils';
@@ -61,8 +65,8 @@ export function appendImportDeclaration(
 }
 
 export function appendElement(
-  parentContext: ParentVisitContext,
   context: VisitContext,
+  parentContext: ParentVisitContext,
   tagName: string
 ) {
   const { cursor: parentCursor } = parentContext;
@@ -92,4 +96,53 @@ export function appendElement(
   appendJsxNode(parentCursor, wrapper);
   // Find the inner div element
   return findTempRefJsxElement(parentCursor);
+}
+
+export function makeLayout(name: string) {
+  const root = parseAsRoot(`
+import React, {FC, CSSProperties} from "react"
+
+export const ${name}: FC<{style: CSSProperties}> = (props) => {
+  return (
+    <__PLACEHOLDER__ ${TEMP_REF_ATTR}></__PLACEHOLDER__>
+  )
+}
+    `);
+  return findTempRefJsxElement(root);
+}
+
+export function appendTextContext(
+  context: VisitContext,
+  parentContext: ParentVisitContext
+) {
+  const { node } = context;
+  if (node.type !== 'TEXT')
+    throw new Error(`Never. This function is supposed to emit on TEXT node.`);
+
+  let cursor = appendElement(context, parentContext, 'div');
+  const content = makeTextContent(node);
+  if (node.name.startsWith('$')) {
+    const varName = node.name.substring(1);
+    // TODO: Handle variables.
+    cursor.node.children.push(
+      jsxExpressionContainer(
+        parseExpression(
+          `this.props.${varName} && this.props.${varName}.split("\\n").map((line, idx) => <div key={idx}>{line}</div>)`
+        )
+      )
+    );
+    cursor = getJsxCursor(cursor);
+    appendJsxNode(
+      cursor,
+      jsxExpressionContainer(
+        parseExpression(
+          `!this.props.${varName} && (<div ${TEMP_REF_ATTR}></div>)`
+        )
+      )
+    );
+    cursor = getJsxCursor(cursor);
+    cursor.node.children.push(...content);
+  } else {
+    cursor.node.children.push(...content);
+  }
 }
