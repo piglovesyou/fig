@@ -2,8 +2,6 @@ import { NodePath } from '@babel/traverse';
 import { JSXElement } from '@babel/types';
 import { CSSProperties } from 'react';
 import { GenContext } from '../make-gen-context';
-import { appendJsxNode, parseExpression } from '../strategies/jsx/jsx-utils';
-import { appendElement } from '../strategies/jsx/visit-utils';
 import { Bound } from '../types';
 import { ComposableNode, Rectangle } from '../types/ast';
 
@@ -101,20 +99,4 @@ export function makeVisitContext(
     classNames,
     outFullDir,
   };
-}
-
-export function appendSvgContent(
-  context: VisitContext,
-  parentContext: ParentVisitContext,
-  svgHtml: string
-) {
-  const cursor = appendElement(context, parentContext, 'div');
-
-  // Use dangerous SVG instead of building DOM
-  appendJsxNode(
-    cursor,
-    parseExpression<JSXElement>(
-      `<div className="vector" dangerouslySetInnerHTML={{__html: \`${svgHtml}\`}} />`
-    )
-  );
 }

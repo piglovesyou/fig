@@ -146,3 +146,37 @@ export function appendTextContext(
     cursor.node.children.push(...content);
   }
 }
+
+export function appendComponentInstanceElement(
+  context: VisitContext,
+  parentContext: ParentVisitContext,
+  genContext: GenContext
+) {
+  const { node } = context;
+  const { cursor: parentCursor } = parentContext;
+  const componentInfo = genContext.componentsMap.get(
+    node.type === 'INSTANCE' ? node.componentId : node.id
+  );
+  if (!componentInfo)
+    throw new Error('Never. It should appear in componentsMap.');
+  const componentName = componentInfo.name;
+
+  appendImportDeclaration(parentCursor, context, genContext, componentName);
+  appendElement(context, parentContext, componentName);
+}
+
+export function appendSvgContent(
+  context: VisitContext,
+  parentContext: ParentVisitContext,
+  svgHtml: string
+) {
+  const cursor = appendElement(context, parentContext, 'div');
+
+  // Use dangerous SVG instead of building DOM
+  appendJsxNode(
+    cursor,
+    parseExpression<JSXElement>(
+      `<div className="vector" dangerouslySetInnerHTML={{__html: \`${svgHtml}\`}} />`
+    )
+  );
+}

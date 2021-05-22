@@ -5,15 +5,15 @@ import { format } from 'prettier';
 import { GenContext } from '../../make-gen-context';
 import { ComponentInfo } from '../../utils';
 import {
-  appendSvgContent,
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
 } from '../../visit/visit-context';
 import { Strategy } from '../types';
 import {
+  appendComponentInstanceElement,
   appendElement,
-  appendImportDeclaration,
+  appendSvgContent,
   appendTextContext,
   erasePlaceholderElement,
   makeLayout,
@@ -57,17 +57,7 @@ export class JsxStrategy implements Strategy {
     parentContext: VisitContextWithCursor,
     genContext: GenContext
   ): void {
-    const { node } = context;
-    const { cursor: parentCursor } = parentContext;
-    const componentInfo = genContext.componentsMap.get(
-      node.type === 'INSTANCE' ? node.componentId : node.id
-    );
-    if (!componentInfo)
-      throw new Error('Never. It should appear in componentsMap.');
-    const componentName = componentInfo.name;
-
-    appendImportDeclaration(parentCursor, context, genContext, componentName);
-    appendElement(context, parentContext, componentName);
+    appendComponentInstanceElement(context, parentContext, genContext);
   }
 
   appendElement(
