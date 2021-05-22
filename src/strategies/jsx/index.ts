@@ -2,13 +2,13 @@ import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { format } from 'prettier';
-import { ComponentInfo } from '../../gen/components-map';
-import { GenContext } from '../../gen/make-gen-context';
+import { ComponentInfo, GenContext } from '../../types/gen';
 import {
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
-} from '../../visit/visit-context';
+} from '../../types/visit';
+import {} from '../../visit/visit-context';
 import { StrategyInterface } from '../types';
 import {
   appendComponentInstanceElement,

@@ -1,10 +1,6 @@
 import { ComposableNode } from '../types/ast';
+import { ComponentInfo } from '../types/gen';
 import { makeComponentName } from './utils';
-
-export type ComponentInfo = {
-  name: string;
-  node: ComposableNode;
-};
 
 export type ComponentsMap = Map<string, ComponentInfo>;
 

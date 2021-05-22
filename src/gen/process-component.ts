@@ -5,10 +5,9 @@ import makeDir from 'make-dir';
 import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { parseAsRoot } from '../strategies/jsx/jsx-utils';
+import { ComponentInfo, GenContext } from '../types/gen';
+import { EmptyVisitContext } from '../types/visit';
 import { visitNode } from '../visit/visit';
-import { EmptyVisitContext } from '../visit/visit-context';
-import { ComponentInfo } from './components-map';
-import { GenContext } from './make-gen-context';
 
 export async function processComponent(
   componentInfo: ComponentInfo,

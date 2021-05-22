@@ -1,9 +1,8 @@
-import { NodePath } from '@babel/traverse';
-import { JSXElement } from '@babel/types';
 import { CSSProperties } from 'react';
-import { GenContext } from '../gen/make-gen-context';
 import { ComposableNode, Rectangle } from '../types/ast';
 import { Bound } from '../types/fig';
+import { GenContext } from '../types/gen';
+import { ParentVisitContext, VisitContext } from '../types/visit';
 
 function makeBounds(parentNode: ComposableNode, nodeBounds: Rectangle) {
   const nx2 = nodeBounds!.x + nodeBounds!.width;
@@ -23,28 +22,6 @@ function makeBounds(parentNode: ComposableNode, nodeBounds: Rectangle) {
     height: nodeBounds!.height,
   };
 }
-
-export type VisitContext = {
-  node: ComposableNode;
-  parentNode: null | ComposableNode;
-  bounds: null | Bound;
-  nodeBounds: any;
-  styles: React.CSSProperties;
-  classNames: Set<string>;
-  // minChildren: ComposableNode[];
-  // centerChildren: ComposableNode[];
-  // maxChildren: ComposableNode[];
-  outFullDir: string;
-};
-
-type _WithCursor = { cursor: NodePath<JSXElement> };
-
-export type VisitContextWithCursor = VisitContext & _WithCursor;
-
-// For parentContext of root node
-export type EmptyVisitContext = Partial<VisitContext> & _WithCursor;
-
-export type ParentVisitContext = VisitContextWithCursor | EmptyVisitContext;
 
 export function makeVisitContext(
   node: ComposableNode,

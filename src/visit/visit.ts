@@ -1,17 +1,17 @@
-import { GenContext } from '../gen/make-gen-context';
 import { StrategyInterface } from '../strategies/types';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
   LayoutConstraintVertical,
 } from '../types/fig';
-import { applyStyles } from './styles';
+import { GenContext } from '../types/gen';
 import {
-  makeVisitContext,
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
-} from './visit-context';
+} from '../types/visit';
+import { applyStyles } from './styles';
+import { makeVisitContext } from './visit-context';
 
 /**
  * TODO: Split into different responsibilities
@@ -104,7 +104,6 @@ export function visitNode(
   genContext: GenContext
 ): VisitContextWithCursor | null {
   const { vectorsMap } = genContext;
-  const { cursor: parentCursor } = parentContext;
 
   const context = makeVisitContext(node, parentContext, genContext);
 

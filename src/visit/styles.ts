@@ -9,7 +9,6 @@ import {
   paintToLinearGradient,
   paintToRadialGradient,
 } from '../core/style-utils';
-import { GenContext } from '../gen/make-gen-context';
 import {
   ComposableNode,
   EffectShadow,
@@ -17,7 +16,8 @@ import {
   Node,
   TypeStyle,
 } from '../types/ast';
-import { VisitContext } from './visit-context';
+import { GenContext } from '../types/gen';
+import { VisitContext } from '../types/visit';
 
 function applyAutolayoutConstraintsStyle({ node, styles }: VisitContext) {
   if (!isLayoutableNode(node) || !node.layoutMode)

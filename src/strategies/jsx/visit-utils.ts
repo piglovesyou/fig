@@ -11,9 +11,9 @@ import {
   Program,
   stringLiteral,
 } from '@babel/types';
-import { GenContext } from '../../gen/make-gen-context';
+import { GenContext } from '../../types/gen';
+import { ParentVisitContext, VisitContext } from '../../types/visit';
 import { makeTextContent } from '../../visit/text';
-import { ParentVisitContext, VisitContext } from '../../visit/visit-context';
 import {
   appendJsxNode,
   findTempRefJsxElement,
