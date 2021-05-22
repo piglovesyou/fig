@@ -678,7 +678,7 @@ export function visitNode(
   node: ComposableNode,
   parentContext: VisitContextWithCursor | EmptyVisitContext,
   genContext: GenContext
-) {
+): VisitContextWithCursor | null {
   const { vectorsMap } = genContext;
   const { node: parentNode, cursor: parentCursor } = parentContext;
 
@@ -721,10 +721,12 @@ export function visitNode(
     return null;
   }
 
-  const contextWithCursor = { ...context, cursor };
-  for (const child of centerChildren) {
-    visitNode(child, contextWithCursor, genContext);
-  }
+  const contextWithCursor: VisitContextWithCursor = { ...context, cursor };
+
+  return contextWithCursor;
+  // for (const child of centerChildren) {
+  //   visitNode(child, contextWithCursor, genContext);
+  // }
 
   // if (maxChildren.length > 0) {
   //   // outerClass.push('maxer');

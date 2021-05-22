@@ -7,7 +7,7 @@ import { join } from 'path';
 import { format } from 'prettier';
 import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
 import { GenContext } from './make-gen-context';
-import { ComponentInfo, isValidComponentNode } from './utils';
+import { ComponentInfo, isValidComponentNode, walkNodeTree } from './utils';
 import { EmptyVisitContext, visitNode } from './visit';
 
 function makeLayoutForReact(
@@ -61,7 +61,13 @@ export async function processComponent(
     [rootAst, placeholderCursor] = makeLayoutForReact(node.id, name);
 
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
-    visitNode(node, parentContext, genContext);
+    walkNodeTree(
+      node,
+      (node, parentResult) => {
+        return visitNode(node, parentResult, genContext);
+      },
+      parentContext
+    );
 
     // Merge attributes before removing the top placeholder element
     const placeholderElement = placeholderCursor.node;
