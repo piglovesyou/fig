@@ -1,14 +1,31 @@
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import {
+  identifier,
+  importDeclaration,
+  importSpecifier,
+  isImportDeclaration,
   isProgram,
   isReturnStatement,
   JSXElement,
   Program,
+  stringLiteral,
 } from '@babel/types';
 import { format } from 'prettier';
+import { GenContext } from '../../make-gen-context';
 import { ComponentInfo } from '../../utils';
-import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './jsx-utils';
+import { appendJsxNode } from '../../visit/jsx';
+import {
+  VisitContext,
+  VisitContextWithCursor,
+} from '../../visit/visit-context';
+import {
+  findTempRefJsxElement,
+  makeFidAttr,
+  parseAsRoot,
+  parseExpression,
+  TEMP_REF_ATTR,
+} from './jsx-utils';
 
 export interface Strategy {}
 
@@ -23,6 +40,66 @@ function erasePlaceholderElement(
   const returnStatement = placeholderCursor.parent;
   if (!isReturnStatement(returnStatement)) throw new Error('never');
   returnStatement.argument = componentRootElement;
+}
+
+function appendImportDeclaration(
+  cursor: NodePath<JSXElement>,
+  context: VisitContext,
+  genContext: GenContext,
+  componentName: string
+) {
+  // Import component if not exists
+  const program = cursor.findParent((path) =>
+    isProgram(path.node)
+  )! as NodePath<Program>;
+  const importFromPage = context.parentNode?.type === 'FRAME';
+  const importSource = `${
+    importFromPage ? `../${genContext.config.componentsDir}` : '.'
+  }/${componentName}`;
+  const alreadyImported = program.node.body.some(
+    (node) => isImportDeclaration(node) && node.source.value === importSource
+  );
+  if (!alreadyImported) {
+    program.node.body.unshift(
+      importDeclaration(
+        [importSpecifier(identifier(componentName), identifier(componentName))],
+        stringLiteral(importSource)
+      )
+    );
+  }
+}
+
+export function appendWrapperElement(
+  cursor: NodePath<JSXElement>,
+  context: VisitContext,
+  tagName: string
+) {
+  const { classNames, node, parentNode, styles } = context;
+
+  const classNameAttr = classNames.size
+    ? `className="${Array.prototype.join.call(classNames, ' ')}"`
+    : '';
+
+  // Component root element wants to merge external style passed from props
+  const isComponentRoot = !Boolean(parentNode);
+  const styleAttr = isComponentRoot
+    ? `style={{...${JSON.stringify(styles)}, ...props.style}}`
+    : `style={${JSON.stringify(styles)}}`;
+
+  const template = `
+<${tagName}
+    ${makeFidAttr(node.id)}
+    ${classNameAttr}
+    ${styleAttr}
+    data-fname="${node.name}"
+    ${TEMP_REF_ATTR}
+>
+</${tagName}>
+`;
+  const wrapper = parseExpression<JSXElement>(template);
+  appendJsxNode(cursor, wrapper);
+  // Find the inner div element
+  return findTempRefJsxElement(cursor);
 }
 
 export class JsxStrategy implements Strategy {
@@ -65,6 +142,23 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
       isProgram(path.node)
     )! as NodePath<Program>;
     return format(generate(program.node).code, { parser: 'babel' });
+  }
+
+  appendComponentInstance(
+    { node }: VisitContext,
+    { cursor: parentCursor }: VisitContextWithCursor,
+    context: VisitContext,
+    genContext: GenContext
+  ): void {
+    const componentInfo = genContext.componentsMap.get(
+      node.type === 'INSTANCE' ? node.componentId : node.id
+    );
+    if (!componentInfo)
+      throw new Error('Never. It should appear in componentsMap.');
+    const componentName = componentInfo.name;
+
+    appendImportDeclaration(parentCursor, context, genContext, componentName);
+    appendWrapperElement(parentCursor, context, componentName);
   }
 }
 

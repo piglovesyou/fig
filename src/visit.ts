@@ -1,22 +1,8 @@
 import { NodePath } from '@babel/traverse';
-import {
-  identifier,
-  importDeclaration,
-  importSpecifier,
-  isImportDeclaration,
-  isProgram,
-  JSXElement,
-  Program,
-  stringLiteral,
-} from '@babel/types';
+import { JSXElement } from '@babel/types';
 import { GenContext } from './make-gen-context';
-import { JsxStrategy } from './strategies/jsx';
-import {
-  findTempRefJsxElement,
-  makeFidAttr,
-  parseExpression,
-  TEMP_REF_ATTR,
-} from './strategies/jsx/jsx-utils';
+import { appendWrapperElement, JsxStrategy } from './strategies/jsx';
+import { parseExpression } from './strategies/jsx/jsx-utils';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
@@ -88,39 +74,6 @@ export function expandChildren(context: VisitContext, offset: number) {
 //   return findTempRefJsxElement(cursor);
 // }
 
-function appendWrapperElement(
-  cursor: NodePath<JSXElement>,
-  context: VisitContext,
-  tagName: string
-) {
-  const { classNames, node, parentNode, styles } = context;
-
-  const classNameAttr = classNames.size
-    ? `className="${Array.prototype.join.call(classNames, ' ')}"`
-    : '';
-
-  // Component root element wants to merge external style passed from props
-  const isComponentRoot = !Boolean(parentNode);
-  const styleAttr = isComponentRoot
-    ? `style={{...${JSON.stringify(styles)}, ...props.style}}`
-    : `style={${JSON.stringify(styles)}}`;
-
-  const template = `
-<${tagName}
-    ${makeFidAttr(node.id)}
-    ${classNameAttr}
-    ${styleAttr}
-    data-fname="${node.name}"
-    ${TEMP_REF_ATTR}
->
-</${tagName}>
-`;
-  const wrapper = parseExpression<JSXElement>(template);
-  appendJsxNode(cursor, wrapper);
-  // Find the inner div element
-  return findTempRefJsxElement(cursor);
-}
-
 // function applySizes(bounds: Bound | null, styles: React.CSSProperties) {
 //   if (bounds) {
 //     styles.minWidth = bounds.width;
@@ -141,50 +94,6 @@ function appendSvg(
       `<div className="vector" dangerouslySetInnerHTML={{__html: \`${svgHtml}\`}} />`
     )
   );
-}
-
-function appendImportDeclaration(
-  cursor: NodePath<JSXElement>,
-  context: VisitContext,
-  genContext: GenContext,
-  componentName: string
-) {
-  // Import component if not exists
-  const program = cursor.findParent((path) =>
-    isProgram(path.node)
-  )! as NodePath<Program>;
-  const importFromPage = context.parentNode?.type === 'FRAME';
-  const importSource = `${
-    importFromPage ? `../${genContext.config.componentsDir}` : '.'
-  }/${componentName}`;
-  const alreadyImported = program.node.body.some(
-    (node) => isImportDeclaration(node) && node.source.value === importSource
-  );
-  if (!alreadyImported) {
-    program.node.body.unshift(
-      importDeclaration(
-        [importSpecifier(identifier(componentName), identifier(componentName))],
-        stringLiteral(importSource)
-      )
-    );
-  }
-}
-
-function appendComponentInstance(
-  genContext: GenContext,
-  node: ComposableNode,
-  cursor: NodePath<JSXElement>,
-  context: VisitContext
-): void {
-  const componentInfo = genContext.componentsMap.get(
-    node.type === 'INSTANCE' ? node.componentId : node.id
-  );
-  if (!componentInfo)
-    throw new Error('Never. It should appear in componentsMap.');
-  const componentName = componentInfo.name;
-
-  appendImportDeclaration(cursor, context, genContext, componentName);
-  appendWrapperElement(cursor, context, componentName);
 }
 
 function checkShouldImportComponent(
@@ -234,7 +143,12 @@ export function visitNode(
     genContext
   );
   if (shouldImportComponent) {
-    appendComponentInstance(genContext, node!, parentCursor, context);
+    strategy.appendComponentInstance(
+      context,
+      parentContext as VisitContextWithCursor,
+      context,
+      genContext
+    );
     return null;
   }
 
