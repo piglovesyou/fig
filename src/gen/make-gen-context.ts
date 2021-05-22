@@ -12,8 +12,8 @@ import {
   isComplexPaintRequired,
 } from '../append-vectors-map';
 import { FigConfig } from '../config';
-import { Canvas, FigmaFile } from '../types';
 import { ComposableNode, isVectorTypeNode } from '../types/ast';
+import { Canvas, FigmaFile } from '../types/fig';
 import {
   ComponentInfo,
   ComponentsMap,

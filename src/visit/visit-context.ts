@@ -2,8 +2,8 @@ import { NodePath } from '@babel/traverse';
 import { JSXElement } from '@babel/types';
 import { CSSProperties } from 'react';
 import { GenContext } from '../gen/make-gen-context';
-import { Bound } from '../types';
 import { ComposableNode, Rectangle } from '../types/ast';
+import { Bound } from '../types/fig';
 
 function makeBounds(parentNode: ComposableNode, nodeBounds: Rectangle) {
   const nx2 = nodeBounds!.x + nodeBounds!.width;

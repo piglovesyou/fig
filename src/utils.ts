@@ -1,6 +1,5 @@
 import camelCase from 'camelcase';
 import _ from 'lodash';
-import { Node } from './types';
 import {
   Color,
   ComposableNode,
@@ -8,6 +7,7 @@ import {
   Paint,
   PaintSolidScaleMode,
 } from './types/ast';
+import { Node } from './types/fig';
 
 // const vectorTypes = [
 //   'VECTOR',

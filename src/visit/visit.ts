@@ -4,7 +4,7 @@ import {
   ComposableNode,
   LayoutConstraintHorizontal,
   LayoutConstraintVertical,
-} from '../types';
+} from '../types/fig';
 import { applyStyles } from './styles';
 import {
   makeVisitContext,

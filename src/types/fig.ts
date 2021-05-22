@@ -1,5 +1,5 @@
-export * from './types/ast';
-import { ComposableNode, Node as _Node } from './types/ast';
+export * from './ast';
+import { ComposableNode, Node as _Node } from './ast';
 
 export interface FigmaFile {
   document: Document;

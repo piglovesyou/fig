@@ -3,7 +3,7 @@ import pMap from 'p-map';
 import { requestFile } from '../api';
 import { FigConfig } from '../config';
 import { processComponent } from '../process-component';
-import { FigmaFile } from '../types';
+import { FigmaFile } from '../types/fig';
 import { makeGenContext } from './make-gen-context';
 
 export async function gen(config: FigConfig) {

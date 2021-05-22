@@ -1,4 +1,4 @@
-import { ComposableNode } from './types';
+import { ComposableNode } from './types/fig';
 import { makeComponentName } from './utils';
 
 describe('figma.test.ts', () => {
