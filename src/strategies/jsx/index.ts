@@ -181,7 +181,13 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     );
   }
 
-  appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
+  appendTextContent(
+    node: Node<'TEXT'>,
+    parentCursor: NodePath<JSXElement>,
+    context: VisitContext
+  ) {
+    let cursor = this.appendElement(parentCursor, context, 'div');
+
     const content = makeTextContent(node);
     if (node.name.startsWith('$')) {
       const varName = node.name.substring(1);

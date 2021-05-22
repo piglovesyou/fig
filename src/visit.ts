@@ -137,12 +137,12 @@ export function visitNode(
     return null;
   }
 
-  const cursor = strategy.appendElement(parentCursor, context, 'div');
-
   if (node?.type === 'TEXT') {
-    strategy.appendTextContent(node, cursor);
+    strategy.appendTextContent(node, parentCursor, context);
     return null;
   }
+
+  const cursor = strategy.appendElement(parentCursor, context, 'div');
 
   return { ...context, cursor };
   // for (const child of centerChildren) {
