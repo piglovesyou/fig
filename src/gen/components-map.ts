@@ -1,5 +1,5 @@
 import { ComposableNode } from '../types/ast';
-import { makeComponentName } from '../utils';
+import { makeComponentName } from './utils';
 
 export type ComponentInfo = {
   name: string;

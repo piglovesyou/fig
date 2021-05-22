@@ -3,7 +3,7 @@ import { File, JSXElement } from '@babel/types';
 import { readFile, writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
-import { isValidComponentNode, walkNodeTree } from './core/utils';
+import { isValidComponentNode, walkNodeTree } from './core/node-utils';
 import { ComponentInfo } from './gen/components-map';
 import { GenContext } from './gen/make-gen-context';
 import { JsxStrategy } from './strategies/jsx';

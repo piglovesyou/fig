@@ -1,13 +1,5 @@
 import { relative } from 'path';
 import { CSSProperties } from 'react';
-import { GenContext } from '../gen/make-gen-context';
-import {
-  ComposableNode,
-  EffectShadow,
-  isLayoutableNode,
-  Node,
-  TypeStyle,
-} from '../types/ast';
 import {
   backgroundSize,
   colorString,
@@ -16,7 +8,15 @@ import {
   innerShadow,
   paintToLinearGradient,
   paintToRadialGradient,
-} from '../utils';
+} from '../core/style-utils';
+import { GenContext } from '../gen/make-gen-context';
+import {
+  ComposableNode,
+  EffectShadow,
+  isLayoutableNode,
+  Node,
+  TypeStyle,
+} from '../types/ast';
 import { VisitContext } from './visit-context';
 
 function applyAutolayoutConstraintsStyle({ node, styles }: VisitContext) {

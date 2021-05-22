@@ -30,7 +30,7 @@ export class CFrame1 extends PureComponent {
 }
 `;
 
-describe('jsx-utils.test.ts', () => {
+describe('jsx-style-utils.test.ts', () => {
   test('getCursor()', async () => {
     const ast = parseAsRoot(rootContent);
     expect((getStatementCursor(ast).node as any).type).toEqual(

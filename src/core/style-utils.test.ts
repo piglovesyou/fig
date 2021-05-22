@@ -1,5 +1,5 @@
-import { ComposableNode } from './types/fig';
-import { makeComponentName } from './utils';
+import { makeComponentName } from '../gen/utils';
+import { ComposableNode } from '../types/fig';
 
 describe('figma.test.ts', () => {
   test('makeComponentName()', async () => {
