@@ -7,12 +7,8 @@ import {
   Program,
 } from '@babel/types';
 import { format } from 'prettier';
-import {
-  findTempRefJsxElement,
-  parseAsRoot,
-  TEMP_REF_ATTR,
-} from '../../make-ast';
 import { ComponentInfo } from '../../utils';
+import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
 
 export interface ComponentStrategy {}
 

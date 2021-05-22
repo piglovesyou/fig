@@ -1,7 +1,11 @@
 import { NodePath } from '@babel/traverse';
 import { JSXElement, jsxExpressionContainer } from '@babel/types';
 import { CSSProperties } from 'react';
-import { getJsxCursor, parseExpression, TEMP_REF_ATTR } from '../make-ast';
+import {
+  getJsxCursor,
+  parseExpression,
+  TEMP_REF_ATTR,
+} from '../strategies/jsx/make-ast';
 import { Node } from '../types/ast';
 import { appendJsxNode } from './jsx';
 import { applyFontStyle } from './styles';

@@ -9,13 +9,13 @@ import {
   Program,
   stringLiteral,
 } from '@babel/types';
+import { GenContext } from './make-gen-context';
 import {
   findTempRefJsxElement,
   makeFidAttr,
   parseExpression,
   TEMP_REF_ATTR,
-} from './make-ast';
-import { GenContext } from './make-gen-context';
+} from './strategies/jsx/make-ast';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
