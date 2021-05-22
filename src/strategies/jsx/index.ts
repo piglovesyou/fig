@@ -14,11 +14,11 @@ import {
 } from '@babel/types';
 import { format } from 'prettier';
 import { GenContext } from '../../make-gen-context';
-import { Node } from '../../types/ast';
 import { ComponentInfo } from '../../utils';
 import { appendJsxNode } from '../../visit/jsx';
 import { makeTextContent } from '../../visit/text';
 import {
+  EmptyVisitContext,
   VisitContext,
   VisitContextWithCursor,
 } from '../../visit/visit-context';
@@ -135,7 +135,7 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
   appendElement(
     cursor: NodePath<JSXElement>,
     context: VisitContext,
-    tagName: string
+    tagName: string = 'div'
   ) {
     const { classNames, node, parentNode, styles } = context;
 
@@ -182,10 +182,14 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
   }
 
   appendTextContent(
-    node: Node<'TEXT'>,
-    parentCursor: NodePath<JSXElement>,
-    context: VisitContext
+    context: VisitContext,
+    parentContext: VisitContextWithCursor | EmptyVisitContext
   ) {
+    const { node } = context;
+    if (node.type !== 'TEXT')
+      throw new Error(`Never. This function is supposed to emit on TEXT node.`);
+
+    const { cursor: parentCursor } = parentContext;
     let cursor = this.appendElement(parentCursor, context, 'div');
 
     const content = makeTextContent(node);

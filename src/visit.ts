@@ -138,11 +138,11 @@ export function visitNode(
   }
 
   if (node?.type === 'TEXT') {
-    strategy.appendTextContent(node, parentCursor, context);
+    strategy.appendTextContent(context, parentContext);
     return null;
   }
 
-  const cursor = strategy.appendElement(parentCursor, context, 'div');
+  const cursor = strategy.appendElement(parentCursor, context);
 
   return { ...context, cursor };
   // for (const child of centerChildren) {
