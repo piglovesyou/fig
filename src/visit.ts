@@ -43,20 +43,6 @@ import {
   sortByYAxis,
 } from './utils';
 
-type VisitContext = {
-  cursor: NodePath<JSXElement>;
-  node: ComposableNode;
-  parentNode: null | ComposableNode;
-  bounds: null | Bound;
-  nodeBounds: any;
-  styles: React.CSSProperties;
-  classNames: string[];
-  minChildren: ComposableNode[];
-  centerChildren: ComposableNode[];
-  maxChildren: ComposableNode[];
-  outFullDir: string;
-};
-
 function applyAutolayoutConstraintsStyle({ node, styles }: VisitContext) {
   if (!isLayoutableNode(node) || !node.layoutMode)
     throw new Error('This function is for frame having autolayout');
@@ -525,12 +511,11 @@ function applyStyles(context: VisitContext, genContext: GenContext) {
   applyNodeTypeStyle(context, genContext);
 }
 
-function makeVisitContext(
-  cursor: NodePath<JSXElement>,
+export function makeVisitContext(
   node: ComposableNode,
-  parentContext: VisitContext | null,
-  // lastVertical: number | null
+  parentContext: VisitContext | EmptyVisitContext,
   genContext: GenContext
+  // lastVertical: number | null
 ): VisitContext {
   const parentNode = parentContext?.node || null;
   const centerChildren: ComposableNode[] = [];
@@ -550,7 +535,7 @@ function makeVisitContext(
   const classNames: string[] = [];
 
   // Get outFullDir
-  let outFullDir: string;
+  let outFullDir: string | undefined;
   switch (node.type) {
     case 'FRAME':
       outFullDir = genContext.pagesFullDir;
@@ -560,15 +545,14 @@ function makeVisitContext(
       outFullDir = genContext.pagesFullDir;
       break;
     default:
-      if (!parentContext?.outFullDir)
-        throw new Error(
-          `Node ${node.name} is neither FRAME, COMPONENT, INSTANCE but doesn't have a parent node.`
-        );
-      outFullDir = parentContext.outFullDir;
+      if (parentContext?.outFullDir) {
+        outFullDir = parentContext?.outFullDir;
+      } else {
+        outFullDir = genContext.pagesFullDir;
+      }
   }
 
   return {
-    cursor,
     node,
     parentNode,
     minChildren,
@@ -670,21 +654,42 @@ function appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
   return cursor;
 }
 
+export type VisitContext = {
+  node: ComposableNode;
+  parentNode: null | ComposableNode;
+  bounds: null | Bound;
+  nodeBounds: any;
+  styles: React.CSSProperties;
+  classNames: string[];
+  minChildren: ComposableNode[];
+  centerChildren: ComposableNode[];
+  maxChildren: ComposableNode[];
+  outFullDir: string;
+};
+
+type _WithCursor = { cursor: NodePath<JSXElement> };
+
+export type VisitContextWithCursor = VisitContext & _WithCursor;
+
+// For parentContext of root node
+export type EmptyVisitContext = Partial<VisitContext> & _WithCursor;
+
 export function visitNode(
-  cursor: NodePath<JSXElement>,
   node: ComposableNode,
-  parentContext: VisitContext | null,
+  parentContext: VisitContextWithCursor | EmptyVisitContext,
   genContext: GenContext
-): void {
+) {
   const { vectorsMap } = genContext;
-  const parentNode = parentContext?.node;
-  const context = makeVisitContext(cursor, node, parentContext, genContext);
-  const { minChildren, maxChildren, centerChildren, styles } = context;
+  const { node: parentNode, cursor: parentCursor } = parentContext;
+
+  // const parentCursor = parentContext.cursor;
+  const context = makeVisitContext(node, parentContext, genContext);
+  const { centerChildren, styles } = context;
 
   // TODO: Rethink whether we want this.
   expandChildren(context, 0);
 
-  if (node.order != null) {
+  if (node?.order != null) {
     styles.zIndex = node.order;
   }
 
@@ -692,48 +697,44 @@ export function visitNode(
 
   const shouldImportComponent =
     (parentNode &&
-      node.type === 'COMPONENT' &&
+      node?.type === 'COMPONENT' &&
       genContext.componentsMap.has(node.id)) ||
-    (node.type === 'INSTANCE' &&
+    (node?.type === 'INSTANCE' &&
       genContext.componentsMap.has(node.componentId));
 
   if (shouldImportComponent) {
-    importComponent(genContext, node, cursor, context);
-    return;
+    importComponent(genContext, node!, parentCursor, context);
+    return null;
   }
 
-  cursor = appendElement(cursor, context, 'div');
+  const cursor = appendElement(parentCursor, context, 'div');
 
-  if (vectorsMap.has(node.id)) {
+  if (node && vectorsMap.has(node.id)) {
     appendSvg(vectorsMap, node, cursor);
-    return;
+    return null;
 
     // TODO: Case to import another component
   }
 
-  if (node.type === 'TEXT') {
+  if (node?.type === 'TEXT') {
     appendTextContent(node, cursor);
-    return;
+    return null;
   }
 
-  // // let first = true;
-  // for (const child of minChildren) {
-  //   visitNode(cursor, child, context, genContext);
-  //   // first = false;
-  // }
-
-  for (const child of centerChildren)
-    visitNode(cursor, child, context, genContext);
+  const contextWithCursor = { ...context, cursor };
+  for (const child of centerChildren) {
+    visitNode(child, contextWithCursor, genContext);
+  }
 
   // if (maxChildren.length > 0) {
   //   // outerClass.push('maxer');
   //   // styles.width = '100%';
   //   // styles.pointerEvents = 'none';
   //   // delete styles.backgroundColor;
-  //   cursor = appendMaxerElement(cursor);
+  //   parentCursor = appendMaxerElement(parentCursor);
   //   // first = true;
   //   for (const child of maxChildren) {
-  //     visitNode(cursor, child, context, genContext);
+  //     visitNode(parentCursor, child, context, genContext);
   //     // first = false;
   //   }
   // }

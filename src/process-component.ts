@@ -8,7 +8,7 @@ import { format } from 'prettier';
 import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
 import { GenContext } from './make-gen-context';
 import { ComponentInfo, isValidComponentNode } from './utils';
-import { visitNode } from './visit';
+import { EmptyVisitContext, visitNode } from './visit';
 
 function makeLayoutForReact(
   fid: string,
@@ -46,7 +46,7 @@ export async function processComponent(
   const fullPath = join(componetsDir, `${name}.tsx`);
 
   let rootAst: File;
-  let cursor: NodePath<JSXElement>;
+  let placeholderCursor: NodePath<JSXElement>;
 
   if (false /*existsSync(fullPath)*/) {
     // TODO: Update mode.
@@ -58,16 +58,17 @@ export async function processComponent(
     throw new Error('Implement');
   } else {
     // Create mode.
-    [rootAst, cursor] = makeLayoutForReact(node.id, name);
+    [rootAst, placeholderCursor] = makeLayoutForReact(node.id, name);
 
-    visitNode(cursor, node, null, genContext);
+    const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
+    visitNode(node, parentContext, genContext);
 
     // Merge attributes before removing the top placeholder element
-    const placeholderElement = cursor.node;
+    const placeholderElement = placeholderCursor.node;
     const componentRootElement = placeholderElement.children[0]! as JSXElement;
 
     // Remove placeholderElement
-    const returnStatement = cursor.parent;
+    const returnStatement = placeholderCursor.parent;
     if (!isReturnStatement(returnStatement)) throw new Error('never');
     returnStatement.argument = componentRootElement;
   }
