@@ -7,7 +7,6 @@ import {
   Paint,
   PaintSolidScaleMode,
 } from './types/ast';
-import { Node } from './types/fig';
 
 // const vectorTypes = [
 //   'VECTOR',
@@ -126,28 +125,5 @@ export function makeComponentName(node: ComposableNode): string | never {
       return makeComponentNameFromId(node.id, '__NOT_FOUND__');
     default:
       throw new Error('Component can only be FRAME, COMPONENT, INSTANCE.');
-  }
-}
-
-export function isValidComponentNode(
-  node: ComposableNode
-): node is Node<'FRAME'> | Node<'COMPONENT'> | Node<'INSTANCE'> {
-  return (
-    (node.type === 'FRAME' ||
-      node.type === 'COMPONENT' ||
-      node.type === 'INSTANCE') &&
-    node.visible !== false
-  );
-}
-
-export function walkNodeTree<T = void>(
-  node: ComposableNode,
-  fn: (node: ComposableNode, parentResult: T) => null | T,
-  parentResult: T
-): void {
-  const result = fn(node, parentResult);
-  if (result === null) return;
-  for (const child of node.children || []) {
-    walkNodeTree(child, fn, result);
   }
 }

@@ -2,8 +2,8 @@ import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { format } from 'prettier';
+import { ComponentInfo } from '../../gen/components-map';
 import { GenContext } from '../../gen/make-gen-context';
-import { ComponentInfo } from '../../utils';
 import {
   ParentVisitContext,
   VisitContext,

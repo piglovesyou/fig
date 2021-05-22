@@ -33,6 +33,7 @@ describe('Test full html', () => {
       const config = applyDefaultConfig({
         fileKeys: [fileKey],
         baseDir,
+        plugins: ['jsx'],
       });
       await gen(config);
 
