@@ -1,16 +1,10 @@
-import { NodePath } from '@babel/traverse';
-import { JSXElement, jsxExpressionContainer } from '@babel/types';
+import { JSXElement } from '@babel/types';
 import { CSSProperties } from 'react';
-import {
-  getJsxCursor,
-  parseExpression,
-  TEMP_REF_ATTR,
-} from '../strategies/jsx/jsx-utils';
+import { parseExpression } from '../strategies/jsx/jsx-utils';
 import { Node } from '../types/ast';
-import { appendJsxNode } from './jsx';
 import { applyFontStyle } from './styles';
 
-function makeTextContent(node: Node<'TEXT'>): JSXElement[] {
+export function makeTextContent(node: Node<'TEXT'>): JSXElement[] {
   if (node.name.startsWith('input:')) {
     return [
       parseExpression<JSXElement>(
@@ -76,36 +70,4 @@ function makeTextContent(node: Node<'TEXT'>): JSXElement[] {
   return node.characters
     .split('\n')
     .map((line, idx) => parseExpression(`<div key='${idx}'>${line}</div>`));
-}
-
-export function appendTextContent(
-  node: Node<'TEXT'>,
-  cursor: NodePath<JSXElement>
-) {
-  const content = makeTextContent(node);
-  if (node.name.startsWith('$')) {
-    const varName = node.name.substring(1);
-    // TODO: Handle variables.
-    cursor.node.children.push(
-      jsxExpressionContainer(
-        parseExpression(
-          `this.props.${varName} && this.props.${varName}.split("\\n").map((line, idx) => <div key={idx}>{line}</div>)`
-        )
-      )
-    );
-    cursor = getJsxCursor(cursor);
-    appendJsxNode(
-      cursor,
-      jsxExpressionContainer(
-        parseExpression(
-          `!this.props.${varName} && (<div ${TEMP_REF_ATTR}></div>)`
-        )
-      )
-    );
-    cursor = getJsxCursor(cursor);
-    cursor.node.children.push(...content);
-  } else {
-    cursor.node.children.push(...content);
-  }
-  return cursor;
 }

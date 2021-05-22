@@ -8,19 +8,23 @@ import {
   isProgram,
   isReturnStatement,
   JSXElement,
+  jsxExpressionContainer,
   Program,
   stringLiteral,
 } from '@babel/types';
 import { format } from 'prettier';
 import { GenContext } from '../../make-gen-context';
+import { Node } from '../../types/ast';
 import { ComponentInfo } from '../../utils';
 import { appendJsxNode } from '../../visit/jsx';
+import { makeTextContent } from '../../visit/text';
 import {
   VisitContext,
   VisitContextWithCursor,
 } from '../../visit/visit-context';
 import {
   findTempRefJsxElement,
+  getJsxCursor,
   makeFidAttr,
   parseAsRoot,
   parseExpression,
@@ -67,39 +71,6 @@ function appendImportDeclaration(
       )
     );
   }
-}
-
-export function appendElement(
-  cursor: NodePath<JSXElement>,
-  context: VisitContext,
-  tagName: string
-) {
-  const { classNames, node, parentNode, styles } = context;
-
-  const classNameAttr = classNames.size
-    ? `className="${Array.prototype.join.call(classNames, ' ')}"`
-    : '';
-
-  // Component root element wants to merge external style passed from props
-  const isComponentRoot = !Boolean(parentNode);
-  const styleAttr = isComponentRoot
-    ? `style={{...${JSON.stringify(styles)}, ...props.style}}`
-    : `style={${JSON.stringify(styles)}}`;
-
-  const template = `
-<${tagName}
-    ${makeFidAttr(node.id)}
-    ${classNameAttr}
-    ${styleAttr}
-    data-fname="${node.name}"
-    ${TEMP_REF_ATTR}
->
-</${tagName}>
-`;
-  const wrapper = parseExpression<JSXElement>(template);
-  appendJsxNode(cursor, wrapper);
-  // Find the inner div element
-  return findTempRefJsxElement(cursor);
 }
 
 export class JsxStrategy implements Strategy {
@@ -158,7 +129,85 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     const componentName = componentInfo.name;
 
     appendImportDeclaration(parentCursor, context, genContext, componentName);
-    appendElement(parentCursor, context, componentName);
+    this.appendElement(parentCursor, context, componentName);
+  }
+
+  appendElement(
+    cursor: NodePath<JSXElement>,
+    context: VisitContext,
+    tagName: string
+  ) {
+    const { classNames, node, parentNode, styles } = context;
+
+    const classNameAttr = classNames.size
+      ? `className="${Array.prototype.join.call(classNames, ' ')}"`
+      : '';
+
+    // Component root element wants to merge external style passed from props
+    const isComponentRoot = !Boolean(parentNode);
+    const styleAttr = isComponentRoot
+      ? `style={{...${JSON.stringify(styles)}, ...props.style}}`
+      : `style={${JSON.stringify(styles)}}`;
+
+    const template = `
+<${tagName}
+    ${makeFidAttr(node.id)}
+    ${classNameAttr}
+    ${styleAttr}
+    data-fname="${node.name}"
+    ${TEMP_REF_ATTR}
+>
+</${tagName}>
+`;
+    const wrapper = parseExpression<JSXElement>(template);
+    appendJsxNode(cursor, wrapper);
+    // Find the inner div element
+    return findTempRefJsxElement(cursor);
+  }
+
+  appendSvgContent(
+    parentCursor: NodePath<JSXElement>,
+    svgHtml: string,
+    context: VisitContext
+  ): void {
+    const cursor = this.appendElement(parentCursor, context, 'div');
+
+    // Use dangerous SVG instead of building DOM
+    appendJsxNode(
+      cursor,
+      parseExpression<JSXElement>(
+        `<div className="vector" dangerouslySetInnerHTML={{__html: \`${svgHtml}\`}} />`
+      )
+    );
+  }
+
+  appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
+    const content = makeTextContent(node);
+    if (node.name.startsWith('$')) {
+      const varName = node.name.substring(1);
+      // TODO: Handle variables.
+      cursor.node.children.push(
+        jsxExpressionContainer(
+          parseExpression(
+            `this.props.${varName} && this.props.${varName}.split("\\n").map((line, idx) => <div key={idx}>{line}</div>)`
+          )
+        )
+      );
+      cursor = getJsxCursor(cursor);
+      appendJsxNode(
+        cursor,
+        jsxExpressionContainer(
+          parseExpression(
+            `!this.props.${varName} && (<div ${TEMP_REF_ATTR}></div>)`
+          )
+        )
+      );
+      cursor = getJsxCursor(cursor);
+      cursor.node.children.push(...content);
+    } else {
+      cursor.node.children.push(...content);
+    }
+    return cursor;
   }
 }
 

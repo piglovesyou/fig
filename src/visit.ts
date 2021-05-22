@@ -1,16 +1,11 @@
-import { NodePath } from '@babel/traverse';
-import { JSXElement } from '@babel/types';
 import { GenContext } from './make-gen-context';
-import { appendElement, JsxStrategy } from './strategies/jsx';
-import { parseExpression } from './strategies/jsx/jsx-utils';
+import { JsxStrategy } from './strategies/jsx';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
   LayoutConstraintVertical,
 } from './types';
-import { appendJsxNode } from './visit/jsx';
 import { applyStyles } from './visit/styles';
-import { appendTextContent } from './visit/text';
 import {
   EmptyVisitContext,
   makeVisitContext,
@@ -81,16 +76,6 @@ export function expandChildren(context: VisitContext, offset: number) {
 //   }
 // }
 
-function appendSvg(cursor: NodePath<JSXElement>, svgHtml: string): void {
-  // Use dangerous SVG instead of building DOM
-  appendJsxNode(
-    cursor,
-    parseExpression<JSXElement>(
-      `<div className="vector" dangerouslySetInnerHTML={{__html: \`${svgHtml}\`}} />`
-    )
-  );
-}
-
 function checkShouldImportComponent(
   context: VisitContext,
   parentContext: VisitContextWithCursor | EmptyVisitContext,
@@ -147,17 +132,15 @@ export function visitNode(
     return null;
   }
 
-  const cursor = appendElement(parentCursor, context, 'div');
-
-  if (node && vectorsMap.has(node.id)) {
-    appendSvg(cursor, vectorsMap.get(node.id)!);
+  if (vectorsMap.has(node.id)) {
+    strategy.appendSvgContent(parentCursor, vectorsMap.get(node.id)!, context);
     return null;
-
-    // TODO: Case to import another component
   }
 
+  const cursor = strategy.appendElement(parentCursor, context, 'div');
+
   if (node?.type === 'TEXT') {
-    appendTextContent(node, cursor);
+    strategy.appendTextContent(node, cursor);
     return null;
   }
 
