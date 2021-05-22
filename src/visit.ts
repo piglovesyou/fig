@@ -44,6 +44,7 @@ import {
 } from './utils';
 
 type VisitContext = {
+  cursor: NodePath<JSXElement>;
   node: ComposableNode;
   parentNode: null | ComposableNode;
   bounds: null | Bound;
@@ -525,6 +526,7 @@ function applyStyles(context: VisitContext, genContext: GenContext) {
 }
 
 function makeVisitContext(
+  cursor: NodePath<JSXElement>,
   node: ComposableNode,
   parentContext: VisitContext | null,
   // lastVertical: number | null
@@ -566,6 +568,7 @@ function makeVisitContext(
   }
 
   return {
+    cursor,
     node,
     parentNode,
     minChildren,
@@ -675,7 +678,7 @@ export function visitNode(
 ): void {
   const { vectorsMap } = genContext;
   const parentNode = parentContext?.node;
-  const context = makeVisitContext(node, parentContext, genContext);
+  const context = makeVisitContext(cursor, node, parentContext, genContext);
   const { minChildren, maxChildren, centerChildren, styles } = context;
 
   // TODO: Rethink whether we want this.
