@@ -69,7 +69,7 @@ function appendImportDeclaration(
   }
 }
 
-export function appendWrapperElement(
+export function appendElement(
   cursor: NodePath<JSXElement>,
   context: VisitContext,
   tagName: string
@@ -158,7 +158,7 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     const componentName = componentInfo.name;
 
     appendImportDeclaration(parentCursor, context, genContext, componentName);
-    appendWrapperElement(parentCursor, context, componentName);
+    appendElement(parentCursor, context, componentName);
   }
 }
 

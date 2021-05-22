@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import { JSXElement } from '@babel/types';
 import { GenContext } from './make-gen-context';
-import { appendWrapperElement, JsxStrategy } from './strategies/jsx';
+import { appendElement, JsxStrategy } from './strategies/jsx';
 import { parseExpression } from './strategies/jsx/jsx-utils';
 import {
   ComposableNode,
@@ -81,13 +81,8 @@ export function expandChildren(context: VisitContext, offset: number) {
 //   }
 // }
 
-function appendSvg(
-  vectorsMap: Map<string, string>,
-  node: ComposableNode,
-  cursor: NodePath<JSXElement>
-): void {
+function appendSvg(cursor: NodePath<JSXElement>, svgHtml: string): void {
   // Use dangerous SVG instead of building DOM
-  const svgHtml = vectorsMap.get(node.id);
   appendJsxNode(
     cursor,
     parseExpression<JSXElement>(
@@ -152,10 +147,10 @@ export function visitNode(
     return null;
   }
 
-  const cursor = appendWrapperElement(parentCursor, context, 'div');
+  const cursor = appendElement(parentCursor, context, 'div');
 
   if (node && vectorsMap.has(node.id)) {
-    appendSvg(vectorsMap, node, cursor);
+    appendSvg(cursor, vectorsMap.get(node.id)!);
     return null;
 
     // TODO: Case to import another component
