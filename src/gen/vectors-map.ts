@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import pMap from 'p-map';
-import { requestVectors } from './api';
-import { ComposableNode, Node, Paint } from './types/ast';
-import { isVectorTypeNode } from './types/fig';
+import { requestVectors } from '../api';
+import { ComposableNode, Node, Paint } from '../types/ast';
+import { isVectorTypeNode } from '../types/fig';
 
 function paintsRequireRender(paints: Paint[]) {
   if (!paints) return false;
