@@ -1,16 +1,10 @@
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import {
-  identifier,
-  importDeclaration,
-  importSpecifier,
-  isImportDeclaration,
   isProgram,
-  isReturnStatement,
   JSXElement,
   jsxExpressionContainer,
   Program,
-  stringLiteral,
 } from '@babel/types';
 import { format } from 'prettier';
 import { GenContext } from '../../make-gen-context';
@@ -25,11 +19,15 @@ import {
   appendJsxNode,
   findTempRefJsxElement,
   getJsxCursor,
-  makeFidAttr,
   parseAsRoot,
   parseExpression,
   TEMP_REF_ATTR,
 } from './jsx-utils';
+import {
+  appendElement,
+  appendImportDeclaration,
+  erasePlaceholderElement,
+} from './visit-utils';
 
 export interface Strategy {
   makeLayout(): NodePath<JSXElement>;
@@ -40,13 +38,11 @@ export interface Strategy {
     parentContext: VisitContextWithCursor,
     genContext: GenContext
   ): void;
-
   appendElement(
     context: VisitContext,
     parentContext: VisitContextWithCursor,
     tagName?: string
   ): NodePath<JSXElement>;
-
   appendSvgContent(
     context: VisitContext,
     parentContext: ParentVisitContext,
@@ -56,46 +52,6 @@ export interface Strategy {
     context: VisitContext,
     parentContext: ParentVisitContext
   ): void;
-}
-
-function erasePlaceholderElement(
-  placeholderCursor: NodePath<JSXElement>
-): void {
-  // Merge attributes before removing the top placeholder element
-  const placeholderElement = placeholderCursor.node;
-  const componentRootElement = placeholderElement.children[0]! as JSXElement;
-
-  // Remove placeholderElement
-  const returnStatement = placeholderCursor.parent;
-  if (!isReturnStatement(returnStatement)) throw new Error('never');
-  returnStatement.argument = componentRootElement;
-}
-
-function appendImportDeclaration(
-  cursor: NodePath<JSXElement>,
-  context: VisitContext,
-  genContext: GenContext,
-  componentName: string
-) {
-  // Import component if not exists
-  const program = cursor.findParent((path) =>
-    isProgram(path.node)
-  )! as NodePath<Program>;
-  const importFromPage = context.parentNode?.type === 'FRAME';
-  const importSource = `${
-    importFromPage ? `../${genContext.config.componentsDir}` : '.'
-  }/${componentName}`;
-  const alreadyImported = program.node.body.some(
-    (node) => isImportDeclaration(node) && node.source.value === importSource
-  );
-  if (!alreadyImported) {
-    program.node.body.unshift(
-      importDeclaration(
-        [importSpecifier(identifier(componentName), identifier(componentName))],
-        stringLiteral(importSource)
-      )
-    );
-  }
 }
 
 export class JsxStrategy implements Strategy {
@@ -163,33 +119,7 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     parentContext: ParentVisitContext,
     tagName: string = 'div'
   ): NodePath<JSXElement> {
-    const { cursor: parentCursor } = parentContext;
-    const { classNames, node, parentNode, styles } = context;
-
-    const classNameAttr = classNames.size
-      ? `className="${Array.prototype.join.call(classNames, ' ')}"`
-      : '';
-
-    // Component root element wants to merge external style passed from props
-    const isComponentRoot = !Boolean(parentNode);
-    const styleAttr = isComponentRoot
-      ? `style={{...${JSON.stringify(styles)}, ...props.style}}`
-      : `style={${JSON.stringify(styles)}}`;
-
-    const template = `
-<${tagName}
-    ${makeFidAttr(node.id)}
-    ${classNameAttr}
-    ${styleAttr}
-    data-fname="${node.name}"
-    ${TEMP_REF_ATTR}
->
-</${tagName}>
-`;
-    const wrapper = parseExpression<JSXElement>(template);
-    appendJsxNode(parentCursor, wrapper);
-    // Find the inner div element
-    return findTempRefJsxElement(parentCursor);
+    return appendElement(parentContext, context, tagName);
   }
 
   appendSvgContent(
