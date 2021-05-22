@@ -502,8 +502,7 @@ function applyStyles(context: VisitContext, genContext: GenContext) {
   if (isLayoutableNode(node) && node.layoutMode) {
     applyAutolayoutConstraintsStyle(context);
   }
-  // applyHorisontalStyle(context, genContext);
-  // applyVerticalStyle(context, genContext);
+
   applyLayoutStyles(context);
 
   applyNodeTypeStyle(context, genContext);
@@ -672,15 +671,35 @@ export type VisitContextWithCursor = VisitContext & _WithCursor;
 // For parentContext of root node
 export type EmptyVisitContext = Partial<VisitContext> & _WithCursor;
 
+function checkShouldImportComponent(
+  context: VisitContext,
+  parentContext: VisitContextWithCursor | EmptyVisitContext,
+  genContext: GenContext
+) {
+  const { node: parentNode } = parentContext;
+  const { node } = context;
+  if (!parentNode) return false;
+
+  if (node.type === 'COMPONENT' && genContext.componentsMap.has(node.id))
+    return true;
+
+  if (
+    node.type === 'INSTANCE' &&
+    genContext.componentsMap.has(node.componentId)
+  )
+    return true;
+
+  return false;
+}
+
 export function visitNode(
   node: ComposableNode,
   parentContext: VisitContextWithCursor | EmptyVisitContext,
   genContext: GenContext
 ): VisitContextWithCursor | null {
   const { vectorsMap } = genContext;
-  const { node: parentNode, cursor: parentCursor } = parentContext;
+  const { cursor: parentCursor } = parentContext;
 
-  // const parentCursor = parentContext.cursor;
   const context = makeVisitContext(node, parentContext, genContext);
 
   // TODO: Rethink whether we want this.
@@ -692,13 +711,11 @@ export function visitNode(
 
   applyStyles(context, genContext);
 
-  const shouldImportComponent =
-    (parentNode &&
-      node?.type === 'COMPONENT' &&
-      genContext.componentsMap.has(node.id)) ||
-    (node?.type === 'INSTANCE' &&
-      genContext.componentsMap.has(node.componentId));
-
+  const shouldImportComponent = checkShouldImportComponent(
+    context,
+    parentContext,
+    genContext
+  );
   if (shouldImportComponent) {
     appendComponentInstance(genContext, node!, parentCursor, context);
     return null;
