@@ -129,12 +129,6 @@ export function makeComponentName(node: ComposableNode): string | never {
   }
 }
 
-export type ComponentInfo = {
-  name: string;
-  node: ComposableNode;
-};
-export type ComponentsMap = Map<string, ComponentInfo>;
-
 export function isValidComponentNode(
   node: ComposableNode
 ): node is Node<'FRAME'> | Node<'COMPONENT'> | Node<'INSTANCE'> {

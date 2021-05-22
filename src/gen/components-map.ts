@@ -1,5 +1,12 @@
 import { ComposableNode } from '../types/ast';
-import { ComponentInfo, ComponentsMap, makeComponentName } from '../utils';
+import { makeComponentName } from '../utils';
+
+export type ComponentInfo = {
+  name: string;
+  node: ComposableNode;
+};
+
+export type ComponentsMap = Map<string, ComponentInfo>;
 
 export function appendComponentsMap(
   node: ComposableNode,
