@@ -146,13 +146,14 @@ export function isValidComponentNode(
   );
 }
 
-export function walkNodeTree(
+export function walkNodeTree<T = void>(
   node: ComposableNode,
-  fn: (node: ComposableNode) => void | boolean
+  fn: (node: ComposableNode, parentResult: T) => null | T,
+  parentResult: T
 ): void {
-  const result = fn(node);
-  if (result === false) return;
+  const result = fn(node, parentResult);
+  if (result === null) return;
   for (const child of node.children || []) {
-    walkNodeTree(child, fn);
+    walkNodeTree(child, fn, result);
   }
 }

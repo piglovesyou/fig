@@ -160,10 +160,14 @@ export async function makeGenContext(
   for (const canvas of figmaFile.document.children as Canvas[])
     for (const screen of canvas.children)
       if (isValidComponentNode(screen)) {
-        walkNodeTree(screen, (node) => {
-          appendComponentsMap(node, componentsMap);
-          appendVectorListIfNecessary(node, vectorList);
-        });
+        walkNodeTree(
+          screen,
+          (node) => {
+            appendComponentsMap(node, componentsMap);
+            appendVectorListIfNecessary(node, vectorList);
+          },
+          undefined
+        );
       }
 
   await appendVectorsMap(vectorsMap, vectorList, fileKey);
