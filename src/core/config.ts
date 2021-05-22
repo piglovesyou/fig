@@ -1,4 +1,5 @@
 import { cosmiconfig } from 'cosmiconfig';
+import { dirname, join, relative } from 'path';
 import * as defaultStartegyModule from '../strategies/jsx';
 import { StrategyModule } from '../types/strategy';
 
@@ -29,12 +30,13 @@ const DEFAULT_FIG_CONFIG: FigConfig = {
 };
 
 export async function applyDefaultConfig(
-  config: FigUserConfig
+  config: FigUserConfig,
+  configFullPath?: string
 ): Promise<FigConfig> {
   return {
     ...DEFAULT_FIG_CONFIG,
     ...config,
-    strategy: await loadStrategy(config.strategy),
+    strategy: await loadStrategy(config.strategy, configFullPath),
   };
 }
 
@@ -44,8 +46,17 @@ export function verifyConfig(config: FigConfig) {
 }
 
 async function loadStrategy(
-  strategyName: FigUserConfig['strategy']
+  strategyName: FigUserConfig['strategy'],
+  configFullPath?: string
 ): Promise<StrategyModule> {
+  if (strategyName.startsWith('./')) {
+    if (!configFullPath) throw new Error(`Never`);
+    const moduleFullPath = join(dirname(configFullPath), strategyName);
+    const moduleRelPath = relative(__dirname, moduleFullPath);
+    return await import(
+      moduleRelPath.startsWith('.') ? moduleRelPath : './' + moduleRelPath
+    );
+  }
   return await import(`../strategies/${strategyName}`);
 }
 
@@ -53,7 +64,10 @@ export async function loadConfig(): Promise<FigConfig> {
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();
   if (!result) throw new Error(`.figrc is not found.`);
-  const config: FigConfig = await applyDefaultConfig(result.config);
+  const config: FigConfig = await applyDefaultConfig(
+    result.config,
+    result.filepath
+  );
   verifyConfig(config);
   return config;
 }
