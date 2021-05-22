@@ -721,9 +721,7 @@ export function visitNode(
     return null;
   }
 
-  const contextWithCursor: VisitContextWithCursor = { ...context, cursor };
-
-  return contextWithCursor;
+  return { ...context, cursor };
   // for (const child of centerChildren) {
   //   visitNode(child, contextWithCursor, genContext);
   // }
