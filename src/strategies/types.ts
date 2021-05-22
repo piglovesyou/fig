@@ -11,7 +11,7 @@ export interface Strategy {
   makeLayout(): NodePath<JSXElement>;
   postWalk(): void;
   render(): string;
-  appendComponentInstance(
+  appendComponentInstanceElement(
     context: VisitContext,
     parentContext: VisitContextWithCursor,
     genContext: GenContext
@@ -21,12 +21,12 @@ export interface Strategy {
     parentContext: VisitContextWithCursor,
     tagName?: string
   ): NodePath<JSXElement>;
-  appendSvgContent(
+  appendSvgElement(
     context: VisitContext,
     parentContext: ParentVisitContext,
     svgHtml: string
   ): void;
-  appendTextContent(
+  appendTextElement(
     context: VisitContext,
     parentContext: ParentVisitContext
   ): void;

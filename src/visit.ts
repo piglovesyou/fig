@@ -123,7 +123,7 @@ export function visitNode(
     genContext
   );
   if (shouldImportComponent) {
-    strategy.appendComponentInstance(
+    strategy.appendComponentInstanceElement(
       context,
       parentContext as VisitContextWithCursor,
       genContext
@@ -132,12 +132,12 @@ export function visitNode(
   }
 
   if (vectorsMap.has(node.id)) {
-    strategy.appendSvgContent(context, parentContext, vectorsMap.get(node.id)!);
+    strategy.appendSvgElement(context, parentContext, vectorsMap.get(node.id)!);
     return null;
   }
 
   if (node?.type === 'TEXT') {
-    strategy.appendTextContent(context, parentContext);
+    strategy.appendTextElement(context, parentContext);
     return null;
   }
 

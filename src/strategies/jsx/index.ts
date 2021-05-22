@@ -5,12 +5,12 @@ import { format } from 'prettier';
 import { GenContext } from '../../make-gen-context';
 import { ComponentInfo } from '../../utils';
 import {
+  appendSvgContent,
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
 } from '../../visit/visit-context';
 import { Strategy } from '../types';
-import { appendJsxNode, parseExpression } from './jsx-utils';
 import {
   appendElement,
   appendImportDeclaration,
@@ -18,22 +18,6 @@ import {
   erasePlaceholderElement,
   makeLayout,
 } from './visit-utils';
-
-function appendSvgContent(
-  context: VisitContext,
-  parentContext: ParentVisitContext,
-  svgHtml: string
-) {
-  const cursor = appendElement(context, parentContext, 'div');
-
-  // Use dangerous SVG instead of building DOM
-  appendJsxNode(
-    cursor,
-    parseExpression<JSXElement>(
-      `<div className="vector" dangerouslySetInnerHTML={{__html: \`${svgHtml}\`}} />`
-    )
-  );
-}
 
 export class JsxStrategy implements Strategy {
   fid: string;
@@ -68,7 +52,7 @@ export class JsxStrategy implements Strategy {
     return format(generate(program.node).code, { parser: 'babel' });
   }
 
-  appendComponentInstance(
+  appendComponentInstanceElement(
     context: VisitContext,
     parentContext: VisitContextWithCursor,
     genContext: GenContext
@@ -94,15 +78,18 @@ export class JsxStrategy implements Strategy {
     return appendElement(context, parentContext, tagName);
   }
 
-  appendSvgContent(
+  appendSvgElement(
     context: VisitContext,
     parentContext: ParentVisitContext,
     svgHtml: string
   ): void {
-    appendSvgContent.call(this, context, parentContext, svgHtml);
+    appendSvgContent(context, parentContext, svgHtml);
   }
 
-  appendTextContent(context: VisitContext, parentContext: ParentVisitContext) {
+  appendTextElement(
+    context: VisitContext,
+    parentContext: ParentVisitContext
+  ): void {
     const { node } = context;
     if (node.type !== 'TEXT')
       throw new Error(`Never. This function is supposed to emit on TEXT node.`);
