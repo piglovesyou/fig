@@ -1,13 +1,11 @@
-import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
-import { File, isReturnStatement, JSXElement } from '@babel/types';
+import { File, JSXElement } from '@babel/types';
 import { readFile, writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
-import { format } from 'prettier';
 import { parseAsRoot } from './make-ast';
 import { GenContext } from './make-gen-context';
-import { makeLayout } from './plugins/jsx';
+import { JsxComponentStrategy } from './plugins/jsx';
 import { ComponentInfo, isValidComponentNode, walkNodeTree } from './utils';
 import { visitNode } from './visit';
 import { EmptyVisitContext } from './visit/visit-context';
@@ -18,6 +16,8 @@ export async function processComponent(
 ) {
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
+
+  const strategy = new JsxComponentStrategy(componentInfo);
 
   const { baseFullDir } = genContext;
   const componetsDir = join(
@@ -42,7 +42,7 @@ export async function processComponent(
     throw new Error('Implement');
   } else {
     // Create mode.
-    [rootAst, placeholderCursor] = makeLayout(node.id, name);
+    placeholderCursor = strategy.makeLayout(node.id, name);
 
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
     walkNodeTree(
@@ -52,21 +52,10 @@ export async function processComponent(
       },
       parentContext
     );
-
-    // Merge attributes before removing the top placeholder element
-    const placeholderElement = placeholderCursor.node;
-    const componentRootElement = placeholderElement.children[0]! as JSXElement;
-
-    // Remove placeholderElement
-    const returnStatement = placeholderCursor.parent;
-    if (!isReturnStatement(returnStatement)) throw new Error('never');
-    returnStatement.argument = componentRootElement;
+    strategy.postWalk();
   }
 
-  await writeFile(
-    fullPath,
-    format(generate(rootAst).code, { parser: 'babel' })
-  );
+  await writeFile(fullPath, strategy.render(placeholderCursor));
 }
 
 // // TODO: Similar to preprocess. Refactor
