@@ -84,6 +84,16 @@ export function appendVectorIds(
   }
 }
 
+export function appendVectorListIfNecessary(
+  node: ComposableNode,
+  vectorList: string[]
+) {
+  // If it's complex to draw by DOM, use SVG
+  if (isVectorTypeNode(node) || isComplexPaintRequired(node)) {
+    vectorList.push(node.id);
+  }
+}
+
 export async function appendVectorsMap(
   vectorsMap: Map<string, string>,
   vectorList: string[],

@@ -1,33 +1,10 @@
-import { createWriteStream } from 'fs';
-import globby from 'globby';
-import makeDir from 'make-dir';
-import { extension } from 'mime-types';
-import fetch from 'node-fetch';
-import pMap from 'p-map';
-import { basename, extname, isAbsolute, join } from 'path';
-import { pipeline } from 'stream/promises';
-import { requestImages } from '../api';
+import { isAbsolute, join } from 'path';
 import { FigConfig } from '../config';
-import { ComposableNode, isVectorTypeNode } from '../types/ast';
 import { Canvas, FigmaFile } from '../types/fig';
-import {
-  ComponentInfo,
-  ComponentsMap,
-  isValidComponentNode,
-  makeComponentName,
-  walkNodeTree,
-} from '../utils';
-import { appendVectorsMap, isComplexPaintRequired } from './vectors-map';
-
-function appendVectorListIfNecessary(
-  node: ComposableNode,
-  vectorList: string[]
-) {
-  // If it's complex to draw by DOM, use SVG
-  if (isVectorTypeNode(node) || isComplexPaintRequired(node)) {
-    vectorList.push(node.id);
-  }
-}
+import { ComponentsMap, isValidComponentNode, walkNodeTree } from '../utils';
+import { appendComponentsMap } from './components-map';
+import { makeImagesMap } from './images-map';
+import { appendVectorListIfNecessary, appendVectorsMap } from './vectors-map';
 
 export type GenContext = {
   componentsMap: ComponentsMap;
@@ -59,89 +36,6 @@ function makePaths(config: FigConfig) {
     htmlFullDir,
     imagesFullDir,
   };
-}
-
-async function makeExistingFileMap(
-  imagesFullDir: string
-): Promise<Map<string, string>> {
-  const fullPaths = await globby(join(imagesFullDir, '*'));
-  const existingFiles = fullPaths.map((fullPath) => {
-    const ext = extname(fullPath);
-    const base = basename(fullPath, ext);
-    return [base, fullPath] as [string, string];
-  });
-  return new Map(existingFiles);
-}
-
-async function makeImagesMap(
-  paths: {
-    htmlFullDir: string;
-    componentsFullDir: string;
-    pagesFullDir: string;
-    baseFullDir: string;
-    imagesFullDir: string;
-  },
-  fileKey: string
-) {
-  // TODO: Refactor. Call them only if needed.
-  const { imagesFullDir } = paths;
-  const imagesMap = new Map<string, string>();
-  await makeDir(imagesFullDir);
-  const existingImagesMap = await makeExistingFileMap(imagesFullDir);
-  const {
-    meta: { images },
-  } = await requestImages(fileKey);
-  await pMap(Object.entries(images), async ([key, u]) => {
-    const imageUrl = new URL(u);
-    const base = basename(imageUrl.pathname);
-    // When we have cache
-    if (existingImagesMap.has(base)) {
-      const imageFullPath = existingImagesMap.get(base)!;
-      imagesMap.set(key, imageFullPath);
-      return;
-    }
-    const res = await fetch(imageUrl.href);
-    const ext = extension(res.headers.get('content-type') || 'bin');
-    const imageFullPath = join(imagesFullDir, `${base}.${ext}`);
-    imagesMap.set(key, imageFullPath);
-    await pipeline(res.body, createWriteStream(imageFullPath));
-  });
-  return imagesMap;
-}
-
-function appendComponentsMap(
-  node: ComposableNode,
-  componentsMap: ComponentsMap
-) {
-  switch (node.type) {
-    case 'INSTANCE':
-    case 'COMPONENT':
-    case 'FRAME':
-      const val: ComponentInfo = {
-        name: makeComponentName(node),
-        node: node,
-      };
-      switch (node.type) {
-        case 'INSTANCE':
-          // Note: There can be no COMPONENT for an INSTANCE.
-          if (!componentsMap.has(node.componentId))
-            componentsMap.set(node.componentId, val);
-          break;
-        case 'COMPONENT':
-          if (
-            !componentsMap.has(node.id) ||
-            // We overwrite INSTANCE if it's held already
-            componentsMap.get(node.id)!.node.type === 'INSTANCE'
-          )
-            componentsMap.set(node.id, val);
-          break;
-        case 'FRAME':
-          if (!componentsMap.has(node.id)) componentsMap.set(node.id, val);
-          break;
-        default:
-          break;
-      }
-  }
 }
 
 export async function makeGenContext(
