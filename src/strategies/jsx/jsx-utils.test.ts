@@ -38,24 +38,6 @@ describe('jsx-utils.test.ts', () => {
     );
   });
 
-  // test('append jsx', async () => {
-  //   const root = parseAsRoot(rootContent);
-  //   const returnCursor = getStatementCursor<ReturnStatement>(root);
-  //
-  //   // Add root JSXElement as a return argument
-  //   returnCursor.node.argument = parseExpression(
-  //     `<div ${FIGG_TEMP_CURSOR}></div>`
-  //   );
-  //
-  //   // Append another JSXElement as a child
-  //   const jsxCursor = getJsxCursor(root);
-  //   let jsxContent = parseExpression<JSXElement>(`<Boom />`);
-  //   appendJsxChild(jsxCursor, jsxContent);
-  //
-  //   let code1 = format(generate(root).code);
-  //   expect(code1).toMatchSnapshot();
-  // });
-
   test('findJsxElementByFid()', () => {
     const root = parseAsRoot(`
 import React, {PureComponent} from "react";

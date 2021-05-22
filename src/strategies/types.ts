@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import { JSXElement } from '@babel/types';
-import { GenContext } from '../make-gen-context';
+import { GenContext } from '../gen/make-gen-context';
 import {
   ParentVisitContext,
   VisitContext,

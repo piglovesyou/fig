@@ -6,18 +6,21 @@ import fetch from 'node-fetch';
 import pMap from 'p-map';
 import { basename, extname, isAbsolute, join } from 'path';
 import { pipeline } from 'stream/promises';
-import { requestImages } from './api';
-import { appendVectorsMap, isComplexPaintRequired } from './append-vectors-map';
-import { FigConfig } from './config';
-import { Canvas, FigmaFile } from './types';
-import { ComposableNode, isVectorTypeNode } from './types/ast';
+import { requestImages } from '../api';
+import {
+  appendVectorsMap,
+  isComplexPaintRequired,
+} from '../append-vectors-map';
+import { FigConfig } from '../config';
+import { Canvas, FigmaFile } from '../types';
+import { ComposableNode, isVectorTypeNode } from '../types/ast';
 import {
   ComponentInfo,
   ComponentsMap,
   isValidComponentNode,
   makeComponentName,
   walkNodeTree,
-} from './utils';
+} from '../utils';
 
 function appendVectorListIfNecessary(
   node: ComposableNode,

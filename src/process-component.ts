@@ -3,11 +3,11 @@ import { File, JSXElement } from '@babel/types';
 import { readFile, writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
-import { GenContext } from './make-gen-context';
+import { GenContext } from './gen/make-gen-context';
 import { JsxStrategy } from './strategies/jsx';
 import { parseAsRoot } from './strategies/jsx/jsx-utils';
 import { ComponentInfo, isValidComponentNode, walkNodeTree } from './utils';
-import { visitNode } from './visit';
+import { visitNode } from './visit/visit';
 import { EmptyVisitContext } from './visit/visit-context';
 
 export async function processComponent(

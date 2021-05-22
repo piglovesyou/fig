@@ -2,7 +2,7 @@ import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { format } from 'prettier';
-import { GenContext } from '../../make-gen-context';
+import { GenContext } from '../../gen/make-gen-context';
 import { ComponentInfo } from '../../utils';
 import {
   ParentVisitContext,

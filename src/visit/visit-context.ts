@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import { JSXElement } from '@babel/types';
 import { CSSProperties } from 'react';
-import { GenContext } from '../make-gen-context';
+import { GenContext } from '../gen/make-gen-context';
 import { Bound } from '../types';
 import { ComposableNode, Rectangle } from '../types/ast';
 

@@ -5,7 +5,7 @@ import React from 'react';
 import * as api from '../src/api';
 import { applyDefaultConfig } from '../src/config';
 import { shouldRefresh } from '../src/env';
-import { gen } from '../src/gen';
+import { gen } from '../src/gen/gen';
 import { readJson, renderInHtml } from '../src/__tools/fns';
 
 const outDir = join(__dirname, '__generated__');

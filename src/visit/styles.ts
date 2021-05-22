@@ -1,6 +1,6 @@
 import { relative } from 'path';
 import { CSSProperties } from 'react';
-import { GenContext } from '../make-gen-context';
+import { GenContext } from '../gen/make-gen-context';
 import {
   ComposableNode,
   EffectShadow,

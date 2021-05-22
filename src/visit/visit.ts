@@ -1,17 +1,17 @@
-import { GenContext } from './make-gen-context';
-import { JsxStrategy } from './strategies/jsx';
+import { GenContext } from '../gen/make-gen-context';
+import { JsxStrategy } from '../strategies/jsx';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
   LayoutConstraintVertical,
-} from './types';
-import { applyStyles } from './visit/styles';
+} from '../types';
+import { applyStyles } from './styles';
 import {
   makeVisitContext,
   ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
-} from './visit/visit-context';
+} from './visit-context';
 
 /**
  * TODO: Split into different responsibilities
