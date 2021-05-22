@@ -8,7 +8,8 @@ import { format } from 'prettier';
 import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
 import { GenContext } from './make-gen-context';
 import { ComponentInfo, isValidComponentNode, walkNodeTree } from './utils';
-import { EmptyVisitContext, visitNode } from './visit';
+import { visitNode } from './visit';
+import { EmptyVisitContext } from './visit/visit-context';
 
 function makeLayoutForReact(
   fid: string,

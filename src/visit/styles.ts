@@ -17,7 +17,7 @@ import {
   paintToLinearGradient,
   paintToRadialGradient,
 } from '../utils';
-import { VisitContext } from '../visit';
+import { VisitContext } from './visit-context';
 
 function applyAutolayoutConstraintsStyle({ node, styles }: VisitContext) {
   if (!isLayoutableNode(node) || !node.layoutMode)

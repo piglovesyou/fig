@@ -6,115 +6,30 @@ import {
   isImportDeclaration,
   isProgram,
   JSXElement,
-  JSXExpressionContainer,
-  jsxExpressionContainer,
   Program,
   stringLiteral,
 } from '@babel/types';
-import { CSSProperties } from 'react';
 import {
   findTempRefJsxElement,
-  getJsxCursor,
   makeFidAttr,
   parseExpression,
   TEMP_REF_ATTR,
 } from './make-ast';
 import { GenContext } from './make-gen-context';
 import {
-  Bound,
   ComposableNode,
   LayoutConstraintHorizontal,
   LayoutConstraintVertical,
-  Rectangle,
 } from './types';
-import { Node } from './types/ast';
-import { applyFontStyle, applyStyles } from './visit/styles';
-
-function makeBounds(parentNode: ComposableNode, nodeBounds: Rectangle) {
-  const nx2 = nodeBounds!.x + nodeBounds!.width;
-  const ny2 = nodeBounds!.y + nodeBounds!.height;
-  const parentBounds = parentNode.absoluteBoundingBox;
-  const px = parentBounds.x;
-  const py = parentBounds.y;
-
-  return {
-    left: nodeBounds!.x - px,
-    right: px + parentBounds.width - nx2,
-    // top:
-    //   lastVertical == null ? nodeBounds!.y - py : nodeBounds!.y - lastVertical,
-    top: nodeBounds!.y - py,
-    bottom: py + parentBounds.height - ny2,
-    width: nodeBounds!.width,
-    height: nodeBounds!.height,
-  };
-}
-function makeTextContent(node: Node<'TEXT'>): JSXElement[] {
-  if (node.name.startsWith('input:')) {
-    return [
-      parseExpression<JSXElement>(
-        `<input key='${node.id}' type='text' placeholder='${
-          node.characters
-        }' name='${node.name.substring(7)}' />`
-      ),
-    ];
-  }
-
-  if (node.characterStyleOverrides) {
-    let para = '';
-    const ps: JSXElement[] = [];
-    const styleCache: Record<number, CSSProperties> = {};
-    let currStyle = 0;
-
-    const commitParagraph = (key: number | string) => {
-      if (para !== '') {
-        if (styleCache[currStyle] == null && currStyle !== 0) {
-          styleCache[currStyle] = {};
-          // TODO: Do we need this?
-          applyFontStyle(
-            styleCache[currStyle],
-            node.styleOverrideTable[currStyle]
-          );
-        }
-
-        const styleOverride = styleCache[currStyle]
-          ? JSON.stringify(styleCache[currStyle])
-          : '{}';
-
-        ps.push(
-          parseExpression<JSXElement>(
-            `<span style={${styleOverride}} key="${key}">${para}</span>`
-          )
-        );
-        para = '';
-      }
-    };
-
-    for (let i = 0; i < node.characters.length; i++) {
-      let idx = node.characterStyleOverrides[i];
-
-      if (node.characters[i] === '\n') {
-        commitParagraph(i);
-        ps.push(parseExpression<JSXElement>(`<br key='${`br${i}`}' />`));
-        continue;
-      }
-
-      if (idx == null) idx = 0;
-      if (idx !== currStyle) {
-        commitParagraph(i);
-        currStyle = idx;
-      }
-
-      para += node.characters[i];
-    }
-    commitParagraph('end');
-
-    return ps;
-  }
-
-  return node.characters
-    .split('\n')
-    .map((line, idx) => parseExpression(`<div key='${idx}'>${line}</div>`));
-}
+import { appendJsxNode } from './visit/jsx';
+import { applyStyles } from './visit/styles';
+import { appendTextContent } from './visit/text';
+import {
+  EmptyVisitContext,
+  makeVisitContext,
+  VisitContext,
+  VisitContextWithCursor,
+} from './visit/visit-context';
 
 /**
  * TODO: Split into different responsibilities
@@ -158,19 +73,19 @@ export function expandChildren(context: VisitContext, offset: number) {
   // return order + children.length - offset;
 }
 
-// TODO: Not tested I guess
-function appendMaxerElement(
-  cursor: NodePath<JSXElement>
-  // context: VisitContext
-) {
-  // const { outerStyle, styles } = context;
-  const wrapper = parseExpression<JSXElement>(`
-  <div className="maxer" ${TEMP_REF_ATTR}></div>
-`);
-  appendJsxNode(cursor, wrapper);
-  // Find the inner div element
-  return findTempRefJsxElement(cursor);
-}
+// // TODO: Not tested I guess
+// function appendMaxerElement(
+//   cursor: NodePath<JSXElement>
+//   // context: VisitContext
+// ) {
+//   // const { outerStyle, styles } = context;
+//   const wrapper = parseExpression<JSXElement>(`
+//   <div className="maxer" ${TEMP_REF_ATTR}></div>
+// `);
+//   appendJsxNode(cursor, wrapper);
+//   // Find the inner div element
+//   return findTempRefJsxElement(cursor);
+// }
 
 function appendWrapperElement(
   cursor: NodePath<JSXElement>,
@@ -205,75 +120,12 @@ function appendWrapperElement(
   return findTempRefJsxElement(cursor);
 }
 
-function appendJsxNode(
-  cursor: NodePath<JSXElement>,
-  child: JSXElement | JSXExpressionContainer
-): void {
-  cursor.node.children.push(child);
-  return;
-}
-
-function applySizes(bounds: Bound | null, styles: React.CSSProperties) {
-  if (bounds) {
-    styles.minWidth = bounds.width;
-    styles.minHeight = bounds.height;
-  }
-}
-
-export function makeVisitContext(
-  node: ComposableNode,
-  parentContext: VisitContext | EmptyVisitContext,
-  genContext: GenContext
-  // lastVertical: number | null
-): VisitContext {
-  const parentNode = parentContext?.node || null;
-  // const centerChildren: ComposableNode[] = [];
-  // Do we want these?? Probably not.
-  // const minChildren: ComposableNode[] = [];
-  // const maxChildren: ComposableNode[] = [];
-
-  let bounds: Bound | null = null;
-  let nodeBounds: Rectangle | null = null;
-
-  if (parentNode) {
-    nodeBounds = node.absoluteBoundingBox;
-    bounds = makeBounds(parentNode, nodeBounds);
-  }
-
-  const styles: CSSProperties = {};
-  const classNames = new Set<string>();
-
-  // Get outFullDir
-  let outFullDir: string | undefined;
-  switch (node.type) {
-    case 'FRAME':
-      outFullDir = genContext.pagesFullDir;
-      break;
-    case 'COMPONENT':
-    case 'INSTANCE':
-      outFullDir = genContext.pagesFullDir;
-      break;
-    default:
-      if (parentContext?.outFullDir) {
-        outFullDir = parentContext?.outFullDir;
-      } else {
-        outFullDir = genContext.pagesFullDir;
-      }
-  }
-
-  return {
-    node,
-    parentNode,
-    // minChildren,
-    // maxChildren,
-    // centerChildren,
-    bounds,
-    nodeBounds,
-    styles,
-    classNames,
-    outFullDir,
-  };
-}
+// function applySizes(bounds: Bound | null, styles: React.CSSProperties) {
+//   if (bounds) {
+//     styles.minWidth = bounds.width;
+//     styles.minHeight = bounds.height;
+//   }
+// }
 
 function appendSvg(
   vectorsMap: Map<string, string>,
@@ -333,55 +185,6 @@ function appendComponentInstance(
   appendImportDeclaration(cursor, context, genContext, componentName);
   appendWrapperElement(cursor, context, componentName);
 }
-
-function appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
-  const content = makeTextContent(node);
-  if (node.name.startsWith('$')) {
-    const varName = node.name.substring(1);
-    // TODO: Handle variables.
-    cursor.node.children.push(
-      jsxExpressionContainer(
-        parseExpression(
-          `this.props.${varName} && this.props.${varName}.split("\\n").map((line, idx) => <div key={idx}>{line}</div>)`
-        )
-      )
-    );
-    cursor = getJsxCursor(cursor);
-    appendJsxNode(
-      cursor,
-      jsxExpressionContainer(
-        parseExpression(
-          `!this.props.${varName} && (<div ${TEMP_REF_ATTR}></div>)`
-        )
-      )
-    );
-    cursor = getJsxCursor(cursor);
-    cursor.node.children.push(...content);
-  } else {
-    cursor.node.children.push(...content);
-  }
-  return cursor;
-}
-
-export type VisitContext = {
-  node: ComposableNode;
-  parentNode: null | ComposableNode;
-  bounds: null | Bound;
-  nodeBounds: any;
-  styles: React.CSSProperties;
-  classNames: Set<string>;
-  // minChildren: ComposableNode[];
-  // centerChildren: ComposableNode[];
-  // maxChildren: ComposableNode[];
-  outFullDir: string;
-};
-
-type _WithCursor = { cursor: NodePath<JSXElement> };
-
-export type VisitContextWithCursor = VisitContext & _WithCursor;
-
-// For parentContext of root node
-export type EmptyVisitContext = Partial<VisitContext> & _WithCursor;
 
 function checkShouldImportComponent(
   context: VisitContext,

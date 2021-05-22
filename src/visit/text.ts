@@ -1,0 +1,107 @@
+import { NodePath } from '@babel/traverse';
+import { JSXElement, jsxExpressionContainer } from '@babel/types';
+import { CSSProperties } from 'react';
+import { getJsxCursor, parseExpression, TEMP_REF_ATTR } from '../make-ast';
+import { Node } from '../types/ast';
+import { appendJsxNode } from './jsx';
+import { applyFontStyle } from './styles';
+
+function makeTextContent(node: Node<'TEXT'>): JSXElement[] {
+  if (node.name.startsWith('input:')) {
+    return [
+      parseExpression<JSXElement>(
+        `<input key='${node.id}' type='text' placeholder='${
+          node.characters
+        }' name='${node.name.substring(7)}' />`
+      ),
+    ];
+  }
+
+  if (node.characterStyleOverrides) {
+    let para = '';
+    const ps: JSXElement[] = [];
+    const styleCache: Record<number, CSSProperties> = {};
+    let currStyle = 0;
+
+    const commitParagraph = (key: number | string) => {
+      if (para !== '') {
+        if (styleCache[currStyle] == null && currStyle !== 0) {
+          styleCache[currStyle] = {};
+          // TODO: Do we need this?
+          applyFontStyle(
+            styleCache[currStyle],
+            node.styleOverrideTable[currStyle]
+          );
+        }
+
+        const styleOverride = styleCache[currStyle]
+          ? JSON.stringify(styleCache[currStyle])
+          : '{}';
+
+        ps.push(
+          parseExpression<JSXElement>(
+            `<span style={${styleOverride}} key="${key}">${para}</span>`
+          )
+        );
+        para = '';
+      }
+    };
+
+    for (let i = 0; i < node.characters.length; i++) {
+      let idx = node.characterStyleOverrides[i];
+
+      if (node.characters[i] === '\n') {
+        commitParagraph(i);
+        ps.push(parseExpression<JSXElement>(`<br key='${`br${i}`}' />`));
+        continue;
+      }
+
+      if (idx == null) idx = 0;
+      if (idx !== currStyle) {
+        commitParagraph(i);
+        currStyle = idx;
+      }
+
+      para += node.characters[i];
+    }
+    commitParagraph('end');
+
+    return ps;
+  }
+
+  return node.characters
+    .split('\n')
+    .map((line, idx) => parseExpression(`<div key='${idx}'>${line}</div>`));
+}
+
+export function appendTextContent(
+  node: Node<'TEXT'>,
+  cursor: NodePath<JSXElement>
+) {
+  const content = makeTextContent(node);
+  if (node.name.startsWith('$')) {
+    const varName = node.name.substring(1);
+    // TODO: Handle variables.
+    cursor.node.children.push(
+      jsxExpressionContainer(
+        parseExpression(
+          `this.props.${varName} && this.props.${varName}.split("\\n").map((line, idx) => <div key={idx}>{line}</div>)`
+        )
+      )
+    );
+    cursor = getJsxCursor(cursor);
+    appendJsxNode(
+      cursor,
+      jsxExpressionContainer(
+        parseExpression(
+          `!this.props.${varName} && (<div ${TEMP_REF_ATTR}></div>)`
+        )
+      )
+    );
+    cursor = getJsxCursor(cursor);
+    cursor.node.children.push(...content);
+  } else {
+    cursor.node.children.push(...content);
+  }
+  return cursor;
+}
