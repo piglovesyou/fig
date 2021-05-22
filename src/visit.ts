@@ -40,7 +40,6 @@ import {
   innerShadow,
   paintToLinearGradient,
   paintToRadialGradient,
-  sortByYAxis,
 } from './utils';
 
 function applyAutolayoutConstraintsStyle({ node, styles }: VisitContext) {
@@ -266,18 +265,17 @@ function makeTextContent(node: Node<'TEXT'>): JSXElement[] {
 export function expandChildren(context: VisitContext, offset: number) {
   const {
     node,
-    minChildren,
-    maxChildren,
-    centerChildren,
+    // minChildren,
+    // maxChildren,
+    // centerChildren,
     parentNode,
   } = context;
   const children = node.children;
-  let order = offset;
+  // let order = offset;
 
-  if (!children) return order - offset;
+  if (!children) return;
 
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
+  for (const child of children) {
     // TODO: Do we want this?
     if (parentNode && (node.type === 'COMPONENT' || node.type === 'INSTANCE')) {
       child.constraints = {
@@ -286,21 +284,21 @@ export function expandChildren(context: VisitContext, offset: number) {
       };
     }
 
-    child.order = i + order;
+    // child.order = i + order;
 
     // if (child.constraints?.vertical === 'TOP') {
     //   minChildren.push(child);
     // } else if (child.constraints?.vertical === 'BOTTOM') {
     //   maxChildren.push(child);
     // } else {
-    centerChildren.push(child);
+    // centerChildren.push(child);
     // }
   }
 
-  minChildren.sort(sortByYAxis);
-  maxChildren.sort(sortByYAxis);
+  // minChildren.sort(sortByYAxis);
+  // maxChildren.sort(sortByYAxis);
 
-  return order + children.length - offset;
+  // return order + children.length - offset;
 }
 
 function applyNodeTypeStyle(
@@ -415,7 +413,7 @@ function appendMaxerElement(
   return findTempRefJsxElement(cursor);
 }
 
-function appendElement(
+function appendWrapperElement(
   cursor: NodePath<JSXElement>,
   context: VisitContext,
   tagName: string
@@ -518,10 +516,10 @@ export function makeVisitContext(
   // lastVertical: number | null
 ): VisitContext {
   const parentNode = parentContext?.node || null;
-  const centerChildren: ComposableNode[] = [];
+  // const centerChildren: ComposableNode[] = [];
   // Do we want these?? Probably not.
-  const minChildren: ComposableNode[] = [];
-  const maxChildren: ComposableNode[] = [];
+  // const minChildren: ComposableNode[] = [];
+  // const maxChildren: ComposableNode[] = [];
 
   let bounds: Bound | null = null;
   let nodeBounds: Rectangle | null = null;
@@ -555,9 +553,9 @@ export function makeVisitContext(
   return {
     node,
     parentNode,
-    minChildren,
-    maxChildren,
-    centerChildren,
+    // minChildren,
+    // maxChildren,
+    // centerChildren,
     bounds,
     nodeBounds,
     styles,
@@ -608,7 +606,7 @@ function appendImportDeclaration(
   }
 }
 
-function importComponent(
+function appendComponentInstance(
   genContext: GenContext,
   node: ComposableNode,
   cursor: NodePath<JSXElement>,
@@ -622,7 +620,7 @@ function importComponent(
   const componentName = componentInfo.name;
 
   appendImportDeclaration(cursor, context, genContext, componentName);
-  appendElement(cursor, context, componentName);
+  appendWrapperElement(cursor, context, componentName);
 }
 
 function appendTextContent(node: Node<'TEXT'>, cursor: NodePath<JSXElement>) {
@@ -661,9 +659,9 @@ export type VisitContext = {
   nodeBounds: any;
   styles: React.CSSProperties;
   classNames: string[];
-  minChildren: ComposableNode[];
-  centerChildren: ComposableNode[];
-  maxChildren: ComposableNode[];
+  // minChildren: ComposableNode[];
+  // centerChildren: ComposableNode[];
+  // maxChildren: ComposableNode[];
   outFullDir: string;
 };
 
@@ -684,7 +682,7 @@ export function visitNode(
 
   // const parentCursor = parentContext.cursor;
   const context = makeVisitContext(node, parentContext, genContext);
-  const { centerChildren, styles } = context;
+  const { styles } = context;
 
   // TODO: Rethink whether we want this.
   expandChildren(context, 0);
@@ -703,11 +701,11 @@ export function visitNode(
       genContext.componentsMap.has(node.componentId));
 
   if (shouldImportComponent) {
-    importComponent(genContext, node!, parentCursor, context);
+    appendComponentInstance(genContext, node!, parentCursor, context);
     return null;
   }
 
-  const cursor = appendElement(parentCursor, context, 'div');
+  const cursor = appendWrapperElement(parentCursor, context, 'div');
 
   if (node && vectorsMap.has(node.id)) {
     appendSvg(vectorsMap, node, cursor);
