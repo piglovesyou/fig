@@ -15,7 +15,6 @@ import {
 import { format } from 'prettier';
 import { GenContext } from '../../make-gen-context';
 import { ComponentInfo } from '../../utils';
-import { appendJsxNode } from '../../visit/jsx';
 import { makeTextContent } from '../../visit/text';
 import {
   EmptyVisitContext,
@@ -23,6 +22,7 @@ import {
   VisitContextWithCursor,
 } from '../../visit/visit-context';
 import {
+  appendJsxNode,
   findTempRefJsxElement,
   getJsxCursor,
   makeFidAttr,
@@ -31,7 +31,11 @@ import {
   TEMP_REF_ATTR,
 } from './jsx-utils';
 
-export interface Strategy {}
+export interface Strategy {
+  makeLayout(): NodePath<JSXElement>;
+  postWalk(): void;
+  render(): string;
+}
 
 function erasePlaceholderElement(
   placeholderCursor: NodePath<JSXElement>
@@ -85,7 +89,7 @@ export class JsxStrategy implements Strategy {
     this.name = name;
   }
 
-  makeLayout(): NodePath<JSXElement> {
+  makeLayout() {
     const root = parseAsRoot(`
 import React, {FC, CSSProperties} from "react"
 
@@ -107,7 +111,7 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     erasePlaceholderElement(this.cursor);
   }
 
-  render(): string {
+  render() {
     if (!this.cursor) throw new Error(`Never. cursor must be set on render().`);
     const program: NodePath<Program> = this.cursor.findParent((path) =>
       isProgram(path.node)
@@ -116,11 +120,11 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
   }
 
   appendComponentInstance(
-    { node }: VisitContext,
-    { cursor: parentCursor }: VisitContextWithCursor,
     context: VisitContext,
+    { cursor: parentCursor }: VisitContextWithCursor,
     genContext: GenContext
   ): void {
+    const { node } = context;
     const componentInfo = genContext.componentsMap.get(
       node.type === 'INSTANCE' ? node.componentId : node.id
     );
@@ -133,7 +137,7 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
   }
 
   appendElement(
-    cursor: NodePath<JSXElement>,
+    parentCursor: NodePath<JSXElement>,
     context: VisitContext,
     tagName: string = 'div'
   ) {
@@ -160,9 +164,9 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
 </${tagName}>
 `;
     const wrapper = parseExpression<JSXElement>(template);
-    appendJsxNode(cursor, wrapper);
+    appendJsxNode(parentCursor, wrapper);
     // Find the inner div element
-    return findTempRefJsxElement(cursor);
+    return findTempRefJsxElement(parentCursor);
   }
 
   appendSvgContent(

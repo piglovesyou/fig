@@ -126,7 +126,6 @@ export function visitNode(
     strategy.appendComponentInstance(
       context,
       parentContext as VisitContextWithCursor,
-      context,
       genContext
     );
     return null;

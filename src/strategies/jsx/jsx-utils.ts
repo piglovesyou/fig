@@ -13,6 +13,7 @@ import {
   isJSXIdentifier,
   isStringLiteral,
   JSXElement,
+  JSXExpressionContainer,
   Node,
 } from '@babel/types';
 
@@ -181,4 +182,12 @@ export function appendJsxChild(
     );
   }
   jsxCursor.node.children.push(jsxContent);
+}
+
+export function appendJsxNode(
+  cursor: NodePath<JSXElement>,
+  child: JSXElement | JSXExpressionContainer
+): void {
+  cursor.node.children.push(child);
+  return;
 }
