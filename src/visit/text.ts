@@ -5,7 +5,7 @@ import {
   getJsxCursor,
   parseExpression,
   TEMP_REF_ATTR,
-} from '../strategies/jsx/make-ast';
+} from '../strategies/jsx/jsx-utils';
 import { Node } from '../types/ast';
 import { appendJsxNode } from './jsx';
 import { applyFontStyle } from './styles';

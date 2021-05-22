@@ -10,12 +10,13 @@ import {
   stringLiteral,
 } from '@babel/types';
 import { GenContext } from './make-gen-context';
+import { JsxStrategy } from './strategies/jsx';
 import {
   findTempRefJsxElement,
   makeFidAttr,
   parseExpression,
   TEMP_REF_ATTR,
-} from './strategies/jsx/make-ast';
+} from './strategies/jsx/jsx-utils';
 import {
   ComposableNode,
   LayoutConstraintHorizontal,
@@ -210,6 +211,7 @@ function checkShouldImportComponent(
 export function visitNode(
   node: ComposableNode,
   parentContext: VisitContextWithCursor | EmptyVisitContext,
+  strategy: JsxStrategy,
   genContext: GenContext
 ): VisitContextWithCursor | null {
   const { vectorsMap } = genContext;

@@ -17,7 +17,7 @@ import {
   getStatementCursor,
   parseAsRoot,
   TEMP_REF_ATTR,
-} from './make-ast';
+} from './jsx-utils';
 
 let rootContent = `
 import React, {PureComponent} from "react";
@@ -30,7 +30,7 @@ export class CFrame1 extends PureComponent {
 }
 `;
 
-describe('make-ast.test.ts', () => {
+describe('jsx-utils.test.ts', () => {
   test('getCursor()', async () => {
     const ast = parseAsRoot(rootContent);
     expect((getStatementCursor(ast).node as any).type).toEqual(

@@ -4,8 +4,8 @@ import { readFile, writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import { GenContext } from './make-gen-context';
-import { JsxComponentStrategy } from './strategies/jsx';
-import { parseAsRoot } from './strategies/jsx/make-ast';
+import { JsxStrategy } from './strategies/jsx';
+import { parseAsRoot } from './strategies/jsx/jsx-utils';
 import { ComponentInfo, isValidComponentNode, walkNodeTree } from './utils';
 import { visitNode } from './visit';
 import { EmptyVisitContext } from './visit/visit-context';
@@ -17,7 +17,7 @@ export async function processComponent(
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
 
-  const strategy = new JsxComponentStrategy(componentInfo);
+  const strategy = new JsxStrategy(componentInfo);
 
   const { baseFullDir } = genContext;
   const componetsDir = join(
@@ -48,7 +48,7 @@ export async function processComponent(
     walkNodeTree(
       node,
       (node, parentContext) => {
-        return visitNode(node, parentContext, genContext);
+        return visitNode(node, parentContext, strategy, genContext);
       },
       parentContext
     );

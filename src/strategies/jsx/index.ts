@@ -8,9 +8,9 @@ import {
 } from '@babel/types';
 import { format } from 'prettier';
 import { ComponentInfo } from '../../utils';
-import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './make-ast';
+import { findTempRefJsxElement, parseAsRoot, TEMP_REF_ATTR } from './jsx-utils';
 
-export interface ComponentStrategy {}
+export interface Strategy {}
 
 function erasePlaceholderElement(
   placeholderCursor: NodePath<JSXElement>
@@ -25,7 +25,7 @@ function erasePlaceholderElement(
   returnStatement.argument = componentRootElement;
 }
 
-export class JsxComponentStrategy implements ComponentStrategy {
+export class JsxStrategy implements Strategy {
   fid: string;
   name: string;
 
@@ -39,14 +39,14 @@ export class JsxComponentStrategy implements ComponentStrategy {
 
   makeLayout(): NodePath<JSXElement> {
     const root = parseAsRoot(`
-    import React, {FC, CSSProperties} from "react"
-    
-    export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
-      return (
-        <__PLACEHOLDER__ ${TEMP_REF_ATTR}></__PLACEHOLDER__>
-      )
-    }
-  `);
+import React, {FC, CSSProperties} from "react"
+
+export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
+  return (
+    <__PLACEHOLDER__ ${TEMP_REF_ATTR}></__PLACEHOLDER__>
+  )
+}
+    `);
     const cursor = findTempRefJsxElement(root);
     if (!cursor) throw new Error('should be found');
     this.cursor = cursor;
