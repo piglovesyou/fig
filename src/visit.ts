@@ -420,8 +420,8 @@ function appendWrapperElement(
 ) {
   const { classNames, node, parentNode, styles } = context;
 
-  const classNameAttr = classNames.length
-    ? `className="${classNames.join(' ')}"`
+  const classNameAttr = classNames.size
+    ? `className="${Array.prototype.join.call(classNames, ' ')}"`
     : '';
 
   // Component root element wants to merge external style passed from props
@@ -529,7 +529,7 @@ export function makeVisitContext(
   }
 
   const styles: CSSProperties = {};
-  const classNames: string[] = [];
+  const classNames = new Set<string>();
 
   // Get outFullDir
   let outFullDir: string | undefined;
@@ -657,7 +657,7 @@ export type VisitContext = {
   bounds: null | Bound;
   nodeBounds: any;
   styles: React.CSSProperties;
-  classNames: string[];
+  classNames: Set<string>;
   // minChildren: ComposableNode[];
   // centerChildren: ComposableNode[];
   // maxChildren: ComposableNode[];
