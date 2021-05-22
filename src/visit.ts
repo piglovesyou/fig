@@ -132,7 +132,7 @@ export function visitNode(
   }
 
   if (vectorsMap.has(node.id)) {
-    strategy.appendSvgContent(parentCursor, vectorsMap.get(node.id)!, context);
+    strategy.appendSvgContent(context, parentContext, vectorsMap.get(node.id)!);
     return null;
   }
 
@@ -141,7 +141,7 @@ export function visitNode(
     return null;
   }
 
-  const cursor = strategy.appendElement(parentCursor, context);
+  const cursor = strategy.appendElement(context, parentContext);
 
   return { ...context, cursor };
   // for (const child of centerChildren) {

@@ -17,7 +17,7 @@ import { GenContext } from '../../make-gen-context';
 import { ComponentInfo } from '../../utils';
 import { makeTextContent } from '../../visit/text';
 import {
-  EmptyVisitContext,
+  ParentVisitContext,
   VisitContext,
   VisitContextWithCursor,
 } from '../../visit/visit-context';
@@ -35,6 +35,27 @@ export interface Strategy {
   makeLayout(): NodePath<JSXElement>;
   postWalk(): void;
   render(): string;
+  appendComponentInstance(
+    context: VisitContext,
+    parentContext: VisitContextWithCursor,
+    genContext: GenContext
+  ): void;
+
+  appendElement(
+    context: VisitContext,
+    parentContext: VisitContextWithCursor,
+    tagName?: string
+  ): NodePath<JSXElement>;
+
+  appendSvgContent(
+    context: VisitContext,
+    parentContext: ParentVisitContext,
+    svgHtml: string
+  ): void;
+  appendTextContent(
+    context: VisitContext,
+    parentContext: ParentVisitContext
+  ): void;
 }
 
 function erasePlaceholderElement(
@@ -121,10 +142,11 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
 
   appendComponentInstance(
     context: VisitContext,
-    { cursor: parentCursor }: VisitContextWithCursor,
+    parentContext: VisitContextWithCursor,
     genContext: GenContext
   ): void {
     const { node } = context;
+    const { cursor: parentCursor } = parentContext;
     const componentInfo = genContext.componentsMap.get(
       node.type === 'INSTANCE' ? node.componentId : node.id
     );
@@ -133,14 +155,15 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     const componentName = componentInfo.name;
 
     appendImportDeclaration(parentCursor, context, genContext, componentName);
-    this.appendElement(parentCursor, context, componentName);
+    this.appendElement(context, parentContext, componentName);
   }
 
   appendElement(
-    parentCursor: NodePath<JSXElement>,
     context: VisitContext,
+    parentContext: ParentVisitContext,
     tagName: string = 'div'
-  ) {
+  ): NodePath<JSXElement> {
+    const { cursor: parentCursor } = parentContext;
     const { classNames, node, parentNode, styles } = context;
 
     const classNameAttr = classNames.size
@@ -170,11 +193,11 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
   }
 
   appendSvgContent(
-    parentCursor: NodePath<JSXElement>,
-    svgHtml: string,
-    context: VisitContext
+    context: VisitContext,
+    parentContext: ParentVisitContext,
+    svgHtml: string
   ): void {
-    const cursor = this.appendElement(parentCursor, context, 'div');
+    const cursor = this.appendElement(context, parentContext, 'div');
 
     // Use dangerous SVG instead of building DOM
     appendJsxNode(
@@ -185,16 +208,12 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     );
   }
 
-  appendTextContent(
-    context: VisitContext,
-    parentContext: VisitContextWithCursor | EmptyVisitContext
-  ) {
+  appendTextContent(context: VisitContext, parentContext: ParentVisitContext) {
     const { node } = context;
     if (node.type !== 'TEXT')
       throw new Error(`Never. This function is supposed to emit on TEXT node.`);
 
-    const { cursor: parentCursor } = parentContext;
-    let cursor = this.appendElement(parentCursor, context, 'div');
+    let cursor = this.appendElement(context, parentContext, 'div');
 
     const content = makeTextContent(node);
     if (node.name.startsWith('$')) {
@@ -221,7 +240,6 @@ export const ${this.name}: FC<{style: CSSProperties}> = (props) => {
     } else {
       cursor.node.children.push(...content);
     }
-    return cursor;
   }
 }
 
