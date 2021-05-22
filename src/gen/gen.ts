@@ -6,7 +6,7 @@ import { FigmaFile } from '../types/fig';
 import { makeGenContext } from './make-gen-context';
 import { processComponent } from './process-component';
 
-export async function gen(config: FigConfig) {
+export async function gen(config: FigConfig): Promise<void> {
   const { fileKeys } = config;
   for (const fileKey of fileKeys) {
     const figmaFile: FigmaFile = await requestFile(fileKey);

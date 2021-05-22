@@ -67,7 +67,7 @@
   },
   "scripts": {
     "clean": "rimraf '**/__generated__'",
-    "build": "tsc --declaration",
+    "build": "rimraf dist && tsc --project tsconfig.compile.json",
     "test": "jest",
     "gh-pages": "gh-pages -d __tests__/__generated__"
   }
