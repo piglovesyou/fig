@@ -1,12 +1,10 @@
 import { writeFile } from 'fs/promises';
-import makeDir from 'make-dir';
 import { join } from 'path';
-import React from 'react';
 import * as api from '../src/core/api';
 import { applyDefaultConfig } from '../src/core/config';
 import { shouldRefresh } from '../src/core/env';
 import { gen } from '../src/gen/gen';
-import { readJson, renderInHtml } from '../src/__tools/fns';
+import { readJson } from '../src/__tools/fns';
 
 const outDir = join(__dirname, '__generated__');
 
@@ -48,17 +46,6 @@ describe('Test full html', () => {
         strategy: 'jsx',
       });
       await gen(config);
-
-      const { [componentName]: Home } = await import(
-        `./__generated__/${name}/pages/${componentName}`
-      );
-
-      // TODO: use gen context
-      await makeDir(join(baseDir, 'public'));
-      await writeFile(
-        join(baseDir, 'public/index.html'),
-        renderInHtml(<Home />)
-      );
     },
     1000 * 60 * 30
   );

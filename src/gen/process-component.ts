@@ -6,18 +6,17 @@ import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { parseAsRoot } from '../strategies/jsx/jsx-utils';
 import { ComponentInfo, GenContext } from '../types/gen';
+import { StrategyInterface } from '../types/strategy';
 import { EmptyVisitContext } from '../types/visit';
 import { visitNode } from '../visit/visit';
 
 export async function processComponent(
+  strategy: StrategyInterface,
   componentInfo: ComponentInfo,
   genContext: GenContext
 ) {
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
-
-  const { createStrategy } = genContext.config.strategy;
-  const strategy = createStrategy(componentInfo);
 
   const { baseFullDir } = genContext;
   const componetsDir = join(

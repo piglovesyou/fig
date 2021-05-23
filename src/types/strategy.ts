@@ -8,10 +8,12 @@ import {
   VisitContextWithCursor,
 } from './visit';
 
+// XXX: Catastrophic. Refactor.
 export interface StrategyInterface {
   makeLayout(): NodePath<JSXElement>;
   postWalk(): void;
   render(): string;
+  renderHtml(genContext: GenContext): Promise<string>;
   appendComponentInstanceElement(
     context: VisitContext,
     parentContext: VisitContextWithCursor,

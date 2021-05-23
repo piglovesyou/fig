@@ -1,7 +1,10 @@
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
+import { join } from 'path';
 import { format } from 'prettier';
+import React, { ComponentType } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { StrategyInterface } from '../../types/strategy';
 import {
@@ -49,6 +52,43 @@ class JsxStrategy implements StrategyInterface {
       isProgram(path.node)
     )! as NodePath<Program>;
     return format(generate(program.node).code, { parser: 'babel' });
+  }
+
+  async renderHtml(genContext: GenContext): Promise<string> {
+    const { pagesFullDir } = genContext;
+    const pageComponentModule = await import(join(pagesFullDir, this.name));
+    const {
+      [this.name]: PageComponent,
+    }: { [key: string]: ComponentType<any> } = pageComponentModule;
+
+    const pageHtml = renderToStaticMarkup(
+      React.createElement(PageComponent, null)
+    );
+
+    return `<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<style>
+  
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  position: absolute;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+body > * {
+  overflow: hidden;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+</style>
+</head>
+<body>${pageHtml}</body>
+</html>`;
   }
 
   appendComponentInstanceElement(
