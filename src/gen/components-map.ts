@@ -11,7 +11,6 @@ export function appendComponentsMap(
   switch (node.type) {
     case 'INSTANCE':
     case 'COMPONENT':
-    case 'FRAME':
       const val: ComponentInfo = {
         name: makeComponentName(node),
         node: node,
@@ -29,9 +28,6 @@ export function appendComponentsMap(
             componentsMap.get(node.id)!.node.type === 'INSTANCE'
           )
             componentsMap.set(node.id, val);
-          break;
-        case 'FRAME':
-          if (!componentsMap.has(node.id)) componentsMap.set(node.id, val);
           break;
         default:
           break;

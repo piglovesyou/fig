@@ -2,9 +2,10 @@ import { isAbsolute, join } from 'path';
 import { FigConfig } from '../core/config';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { Canvas, FigmaFile } from '../types/fig';
-import { GenContext } from '../types/gen';
+import { ComponentInfo, GenContext } from '../types/gen';
 import { appendComponentsMap, ComponentsMap } from './components-map';
 import { makeImagesMap } from './images-map';
+import { makeComponentName } from './utils';
 import { appendVectorListIfNecessary, appendVectorsMap } from './vectors-map';
 
 function makePaths(config: FigConfig) {
@@ -41,6 +42,11 @@ export async function makeGenContext(
   for (const canvas of figmaFile.document.children as Canvas[])
     for (const screen of canvas.children)
       if (isValidComponentNode(screen)) {
+        const val: ComponentInfo = {
+          name: makeComponentName(screen),
+          node: screen,
+        };
+        componentsMap.set(screen.id, val);
         walkNodeTree(
           screen,
           (node) => {
