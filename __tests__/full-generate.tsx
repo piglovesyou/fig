@@ -18,16 +18,28 @@ const caseArgs: CaseArg[] = [
 ];
 
 describe('Test full html', () => {
+  // Caution: run the tests sequentially. Break down otherwise.
   test.each(caseArgs)(
     'Test %s',
     async (name, componentName, fileKey: string) => {
-      if (!shouldRefresh) {
-        jest
-          .spyOn(api, 'requestFile')
-          .mockImplementation(() =>
-            readJson(__dirname, `__fixtures/${fileKey}.file.json`)
+      // Spy to read cache by default or update it
+      jest
+        .spyOn(api, 'requestFile')
+        .mockImplementation(async (fileKey: string) => {
+          const cacheFullPath = join(
+            __dirname,
+            `__fixtures/${fileKey}.file.json`
           );
-      }
+          if (shouldRefresh) {
+            const figmaFile = await api.requestFile(fileKey);
+            await writeFile(
+              cacheFullPath,
+              JSON.stringify(figmaFile, undefined, 2)
+            );
+            return figmaFile;
+          }
+          return readJson(cacheFullPath);
+        });
 
       const baseDir = join(outDir, name);
       const config = await applyDefaultConfig({
