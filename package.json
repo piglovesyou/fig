@@ -15,6 +15,9 @@
     "dist",
     "bin"
   ],
+  "bin": {
+    "fig": "bin/fig"
+  },
   "dependencies": {
     "@babel/core": "^7.14.0",
     "@babel/generator": "^7.14.1",
