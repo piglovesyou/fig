@@ -100,7 +100,7 @@ open __generated__/public/Home_1\$4.html
 
 ## Milestones
 
-- [ ] Publish alpha release to generate simple React component source
+- [x] Publish alpha release to generate simple React component source
 - [ ] Support "synchronize" behavior
 - [ ] Make it pluggable to generate multiple template language source
 - [ ] Support another Stylesheet strategy perhaps to support Tailwind CSS
