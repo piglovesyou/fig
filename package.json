@@ -1,6 +1,6 @@
 {
   "name": "fig",
-  "version": "0.0.1",
+  "version": "0.1.0-alpha.0",
   "main": "index.js",
   "license": "MIT",
   "husky": {
@@ -12,11 +12,16 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@babel/core": "^7.14.0",
     "@babel/generator": "^7.14.1",
     "@babel/parser": "^7.14.1",
+    "@babel/preset-env": "^7.14.1",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
     "@babel/template": "^7.12.13",
     "@babel/traverse": "^7.14.0",
     "@babel/types": "^7.14.1",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-jsx": "^1.2.0",
     "camelcase": "^6.2.0",
     "cosmiconfig": "^7.0.0",
@@ -28,11 +33,6 @@
     "ngrok": "^4.0.1",
     "node-fetch": "^2.6.1",
     "p-map": "^4.0.0",
-    "@babel/core": "^7.14.0",
-    "@babel/preset-env": "^7.14.1",
-    "@babel/preset-react": "^7.13.13",
-    "@babel/preset-typescript": "^7.13.0",
-    "babel-core": "^7.0.0-bridge.0",
     "prettier": "^2.2.1"
   },
   "devDependencies": {
