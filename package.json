@@ -1,5 +1,5 @@
 {
-  "name": "fig",
+  "name": "@piglovesyou/fig-cli",
   "version": "0.1.0-alpha.0",
   "main": "index.js",
   "license": "MIT",
@@ -11,6 +11,10 @@
   "prettier": {
     "singleQuote": true
   },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "dependencies": {
     "@babel/core": "^7.14.0",
     "@babel/generator": "^7.14.1",
