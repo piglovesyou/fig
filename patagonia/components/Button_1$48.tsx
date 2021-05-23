@@ -26,7 +26,6 @@ export const Button_1$48: FC<{
       <div
         data-fid="1:46"
         style={{
-          zIndex: 0,
           position: "relative",
           boxSizing: "border-box",
           flexGrow: 0,

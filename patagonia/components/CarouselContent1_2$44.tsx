@@ -23,7 +23,6 @@ export const CarouselContent1_2$44: FC<{
       <div
         data-fid="2:25"
         style={{
-          zIndex: 0,
           position: "absolute",
           boxSizing: "border-box",
           top: "50%",

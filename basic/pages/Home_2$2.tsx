@@ -26,7 +26,6 @@ export const Home_2$2: FC<{
       <div
         data-fid="53:42"
         style={{
-          zIndex: 0,
           display: "flex",
           flexDirection: "row",
           position: "relative",
@@ -42,7 +41,6 @@ export const Home_2$2: FC<{
         <div
           data-fid="53:34"
           style={{
-            zIndex: 0,
             display: "flex",
             flexDirection: "column",
             gap: 41,
@@ -59,7 +57,6 @@ export const Home_2$2: FC<{
           <div
             data-fid="53:6"
             style={{
-              zIndex: 0,
               display: "flex",
               flexDirection: "column",
               gap: 10,
@@ -76,7 +73,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:7"
               style={{
-                zIndex: 0,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 1,
@@ -93,7 +89,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:8"
               style={{
-                zIndex: 1,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 1,
@@ -110,7 +105,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:9"
               style={{
-                zIndex: 2,
                 display: "flex",
                 flexDirection: "row",
                 gap: 10,
@@ -127,7 +121,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="53:10"
                 style={{
-                  zIndex: 0,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 1,
@@ -144,7 +137,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="53:11"
                 style={{
-                  zIndex: 1,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
@@ -162,7 +154,6 @@ export const Home_2$2: FC<{
           <div
             data-fid="53:27"
             style={{
-              zIndex: 1,
               display: "flex",
               flexDirection: "column",
               gap: 16,
@@ -179,7 +170,6 @@ export const Home_2$2: FC<{
             <Frame3_31$5
               data-fid="31:6"
               style={{
-                zIndex: 0,
                 display: "flex",
                 flexDirection: "row",
                 gap: 11,
@@ -197,7 +187,6 @@ export const Home_2$2: FC<{
             <Frame3_31$5
               data-fid="45:0"
               style={{
-                zIndex: 1,
                 display: "flex",
                 flexDirection: "row",
                 gap: 11,
@@ -215,7 +204,6 @@ export const Home_2$2: FC<{
             <Frame3_31$5
               data-fid="53:28"
               style={{
-                zIndex: 2,
                 display: "flex",
                 flexDirection: "row",
                 gap: 11,
@@ -233,7 +221,6 @@ export const Home_2$2: FC<{
             <Frame3_31$5
               data-fid="53:31"
               style={{
-                zIndex: 3,
                 display: "flex",
                 flexDirection: "row",
                 gap: 11,
@@ -252,7 +239,6 @@ export const Home_2$2: FC<{
           <div
             data-fid="53:41"
             style={{
-              zIndex: 2,
               display: "flex",
               flexDirection: "row",
               gap: 41,
@@ -269,7 +255,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="2:5"
               style={{
-                zIndex: 0,
                 display: "flex",
                 flexDirection: "column",
                 gap: 22,
@@ -286,7 +271,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="2:3"
                 style={{
-                  zIndex: 0,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
@@ -303,7 +287,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="2:4"
                 style={{
-                  zIndex: 1,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
@@ -321,7 +304,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:38"
               style={{
-                zIndex: 1,
                 display: "flex",
                 flexDirection: "column",
                 gap: 22,
@@ -338,7 +320,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="53:39"
                 style={{
-                  zIndex: 0,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
@@ -355,7 +336,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="53:40"
                 style={{
-                  zIndex: 1,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
@@ -375,7 +355,6 @@ export const Home_2$2: FC<{
         <div
           data-fid="53:36"
           style={{
-            zIndex: 1,
             display: "flex",
             flexDirection: "column",
             gap: 69,
@@ -393,7 +372,6 @@ export const Home_2$2: FC<{
           <div
             data-fid="45:3"
             style={{
-              zIndex: 0,
               display: "flex",
               flexDirection: "column",
               gap: 10,
@@ -411,7 +389,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="45:4"
               style={{
-                zIndex: 0,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 1,
@@ -428,7 +405,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="47:0"
               style={{
-                zIndex: 1,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 0,
@@ -445,7 +421,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="45:5"
               style={{
-                zIndex: 2,
                 display: "flex",
                 flexDirection: "row",
                 gap: 10,
@@ -462,7 +437,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="45:6"
                 style={{
-                  zIndex: 0,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 1,
@@ -479,7 +453,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="45:7"
                 style={{
-                  zIndex: 1,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,
@@ -497,7 +470,6 @@ export const Home_2$2: FC<{
           <div
             data-fid="53:35"
             style={{
-              zIndex: 1,
               display: "flex",
               flexDirection: "row",
               gap: 57,
@@ -514,7 +486,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="28:1"
               style={{
-                zIndex: 0,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 0,
@@ -537,7 +508,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:24"
               style={{
-                zIndex: 1,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 0,
@@ -561,7 +531,6 @@ export const Home_2$2: FC<{
           <div
             data-fid="53:18"
             style={{
-              zIndex: 2,
               display: "flex",
               flexDirection: "column",
               gap: 10,
@@ -579,7 +548,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:19"
               style={{
-                zIndex: 0,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 1,
@@ -596,7 +564,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:20"
               style={{
-                zIndex: 1,
                 position: "relative",
                 boxSizing: "border-box",
                 flexGrow: 1,
@@ -613,7 +580,6 @@ export const Home_2$2: FC<{
             <div
               data-fid="53:21"
               style={{
-                zIndex: 2,
                 display: "flex",
                 flexDirection: "row",
                 gap: 10,
@@ -634,7 +600,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="53:22"
                 style={{
-                  zIndex: 0,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 1,
@@ -651,7 +616,6 @@ export const Home_2$2: FC<{
               <div
                 data-fid="53:23"
                 style={{
-                  zIndex: 1,
                   position: "relative",
                   boxSizing: "border-box",
                   flexGrow: 0,

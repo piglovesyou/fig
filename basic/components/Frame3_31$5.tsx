@@ -22,7 +22,6 @@ export const Frame3_31$5: FC<{
       <div
         data-fid="31:2"
         style={{
-          zIndex: 0,
           position: "relative",
           boxSizing: "border-box",
           flexGrow: 0,
@@ -45,7 +44,6 @@ export const Frame3_31$5: FC<{
       <div
         data-fid="31:3"
         style={{
-          zIndex: 1,
           position: "relative",
           boxSizing: "border-box",
           flexGrow: 0,

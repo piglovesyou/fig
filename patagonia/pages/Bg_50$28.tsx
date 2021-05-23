@@ -22,7 +22,6 @@ export const Bg_50$28: FC<{
       <div
         data-fid="50:29"
         style={{
-          zIndex: 0,
           position: "absolute",
           boxSizing: "border-box",
           top: 0,
