@@ -23,7 +23,7 @@ const DEFAULT_FIG_CONFIG: FigConfig = {
   baseDir: '.',
   componentsDir: 'components',
   pagesDir: 'pages',
-  htmlDir: 'html',
+  htmlDir: 'public',
   imagesDir: 'images',
   strategy: defaultStartegyModule,
   fileKeys: [],
