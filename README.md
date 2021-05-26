@@ -39,9 +39,9 @@ fileKeys:
   - pC6EOjjdZpS7PVsPTgjNLL # This is my public sample Figma file
 ```
 
-### 3. Create and store a Figma token in .env
+### 3. Generate and store a Figma token in .env
 
-Create a Figma Personal Access Token from https://www.figma.com/developers/api#access-tokens
+Please [generate a personal access token](https://www.figma.com/developers/api#access-tokens).
 
 Then, create a file `.env` as following. Replace `0000...` with your token.
 
