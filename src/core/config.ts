@@ -1,3 +1,4 @@
+import commandLineArgs, { OptionDefinition } from 'command-line-args';
 import { cosmiconfig } from 'cosmiconfig';
 import { dirname, join, relative } from 'path';
 import * as defaultStartegyModule from '../strategies/react';
@@ -28,6 +29,18 @@ const DEFAULT_FIG_CONFIG: FigConfig = {
   strategy: defaultStartegyModule,
   fileKeys: [],
 };
+
+export const commandLineOptions: OptionDefinition[] = Object.keys(
+  DEFAULT_FIG_CONFIG
+).map((prop) => {
+  const o: OptionDefinition = { name: prop };
+  switch (prop) {
+    case 'fileKeys':
+      return { ...o, alias: 'fileKey', multiple: true, defaultOption: true };
+    default:
+      return { ...o, type: String };
+  }
+});
 
 export async function applyDefaultConfig(
   config: FigUserConfig,
@@ -60,14 +73,34 @@ async function loadStrategy(
   return await import(`../strategies/${strategyName}`);
 }
 
+function loadCommandLineArgs() {
+  const options = commandLineArgs(commandLineOptions);
+  const contented = Object.entries(options).filter(([, v]) =>
+    Array.isArray(v) ? v.length : v
+  );
+  return Object.fromEntries(contented);
+}
+
 export async function loadConfig(): Promise<FigConfig> {
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();
-  if (!result) throw new Error(`.figrc is not found.`);
-  const config: FigConfig = await applyDefaultConfig(
-    result.config,
-    result.filepath
-  );
+
+  const rcConfig: FigUserConfig = result?.config || {};
+  const cwd: string = result?.filepath
+    ? dirname(result.filepath)
+    : process.cwd();
+
+  const mergedUserConfig: Required<FigUserConfig> = {
+    ...DEFAULT_FIG_CONFIG,
+    ...rcConfig,
+    ...loadCommandLineArgs(),
+  };
+
+  const config: FigConfig = {
+    ...mergedUserConfig,
+    strategy: await loadStrategy(mergedUserConfig.strategy, cwd),
+  };
+
   verifyConfig(config);
   return config;
 }
