@@ -5,8 +5,11 @@ import { extension } from 'mime-types';
 import fetch from 'node-fetch';
 import pMap from 'p-map';
 import { basename, extname, join } from 'path';
-import { pipeline } from 'stream/promises';
+import { pipeline as _pipeline } from 'stream';
+import { promisify } from 'util';
 import { requestImages } from '../core/api';
+
+const pipeline = promisify(_pipeline);
 
 async function makeExistingFileMap(
   imagesFullDir: string
