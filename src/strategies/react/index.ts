@@ -21,7 +21,7 @@ import {
   makeLayout,
 } from './visit-utils';
 
-class JsxStrategy implements StrategyInterface {
+class ReactStrategy implements StrategyInterface {
   fid: string;
   name: string;
 
@@ -126,6 +126,6 @@ body > * {
   }
 }
 
-export function createStrategy(componentInfo: ComponentInfo): JsxStrategy {
-  return new JsxStrategy(componentInfo);
+export function createStrategy(componentInfo: ComponentInfo): ReactStrategy {
+  return new ReactStrategy(componentInfo);
 }
