@@ -66,9 +66,11 @@ class ReactStrategy implements StrategyInterface {
     ];
   }
 
-  async renderHtml(genContext: GenContext): Promise<string> {
+  async renderHtml(genContext: GenContext, name: string): Promise<string> {
     const { pagesFullDir } = genContext;
-    const pageComponentModule = await import(join(pagesFullDir, this.name));
+    const pageComponentModule = await import(
+      join(pagesFullDir, this.name + '.js')
+    );
     const {
       [this.name]: PageComponent,
     }: { [key: string]: ComponentType<any> } = pageComponentModule;

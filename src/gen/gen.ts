@@ -26,7 +26,7 @@ export async function processHtml(
 ) {
   const { node, name } = componentInfo;
   if (node.type !== 'FRAME') return;
-  const html = await strategy.renderHtml(genContext);
+  const html = await strategy.renderHtml(genContext, node.name);
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
 }
 
@@ -52,12 +52,9 @@ export async function gen(config: FigConfig): Promise<void> {
     });
 
     // Generate html to "./public"
-    // XXX: Catastrophic. Refactor.
-    if (await registerTsNodeIfPossible()) {
-      await makeDir(genContext.htmlFullDir);
-      await pMap(result, async ([componentInfo, strategy]) => {
-        await processHtml(strategy, componentInfo, genContext);
-      });
-    }
+    await makeDir(genContext.htmlFullDir);
+    await pMap(result, async ([componentInfo, strategy]) => {
+      await processHtml(strategy, componentInfo, genContext);
+    });
   }
 }

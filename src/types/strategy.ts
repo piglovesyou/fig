@@ -13,7 +13,7 @@ export interface StrategyInterface {
   makeLayout(): NodePath<JSXElement>;
   postWalk(): void;
   render(): [content: string, ext: string][];
-  renderHtml(genContext: GenContext): Promise<string>;
+  renderHtml(genContext: GenContext, name: string): Promise<string>;
   appendComponentInstanceElement(
     context: VisitContext,
     parentContext: VisitContextWithCursor,
