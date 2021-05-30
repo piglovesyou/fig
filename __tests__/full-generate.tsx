@@ -1,7 +1,7 @@
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import * as api from '../src/core/api';
-import { applyDefaultConfig } from '../src/core/config';
+import { createConfig } from '../src/core/config';
 import { shouldRefresh } from '../src/core/env';
 import { gen } from '../src/gen/gen';
 import { readJson } from '../src/__tools/fns';
@@ -40,7 +40,7 @@ describe('Test full html', () => {
         });
 
       const baseDir = join(outDir, name);
-      const config = await applyDefaultConfig({
+      const config = await createConfig({
         fileKeys: [fileKey],
         baseDir,
         strategy: 'react',

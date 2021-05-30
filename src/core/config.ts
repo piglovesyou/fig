@@ -14,6 +14,7 @@ interface _FigConfigBase<StrategySpecifier> {
   imagesDir?: string;
   strategy: StrategySpecifier;
   fileKeys: string[];
+  token?: string;
 }
 
 export type FigUserConfig = _FigConfigBase<string>;
@@ -28,6 +29,7 @@ const DEFAULT_FIG_CONFIG: FigConfig = {
   imagesDir: 'images',
   strategy: defaultStartegyModule,
   fileKeys: [],
+  token: '',
 };
 
 export const commandLineOptions: OptionDefinition[] = Object.keys(
@@ -36,22 +38,22 @@ export const commandLineOptions: OptionDefinition[] = Object.keys(
   const o: OptionDefinition = { name: prop };
   switch (prop) {
     case 'fileKeys':
-      return { ...o, alias: 'fileKey', multiple: true, defaultOption: true };
+      return { ...o, multiple: true, defaultOption: true };
     default:
       return { ...o, type: String };
   }
 });
 
-export async function applyDefaultConfig(
-  config: FigUserConfig,
-  configFullPath?: string
-): Promise<FigConfig> {
-  return {
-    ...DEFAULT_FIG_CONFIG,
-    ...config,
-    strategy: await loadStrategy(config.strategy, configFullPath),
-  };
-}
+// export async function applyDefaultConfig(
+//   config: FigUserConfig,
+//   configFullPath?: string
+// ): Promise<FigConfig> {
+//   return {
+//     ...DEFAULT_FIG_CONFIG,
+//     ...config,
+//     strategy: await loadStrategy(config.strategy, configFullPath),
+//   };
+// }
 
 export function verifyConfig(config: FigConfig) {
   const { strategy } = config;
@@ -81,6 +83,30 @@ function loadCommandLineArgs() {
   return Object.fromEntries(contented);
 }
 
+function applyDefaultConfig(
+  userConfig: FigUserConfig
+): Required<FigUserConfig> {
+  return {
+    ...DEFAULT_FIG_CONFIG,
+    token: process.env.TOKEN || '',
+    ...userConfig,
+  };
+}
+
+export async function createConfig(
+  userConfig: _FigConfigBase<string>,
+  cwd: string = process.cwd()
+) {
+  const fullConfig: Required<FigUserConfig> = applyDefaultConfig(userConfig);
+
+  const config: FigConfig = {
+    ...fullConfig,
+    strategy: await loadStrategy(userConfig.strategy, cwd),
+  };
+
+  return config;
+}
+
 export async function loadConfig(): Promise<FigConfig> {
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();
@@ -90,16 +116,13 @@ export async function loadConfig(): Promise<FigConfig> {
     ? dirname(result.filepath)
     : process.cwd();
 
-  const mergedUserConfig: Required<FigUserConfig> = {
-    ...DEFAULT_FIG_CONFIG,
-    ...rcConfig,
-    ...loadCommandLineArgs(),
-  };
-
-  const config: FigConfig = {
-    ...mergedUserConfig,
-    strategy: await loadStrategy(mergedUserConfig.strategy, cwd),
-  };
+  const config = await createConfig(
+    {
+      ...rcConfig,
+      ...loadCommandLineArgs(),
+    },
+    cwd
+  );
 
   verifyConfig(config);
   return config;
