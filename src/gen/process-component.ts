@@ -26,17 +26,17 @@ export async function processComponent(
       : genContext.config.componentsDir
   );
   await makeDir(componetsDir);
-  const fullPath = join(componetsDir, `${name}.tsx`);
+  const fullBasePath = join(componetsDir, name);
 
   let rootAst: File;
   let placeholderCursor: NodePath<JSXElement>;
 
-  if (false /*existsSync(fullPath)*/) {
+  if (false /*existsSync(fullBasePath)*/) {
     // TODO: Update mode.
     // 1. Parse and get the File ast
     // 2. Find the root element to update
     // 3. Repeat update and traverse
-    const content = await readFile(fullPath, 'utf-8');
+    const content = await readFile(fullBasePath + '.tsx', 'utf-8');
     rootAst = parseAsRoot(content);
     throw new Error('Implement');
   } else {
@@ -54,7 +54,7 @@ export async function processComponent(
     strategy.postWalk();
   }
 
-  await writeFile(fullPath, strategy.render());
+  await writeFile(fullBasePath + '.tsx', strategy.render());
 }
 
 // // TODO: Similar to preprocess. Refactor
