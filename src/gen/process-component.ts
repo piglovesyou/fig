@@ -54,7 +54,9 @@ export async function processComponent(
     strategy.postWalk();
   }
 
-  await writeFile(fullBasePath + '.tsx', strategy.render());
+  for (const [content, ext] of strategy.render()) {
+    await writeFile(fullBasePath + ext, content);
+  }
 }
 
 // // TODO: Similar to preprocess. Refactor

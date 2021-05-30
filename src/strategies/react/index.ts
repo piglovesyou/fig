@@ -1,3 +1,4 @@
+import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
@@ -46,12 +47,23 @@ class ReactStrategy implements StrategyInterface {
     erasePlaceholderElement(this.cursor);
   }
 
-  render() {
+  render(): [content: string, ext: string][] {
     if (!this.cursor) throw new Error(`Never. cursor must be set on render().`);
     const program: NodePath<Program> = this.cursor.findParent((path) =>
       isProgram(path.node)
     )! as NodePath<Program>;
-    return format(generate(program.node).code, { parser: 'babel' });
+
+    const { code: tsxCode } = generate(program.node);
+    const { code: jsCode } = transformFromAstSync(program.node, undefined, {
+      filename: 'a.tsx',
+      babelrc: false,
+      plugins: ['@babel/plugin-transform-typescript'],
+    })!;
+
+    return [
+      [format(tsxCode, { parser: 'babel' }), '.tsx'],
+      [format(jsCode!, { parser: 'babel' }), '.js'],
+    ];
   }
 
   async renderHtml(genContext: GenContext): Promise<string> {
