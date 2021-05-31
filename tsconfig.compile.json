@@ -8,6 +8,7 @@
   },
   "exclude": [
     "dist",
+    "**/__generated__",
     "__tests__",
     "**/*.test.ts",
     "**/__tools"

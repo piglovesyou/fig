@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.compile.json",
+  "compilerOptions": {
+    "target": "ES2019",
+    "noEmit": false,
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true
+  }
+}

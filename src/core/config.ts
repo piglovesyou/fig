@@ -2,7 +2,6 @@ import commandLineArgs, { OptionDefinition } from 'command-line-args';
 import { cosmiconfig } from 'cosmiconfig';
 import { config } from 'dotenv';
 import { dirname, join, relative } from 'path';
-import * as defaultStartegyModule from '../strategies/react';
 import { StrategyModule } from '../types/strategy';
 
 config();
@@ -22,18 +21,18 @@ interface _FigConfigBase<StrategySpecifier> {
 
 export type FigUserConfig = _FigConfigBase<string>;
 
-export type FigConfig = Required<_FigConfigBase<StrategyModule>>;
-
-const DEFAULT_FIG_CONFIG: FigConfig = {
+const DEFAULT_FIG_CONFIG: FigUserConfig = {
   baseDir: '.',
   componentsDir: 'components',
   pagesDir: 'pages',
   htmlDir: 'public',
   imagesDir: 'images',
-  strategy: defaultStartegyModule,
+  strategy: 'react',
   fileKeys: [],
   token: '',
 };
+
+export type FigConfig = Required<_FigConfigBase<StrategyModule>>;
 
 export const commandLineOptions: OptionDefinition[] = Object.keys(
   DEFAULT_FIG_CONFIG
@@ -59,7 +58,9 @@ export const commandLineOptions: OptionDefinition[] = Object.keys(
 // }
 
 export function verifyConfig(config: FigConfig) {
-  const { strategy } = config;
+  const { strategy, fileKeys, token } = config;
+  if (!fileKeys.length) throw new Error(`Specify a Figma file key.`);
+  if (!token) throw new Error(`Specify a Figma token.`);
   if (!strategy) throw new Error('Specify strategy.');
 }
 
@@ -86,14 +87,12 @@ function loadCommandLineArgs() {
   return Object.fromEntries(contented);
 }
 
-function applyDefaultConfig(
-  userConfig: FigUserConfig
-): Required<FigUserConfig> {
+function applyDefaultConfig(userConfig: FigUserConfig) {
   return {
     ...DEFAULT_FIG_CONFIG,
     token: process.env.TOKEN || '',
     ...userConfig,
-  };
+  } as Required<FigUserConfig>;
 }
 
 export async function createConfig(
@@ -104,7 +103,7 @@ export async function createConfig(
 
   const config: FigConfig = {
     ...fullConfig,
-    strategy: await loadStrategy(userConfig.strategy, cwd),
+    strategy: await loadStrategy(fullConfig.strategy, cwd),
   };
 
   return config;

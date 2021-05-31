@@ -15,6 +15,8 @@ const caseArgs: CaseArg[] = [
   ['patagonia', 'Home_1$4', 'pC6EOjjdZpS7PVsPTgjNLL'],
 ];
 
+const originalRequestFile = api.requestFile;
+
 describe('Test full html', () => {
   // Caution: run the tests sequentially. Break down otherwise.
   test.each(caseArgs)(
@@ -29,7 +31,7 @@ describe('Test full html', () => {
             `__fixtures/${fileKey}.file.json`
           );
           if (shouldRefresh) {
-            const figmaFile = await api.requestFile(fileKey, token);
+            const figmaFile = await originalRequestFile(fileKey, token);
             await writeFile(
               cacheFullPath,
               JSON.stringify(figmaFile, undefined, 2)
