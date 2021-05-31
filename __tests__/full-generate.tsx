@@ -23,13 +23,13 @@ describe('Test full html', () => {
       // Spy to read cache by default or update it
       jest
         .spyOn(api, 'requestFile')
-        .mockImplementation(async (fileKey: string) => {
+        .mockImplementation(async (fileKey: string, token: string) => {
           const cacheFullPath = join(
             __dirname,
             `__fixtures/${fileKey}.file.json`
           );
           if (shouldRefresh) {
-            const figmaFile = await api.requestFile(fileKey);
+            const figmaFile = await api.requestFile(fileKey, token);
             await writeFile(
               cacheFullPath,
               JSON.stringify(figmaFile, undefined, 2)

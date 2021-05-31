@@ -31,7 +31,8 @@ export async function makeImagesMap(
     baseFullDir: string;
     imagesFullDir: string;
   },
-  fileKey: string
+  fileKey: string,
+  token: string
 ) {
   // TODO: Refactor. Call them only if needed.
   const { imagesFullDir } = paths;
@@ -40,7 +41,7 @@ export async function makeImagesMap(
   const existingImagesMap = await makeExistingFileMap(imagesFullDir);
   const {
     meta: { images },
-  } = await requestImages(fileKey);
+  } = await requestImages(fileKey, token);
   await pMap(Object.entries(images), async ([key, u]) => {
     const imageUrl = new URL(u);
     const base = basename(imageUrl.pathname);

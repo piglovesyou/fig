@@ -1,8 +1,11 @@
 import commandLineArgs, { OptionDefinition } from 'command-line-args';
 import { cosmiconfig } from 'cosmiconfig';
+import { config } from 'dotenv';
 import { dirname, join, relative } from 'path';
 import * as defaultStartegyModule from '../strategies/react';
 import { StrategyModule } from '../types/strategy';
+
+config();
 
 const MODULE_NAME = 'fig';
 

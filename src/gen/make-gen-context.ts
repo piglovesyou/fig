@@ -32,10 +32,11 @@ export async function makeGenContext(
   config: FigConfig
 ): Promise<GenContext> {
   const paths = makePaths(config);
+  const { token } = config;
 
   const componentsMap: ComponentsMap = new Map();
   const vectorsMap = new Map<string, string>();
-  const imagesMap = await makeImagesMap(paths, fileKey);
+  const imagesMap = await makeImagesMap(paths, fileKey, token);
 
   const vectorList: string[] = []; // TODO: Use Set
 
@@ -57,7 +58,7 @@ export async function makeGenContext(
         );
       }
 
-  await appendVectorsMap(vectorsMap, vectorList, fileKey);
+  await appendVectorsMap(vectorsMap, vectorList, fileKey, token);
 
   return {
     componentsMap,

@@ -10,14 +10,14 @@ import { StrategyInterface } from '../types/strategy';
 import { makeGenContext } from './make-gen-context';
 import { processComponent } from './process-component';
 
-async function registerTsNodeIfPossible() {
-  try {
-    const tsNode = await import('ts-node');
-    tsNode.register({ transpileOnly: true });
-    return true;
-  } catch (e) {}
-  return false;
-}
+// async function registerTsNodeIfPossible() {
+//   try {
+//     const tsNode = await import('ts-node');
+//     tsNode.register({ transpileOnly: true });
+//     return true;
+//   } catch (e) {}
+//   return false;
+// }
 
 export async function processHtml(
   strategy: StrategyInterface,
@@ -31,9 +31,9 @@ export async function processHtml(
 }
 
 export async function gen(config: FigConfig): Promise<void> {
-  const { fileKeys } = config;
+  const { fileKeys, token } = config;
   for (const fileKey of fileKeys) {
-    const figmaFile: FigmaFile = await requestFile(fileKey);
+    const figmaFile: FigmaFile = await requestFile(fileKey, token);
 
     const genContext = await makeGenContext(figmaFile, fileKey, config);
     const {
