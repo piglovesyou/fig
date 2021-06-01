@@ -1,10 +1,7 @@
 import commandLineArgs, { OptionDefinition } from 'command-line-args';
 import { cosmiconfig } from 'cosmiconfig';
-import { config } from 'dotenv';
 import { dirname, join, relative } from 'path';
 import { StrategyModule } from '../types/strategy';
-
-config();
 
 const MODULE_NAME = 'fig';
 
@@ -17,6 +14,7 @@ interface _FigConfigBase<StrategySpecifier> {
   strategy: StrategySpecifier;
   fileKeys: string[];
   token?: string;
+  require?: string[];
 }
 
 export type FigUserConfig = _FigConfigBase<string>;
@@ -98,15 +96,13 @@ function applyDefaultConfig(userConfig: FigUserConfig) {
 export async function createConfig(
   userConfig: _FigConfigBase<string>,
   cwd: string = process.cwd()
-) {
+): Promise<FigConfig> {
   const fullConfig: Required<FigUserConfig> = applyDefaultConfig(userConfig);
 
-  const config: FigConfig = {
+  return {
     ...fullConfig,
     strategy: await loadStrategy(fullConfig.strategy, cwd),
   };
-
-  return config;
 }
 
 export async function loadConfig(): Promise<FigConfig> {
@@ -123,6 +119,7 @@ export async function loadConfig(): Promise<FigConfig> {
       ...rcConfig,
       ...loadCommandLineArgs(),
     },
+    // TODO: Return cwd for later use
     cwd
   );
 
