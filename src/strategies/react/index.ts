@@ -1,5 +1,8 @@
 import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
+import babelPluginTransformModulesCommonjs from '@babel/plugin-transform-modules-commonjs';
+import babelPluginTransformReactJsx from '@babel/plugin-transform-react-jsx';
+import babelPluginTransformTypescript from '@babel/plugin-transform-typescript';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { join } from 'path';
@@ -58,9 +61,9 @@ class ReactStrategy implements StrategyInterface {
       filename: 'a.tsx',
       babelrc: false,
       plugins: [
-        '@babel/plugin-transform-react-jsx',
-        '@babel/plugin-transform-modules-commonjs',
-        '@babel/plugin-transform-typescript',
+        babelPluginTransformReactJsx,
+        babelPluginTransformModulesCommonjs,
+        babelPluginTransformTypescript,
       ],
     })!;
 
