@@ -1,7 +1,7 @@
 import execa from 'execa';
 import { join } from 'path';
 
-describe.skip('command.test.ts', () => {
+describe('command.test.ts', () => {
   test(
     'cli execution',
     async () => {

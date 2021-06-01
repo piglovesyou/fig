@@ -57,7 +57,11 @@ class ReactStrategy implements StrategyInterface {
     const { code: jsCode } = transformFromAstSync(program.node, undefined, {
       filename: 'a.tsx',
       babelrc: false,
-      plugins: ['@babel/plugin-transform-typescript'],
+      plugins: [
+        '@babel/plugin-transform-react-jsx',
+        '@babel/plugin-transform-modules-commonjs',
+        '@babel/plugin-transform-typescript',
+      ],
     })!;
 
     return [
