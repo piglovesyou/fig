@@ -62,7 +62,7 @@ export async function makeGenContext(
 
   await appendVectorsMap(vectorsMap, vectorList, fileKey, token);
 
-  return {
+  const genContext: GenContext = {
     componentsMap,
     imagesMap,
     vectorsMap,
@@ -71,4 +71,10 @@ export async function makeGenContext(
     libDir,
     ...paths,
   };
+  const {
+    strategy: { createStrategy },
+  } = config;
+  const strategy = createStrategy(genContext);
+
+  return { ...genContext, strategy };
 }

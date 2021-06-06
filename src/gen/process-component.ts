@@ -6,17 +6,17 @@ import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { parseAsRoot } from '../strategies/react/ast-utils';
 import { ComponentInfo, GenContext } from '../types/gen';
-import { StrategyInterface } from '../types/strategy';
 import { EmptyVisitContext } from '../types/visit';
 import { visitNode } from '../visit/visit';
 
 export async function processComponent(
-  strategy: StrategyInterface,
   componentInfo: ComponentInfo,
   genContext: GenContext
 ) {
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
+  const { strategy } = genContext;
+  if (!strategy) throw new Error('Never. Strategy should be instantiated.');
 
   const { baseFullDir } = genContext;
   const componetsDir = join(
@@ -41,7 +41,7 @@ export async function processComponent(
     throw new Error('Implement');
   } else {
     // Create mode.
-    placeholderCursor = strategy.makeLayout();
+    placeholderCursor = strategy.makeLayout(componentInfo);
 
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
     walkNodeTree(
@@ -54,7 +54,7 @@ export async function processComponent(
     strategy.postWalk();
   }
 
-  for (const [content, ext] of strategy.render()) {
+  for (const [content, ext] of strategy.render(componentInfo)) {
     await writeFile(fullBasePath + ext, content);
   }
 }

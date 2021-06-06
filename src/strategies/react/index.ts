@@ -32,19 +32,21 @@ function makeHash(s: string | Buffer): string {
 }
 
 class ReactStrategy implements StrategyInterface {
-  fid: string;
-  name: string;
+  genContext: GenContext;
+  // fid: string;
+  // name: string;
 
   // rootNode: Node | undefined;
   cursor: NodePath<JSXElement> | undefined;
 
-  constructor({ node, name }: ComponentInfo) {
-    this.fid = node.id;
-    this.name = name;
+  constructor(genContext: GenContext) {
+    this.genContext = genContext;
+    // this.fid = node.id;
+    // this.name = name;
   }
 
-  makeLayout() {
-    const cursor = makeLayout(this.name);
+  makeLayout({ node, name }: ComponentInfo) {
+    const cursor = makeLayout(name);
     if (!cursor) throw new Error('should be found');
     this.cursor = cursor;
     return cursor;
@@ -83,22 +85,25 @@ class ReactStrategy implements StrategyInterface {
     ];
   }
 
-  async renderHtml(genContext: GenContext, name: string): Promise<string> {
-    let { pagesFullDir, libDir } = genContext;
+  async renderHtml(componentInfo: ComponentInfo): Promise<string> {
+    const { name } = componentInfo;
+    let { pagesFullDir, libDir } = this.genContext;
 
     // The reason using thread is to set NODE_PATH value, otherwise
     // components can't resolve "react" and "react-dom".
+    // TODO: Refactor.
     const thread = new Piscina({
-      filename: join(__dirname, 'render-html.js'),
+      maxQueue: 'auto',
+      filename: join(
+        __dirname,
+        '../../../dist/strategies/react/render-html.js'
+      ),
       env: {
         NODE_PATH: join(libDir, 'node_modules'),
       },
     });
 
-    return await thread.run({
-      pagesFullDir,
-      name: this.name,
-    } as RenderHtmlArgType);
+    return await thread.run({ pagesFullDir, name } as RenderHtmlArgType);
   }
 
   appendComponentInstanceElement(
@@ -136,6 +141,6 @@ class ReactStrategy implements StrategyInterface {
   }
 }
 
-export function createStrategy(componentInfo: ComponentInfo): ReactStrategy {
-  return new ReactStrategy(componentInfo);
+export function createStrategy(genContext: GenContext): ReactStrategy {
+  return new ReactStrategy(genContext);
 }

@@ -26,7 +26,7 @@ export async function processHtml(
 ) {
   const { node, name } = componentInfo;
   if (node.type !== 'FRAME') return;
-  const html = await strategy.renderHtml(genContext, node.name);
+  const html = await strategy.renderHtml(componentInfo);
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
 }
 
@@ -44,13 +44,13 @@ export async function gen(
       config: {
         strategy: { createStrategy },
       },
+      strategy,
     } = genContext;
 
     // Generate components to "components" and "pages"
     const result = await pMap(componentsMap, async ([, componentInfo]) => {
       // TODO: Strategy for genContext, not for components. Are you crazy?
-      const strategy = createStrategy(componentInfo);
-      await processComponent(strategy, componentInfo, genContext);
+      await processComponent(componentInfo, genContext);
       return [componentInfo, strategy] as [ComponentInfo, StrategyInterface];
     });
 
