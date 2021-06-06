@@ -22,6 +22,13 @@ import {
   makeLayout,
 } from './visit-utils';
 
+function findReactResolvablePath(): string | never {
+  const reactPath = require.resolve('react');
+  for (const nodePath of require.resolve.paths('react') || [])
+    if (reactPath.startsWith(nodePath)) return nodePath;
+  throw new Error(`Never. Couldn't find react resolvable path.`);
+}
+
 class ReactStrategy implements StrategyInterface {
   genContext: GenContext;
   renderHtmlThread: Piscina;
@@ -34,6 +41,7 @@ class ReactStrategy implements StrategyInterface {
     const { libDir } = genContext;
     // The reason using thread is to set NODE_PATH value, otherwise
     // components can't resolve "react" and "react-dom".
+    require.resolve('react');
     this.renderHtmlThread = new Piscina({
       maxQueue: 'auto',
       filename: join(
@@ -41,7 +49,7 @@ class ReactStrategy implements StrategyInterface {
         '../../../dist/strategies/react/render-html.js'
       ),
       env: {
-        NODE_PATH: join(libDir, 'node_modules'),
+        NODE_PATH: findReactResolvablePath(),
       },
     });
   }
