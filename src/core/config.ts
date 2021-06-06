@@ -1,4 +1,5 @@
-import commandLineArgs, { OptionDefinition } from 'command-line-args';
+import commandLineArgs from 'command-line-args';
+import commandLineUsage, { OptionDefinition } from 'command-line-usage';
 import { cosmiconfig } from 'cosmiconfig';
 import { dirname, join, relative } from 'path';
 import { StrategyModule } from '../types/strategy';
@@ -15,6 +16,7 @@ interface _FigConfigBase<StrategySpecifier> {
   fileKeys: string[];
   token?: string;
   require?: string[];
+  help?: boolean;
 }
 
 export type FigUserConfig = _FigConfigBase<string>;
@@ -28,32 +30,51 @@ const DEFAULT_FIG_CONFIG: FigUserConfig = {
   strategy: 'react',
   fileKeys: [],
   token: '',
+  help: false,
 };
 
 export type FigConfig = Required<_FigConfigBase<StrategyModule>>;
 
-export const commandLineOptions: OptionDefinition[] = Object.keys(
-  DEFAULT_FIG_CONFIG
-).map((prop) => {
-  const o: OptionDefinition = { name: prop };
-  switch (prop) {
-    case 'fileKeys':
-      return { ...o, multiple: true, defaultOption: true };
-    default:
-      return { ...o, type: String };
-  }
-});
-
-// export async function applyDefaultConfig(
-//   config: FigUserConfig,
-//   configFullPath?: string
-// ): Promise<FigConfig> {
-//   return {
-//     ...DEFAULT_FIG_CONFIG,
-//     ...config,
-//     strategy: await loadStrategy(config.strategy, configFullPath),
-//   };
-// }
+export const commandLineOptions: OptionDefinition[] = [
+  {
+    name: 'fileKeys',
+    multiple: true,
+    defaultOption: true,
+    description: `{bold Required}. Pass one or more Figma file keys. You can get yours from browser location bar as "https://www.figma.com/file/{bold :FILE_KEY}/:TITLE".`,
+    typeLabel: 'fileKey',
+  },
+  {
+    name: 'token',
+    typeLabel: 'token',
+    description: `{bold Required}. Provide one valid Figma access token. https://www.figma.com/developers/api#access-tokens`,
+  },
+  {
+    name: 'baseDir',
+    description: `"." by default. If you specify "__generated__" as baseDir, it generates components in "__generated__/components" for example.`,
+  },
+  {
+    name: 'componentsDir',
+    description:
+      '"components" by default. A directory to generate your component sources to.',
+  },
+  {
+    name: 'pagesDir',
+    description: `"pages" by default. A directory to generate your page component sources to.`,
+  },
+  {
+    name: 'htmlDir',
+    description: `"public" by default. A directory to generate your HTML sources to.`,
+  },
+  {
+    name: 'imagesDir',
+    description: `"images" by default. A directory to fetch your image resources to.`,
+  },
+  {
+    name: 'strategy',
+    description: `"react" by default, and is the only supported strategy for now.`,
+  },
+  { name: 'help', type: Boolean, description: `Show this message.` },
+];
 
 export function verifyConfig(config: FigConfig) {
   const { strategy, fileKeys, token } = config;
@@ -109,6 +130,27 @@ export async function loadConfig(): Promise<{
   config: FigConfig;
   cwd: string;
 }> {
+  const loadedCommandLineArgs = loadCommandLineArgs();
+  if (loadedCommandLineArgs.help) {
+    const sections = [
+      {
+        header: 'Fig',
+        content: `A CLI to generates HTML and Component sources from Figma file.`,
+      },
+      {
+        header: 'Example',
+        content: `$ fig {bold --token} token {bold fileKey} [fileKey ...]`,
+      },
+      {
+        header: 'Options',
+        optionList: commandLineOptions,
+      },
+    ];
+    const usage = commandLineUsage(sections);
+    console.log(usage);
+    process.exit(0);
+  }
+
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();
 
@@ -120,7 +162,7 @@ export async function loadConfig(): Promise<{
   const config = await createConfig(
     {
       ...rcConfig,
-      ...loadCommandLineArgs(),
+      ...loadedCommandLineArgs,
     },
     // TODO: Return cwd for later use
     cwd
