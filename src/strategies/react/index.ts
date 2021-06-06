@@ -4,10 +4,8 @@ import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { createHash } from 'crypto';
 import { join } from 'path';
+import piscina from 'piscina';
 import { format } from 'prettier';
-import React, { ComponentType } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import symlinkDir from 'symlink-dir';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { StrategyInterface } from '../../types/strategy';
 import {
@@ -15,6 +13,7 @@ import {
   VisitContext,
   VisitContextWithCursor,
 } from '../../types/visit';
+import { RenderHtmlArgType } from './render-html';
 import {
   appendComponentInstanceElement,
   appendElement,
@@ -23,6 +22,9 @@ import {
   erasePlaceholderElement,
   makeLayout,
 } from './visit-utils';
+const { Piscina } = piscina;
+
+// new StaticPool({});
 
 function makeHash(s: string | Buffer): string {
   return createHash('sha1').digest('hex');
@@ -81,8 +83,6 @@ class ReactStrategy implements StrategyInterface {
   }
 
   async renderHtml(genContext: GenContext, name: string): Promise<string> {
-    require('react');
-    require('react-dom');
     let {
       pagesFullDir,
       cwd,
@@ -90,54 +90,68 @@ class ReactStrategy implements StrategyInterface {
       config: { pagesDir },
     } = genContext;
 
-    const isLocalModule = libDir.startsWith(cwd);
-    if (!isLocalModule) {
-      // If user installs fig with "--global", generated
-      // react components cannot import "react" and "react-dom".
-      // To solve it, we force change the import target paths to
-      // our libDir's subdirectory.
-      const symlinkFullPath = join(libDir, '.' + makeHash(cwd));
-      await symlinkDir(cwd, symlinkFullPath);
-      pagesFullDir = join(symlinkFullPath, pagesDir);
-    }
+    const thread = new Piscina({
+      filename: join(__dirname, 'render-html.js'),
+      env: {
+        NODE_PATH: join(libDir, 'node_modules'),
+      },
+    });
 
-    const pageComponentModule = await import(
-      join(pagesFullDir, this.name + '.js')
-    );
-    const {
-      [this.name]: PageComponent,
-    }: { [key: string]: ComponentType<any> } = pageComponentModule;
+    const x = await thread.run({
+      pagesFullDir,
+      name: this.name,
+    } as RenderHtmlArgType);
 
-    const pageHtml = renderToStaticMarkup(
-      React.createElement(PageComponent, null)
-    );
+    return x;
 
-    const html = `<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<style>
-  
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  position: absolute;
-  width: 100vw;
-  min-height: 100vh;
-}
-
-body > * {
-  overflow: hidden;
-  min-width: 100vw;
-  min-height: 100vh;
-}
-
-</style>
-</head>
-<body>${pageHtml}</body>
-</html>`;
-
-    return format(html, { parser: 'html' });
+    //     const isLocalModule = libDir.startsWith(cwd);
+    //     if (!isLocalModule) {
+    //       // If user installs fig with "--global", generated
+    //       // react components cannot import "react" and "react-dom".
+    //       // To solve it, we force change the import target paths to
+    //       // our libDir's subdirectory.
+    //       const symlinkFullPath = join(libDir, '.' + makeHash(cwd));
+    //       await symlinkDir(cwd, symlinkFullPath);
+    //       pagesFullDir = join(symlinkFullPath, pagesDir);
+    //     }
+    //
+    //     const pageComponentModule = await import(
+    //       join(pagesFullDir, this.name + '.js')
+    //     );
+    //     const {
+    //       [this.name]: PageComponent,
+    //     }: { [key: string]: ComponentType<any> } = pageComponentModule;
+    //
+    //     const pageHtml = renderToStaticMarkup(
+    //       React.createElement(PageComponent, null)
+    //     );
+    //
+    //     const html = `<html>
+    // <head>
+    // <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    // <style>
+    //
+    // body {
+    //   margin: 0;
+    //   padding: 0;
+    //   font-family: sans-serif;
+    //   position: absolute;
+    //   width: 100vw;
+    //   min-height: 100vh;
+    // }
+    //
+    // body > * {
+    //   overflow: hidden;
+    //   min-width: 100vw;
+    //   min-height: 100vh;
+    // }
+    //
+    // </style>
+    // </head>
+    // <body>${pageHtml}</body>
+    // </html>`;
+    //
+    //     return format(html, { parser: 'html' });
   }
 
   appendComponentInstanceElement(
