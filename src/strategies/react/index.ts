@@ -2,7 +2,6 @@ import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
-import { createHash } from 'crypto';
 import { join } from 'path';
 import Piscina from 'piscina';
 import { format } from 'prettier';
@@ -23,15 +22,10 @@ import {
   makeLayout,
 } from './visit-utils';
 
-function makeHash(s: string | Buffer): string {
-  return createHash('sha1').digest('hex');
-}
-
 class ReactStrategy implements StrategyInterface {
   genContext: GenContext;
   renderHtmlThread: Piscina;
 
-  // rootNode: Node | undefined;
   cursor: NodePath<JSXElement> | undefined;
 
   constructor(genContext: GenContext) {
@@ -80,9 +74,6 @@ class ReactStrategy implements StrategyInterface {
         '@babel/plugin-transform-modules-commonjs',
         '@babel/plugin-transform-react-jsx',
         '@babel/plugin-transform-typescript',
-        // babelPluginTransformReactJsx,
-        // babelPluginTransformModulesCommonjs,
-        // babelPluginTransformTypescript,
       ],
     })!;
 
@@ -94,7 +85,7 @@ class ReactStrategy implements StrategyInterface {
 
   async renderHtml(componentInfo: ComponentInfo): Promise<string> {
     const { name } = componentInfo;
-    let { pagesFullDir, libDir } = this.genContext;
+    let { pagesFullDir } = this.genContext;
 
     return await this.renderHtmlThread.run({
       pagesFullDir,

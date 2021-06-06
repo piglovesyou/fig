@@ -19,6 +19,7 @@ export async function processHtml(
   if (!strategy) throw new Error('Never. Strategy should be instantiated.');
 
   const html = await strategy.renderHtml(componentInfo);
+
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
 }
 
@@ -35,15 +36,15 @@ export async function gen(
     if (!strategy) throw new Error('Never. Strategy should be instantiated.');
 
     // Generate components to "./components" and "./pages"
-    await pMap(componentsMap, async ([, componentInfo]) => {
-      await processComponent(componentInfo, genContext);
-    });
+    await pMap(componentsMap, ([, componentInfo]) =>
+      processComponent(componentInfo, genContext)
+    );
 
     // Generate html to "./public"
     await makeDir(genContext.htmlFullDir);
-    await pMap(componentsMap, async ([, componentInfo]) => {
-      await processHtml(componentInfo, genContext);
-    });
+    await pMap(componentsMap, ([, componentInfo]) =>
+      processHtml(componentInfo, genContext)
+    );
 
     await strategy.dispose();
   }

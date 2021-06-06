@@ -58,14 +58,3 @@ export async function processComponent(
     await writeFile(fullBasePath + ext, content);
   }
 }
-
-// // TODO: Similar to preprocess. Refactor
-// export async function processCanvas(
-//   canvas: Canvas,
-//   genContext: GenContext
-// ): Promise<void> {
-//   for (const screen of canvas.children) {
-//     if (isValidComponentNode(screen))
-//       await processComponent(screen, genContext);
-//   }
-// }
