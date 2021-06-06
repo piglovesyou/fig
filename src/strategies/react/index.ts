@@ -41,7 +41,6 @@ class ReactStrategy implements StrategyInterface {
     const { libDir } = genContext;
     // The reason using thread is to set NODE_PATH value, otherwise
     // components can't resolve "react" and "react-dom".
-    require.resolve('react');
     this.renderHtmlThread = new Piscina({
       maxQueue: 'auto',
       filename: join(
