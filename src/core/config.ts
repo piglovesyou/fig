@@ -1,6 +1,7 @@
+import commandLineArgs from 'command-line-args';
+import commandLineUsage, { OptionDefinition } from 'command-line-usage';
 import { cosmiconfig } from 'cosmiconfig';
 import { dirname, join, relative } from 'path';
-import * as defaultStartegyModule from '../strategies/react';
 import { StrategyModule } from '../types/strategy';
 
 const MODULE_NAME = 'fig';
@@ -13,36 +14,82 @@ interface _FigConfigBase<StrategySpecifier> {
   imagesDir?: string;
   strategy: StrategySpecifier;
   fileKeys: string[];
+  token?: string;
+  require?: string[];
+  help?: boolean;
 }
 
 export type FigUserConfig = _FigConfigBase<string>;
 
-export type FigConfig = Required<_FigConfigBase<StrategyModule>>;
-
-const DEFAULT_FIG_CONFIG: FigConfig = {
+const DEFAULT_FIG_CONFIG: FigUserConfig = {
   baseDir: '.',
   componentsDir: 'components',
   pagesDir: 'pages',
   htmlDir: 'public',
   imagesDir: 'images',
-  strategy: defaultStartegyModule,
+  strategy: 'react',
   fileKeys: [],
+  token: '',
+  help: false,
 };
 
-export async function applyDefaultConfig(
-  config: FigUserConfig,
-  configFullPath?: string
-): Promise<FigConfig> {
-  return {
-    ...DEFAULT_FIG_CONFIG,
-    ...config,
-    strategy: await loadStrategy(config.strategy, configFullPath),
-  };
-}
+export type FigConfig = Required<_FigConfigBase<StrategyModule>>;
 
-export function verifyConfig(config: FigConfig) {
-  const { strategy } = config;
-  if (!strategy) throw new Error('Specify strategy.');
+export const commandLineOptions: OptionDefinition[] = [
+  {
+    name: 'fileKeys',
+    multiple: true,
+    defaultOption: true,
+    description: `{bold Required}. Pass one or more Figma file keys. You can get yours from browser location bar as "https://www.figma.com/file/{bold :FILE_KEY}/:TITLE".`,
+    typeLabel: 'fileKey',
+  },
+  {
+    name: 'token',
+    typeLabel: 'token',
+    description: `{bold Required}. Provide one valid Figma access token. It also accepts $TOKEN environment variable. See https://www.figma.com/developers/api#access-tokens.`,
+  },
+  {
+    name: 'baseDir',
+    description: `"." by default. If you specify "__generated__" as baseDir, it generates components in "__generated__/components" for example.`,
+  },
+  {
+    name: 'componentsDir',
+    description:
+      '"components" by default. A directory to generate your component sources to.',
+  },
+  {
+    name: 'pagesDir',
+    description: `"pages" by default. A directory to generate your page component sources to.`,
+  },
+  {
+    name: 'htmlDir',
+    description: `"public" by default. A directory to generate your HTML sources to.`,
+  },
+  {
+    name: 'imagesDir',
+    description: `"images" by default. A directory to fetch your image resources to.`,
+  },
+  {
+    name: 'strategy',
+    description: `"react" by default, and is the only supported strategy for now.`,
+  },
+  { name: 'help', type: Boolean, description: `Show this message.` },
+];
+
+export function verifyConfig(config: FigConfig): void | never {
+  const { strategy, fileKeys, token } = config;
+  if (!fileKeys.length) {
+    console.error(`Specify a Figma file key.`);
+    showHelpAndExit(1);
+  }
+  if (!token) {
+    console.error(`Specify a Figma token.`);
+    showHelpAndExit(1);
+  }
+  if (!strategy) {
+    console.error('Specify strategy.');
+    showHelpAndExit(1);
+  }
 }
 
 async function loadStrategy(
@@ -60,14 +107,78 @@ async function loadStrategy(
   return await import(`../strategies/${strategyName}`);
 }
 
-export async function loadConfig(): Promise<FigConfig> {
+function loadCommandLineArgs() {
+  const options = commandLineArgs(commandLineOptions);
+  const contented = Object.entries(options).filter(([, v]) =>
+    Array.isArray(v) ? v.length : v
+  );
+  return Object.fromEntries(contented);
+}
+
+function applyDefaultConfig(userConfig: FigUserConfig) {
+  return {
+    ...DEFAULT_FIG_CONFIG,
+    token: process.env.TOKEN || '',
+    ...userConfig,
+  } as Required<FigUserConfig>;
+}
+
+export async function createConfig(
+  userConfig: _FigConfigBase<string>,
+  cwd: string = process.cwd()
+): Promise<FigConfig> {
+  const fullConfig: Required<FigUserConfig> = applyDefaultConfig(userConfig);
+
+  return {
+    ...fullConfig,
+    strategy: await loadStrategy(fullConfig.strategy, cwd),
+  };
+}
+
+function showHelpAndExit(code: number) {
+  const sections = [
+    {
+      header: 'Fig',
+      content: `A CLI to generates HTML and Component sources from Figma file.`,
+    },
+    {
+      header: 'Example',
+      content: `$ fig {bold --token} token {bold fileKey} [fileKey ...]`,
+    },
+    {
+      header: 'Options',
+      optionList: commandLineOptions,
+    },
+  ];
+  const usage = commandLineUsage(sections);
+  console.log(usage);
+  process.exit(code);
+}
+
+export async function loadConfig(): Promise<{
+  config: FigConfig;
+  cwd: string;
+}> {
+  const loadedCommandLineArgs = loadCommandLineArgs();
+  if (loadedCommandLineArgs.help) showHelpAndExit(0);
+
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();
-  if (!result) throw new Error(`.figrc is not found.`);
-  const config: FigConfig = await applyDefaultConfig(
-    result.config,
-    result.filepath
+
+  const rcConfig: FigUserConfig = result?.config || {};
+  const cwd: string = result?.filepath
+    ? dirname(result.filepath)
+    : process.cwd();
+
+  const config = await createConfig(
+    {
+      ...rcConfig,
+      ...loadedCommandLineArgs,
+    },
+    // TODO: Return cwd for later use
+    cwd
   );
+
   verifyConfig(config);
-  return config;
+  return { config, cwd };
 }

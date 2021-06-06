@@ -4,60 +4,74 @@ import pMap from 'p-map';
 import { join } from 'path';
 import { requestFile } from '../core/api';
 import { FigConfig } from '../core/config';
+import { updateLog, updateLogDone } from '../core/print';
 import { FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
-import { StrategyInterface } from '../types/strategy';
 import { makeGenContext } from './make-gen-context';
 import { processComponent } from './process-component';
 
-async function registerTsNodeIfPossible() {
-  try {
-    const tsNode = await import('ts-node');
-    tsNode.register({ transpileOnly: true });
-    return true;
-  } catch (e) {}
-  return false;
-}
-
 export async function processHtml(
-  strategy: StrategyInterface,
   componentInfo: ComponentInfo,
   genContext: GenContext
 ) {
   const { node, name } = componentInfo;
-  if (node.type !== 'FRAME') return;
-  const html = await strategy.renderHtml(genContext);
+  if (node.type !== 'FRAME')
+    throw new Error('Never. node.type should be FRAME');
+  const { strategy } = genContext;
+  if (!strategy) throw new Error('Never. Strategy should be instantiated.');
+
+  const html = await strategy.renderHtml(componentInfo);
+
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
 }
 
-export async function gen(config: FigConfig): Promise<void> {
-  const { fileKeys } = config;
+export async function gen(
+  config: FigConfig,
+  cwd = process.cwd()
+): Promise<void> {
+  const { fileKeys, token } = config;
   for (const fileKey of fileKeys) {
-    const figmaFile: FigmaFile = await requestFile(fileKey);
+    updateLog(`Fetching data of "${fileKey}"..`);
+    const figmaFile: FigmaFile = await requestFile(fileKey, token);
 
-    const genContext = await makeGenContext(figmaFile, fileKey, config);
-    const {
-      componentsMap,
-      config: {
-        strategy: { createStrategy },
-      },
-    } = genContext;
+    updateLog(`Fetching image resources..`);
+    const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
+    const { componentsMap, strategy } = genContext;
+    if (!strategy) throw new Error('Never. Strategy should be instantiated.');
 
-    // Generate components to "components" and "pages"
-    const result = await pMap(componentsMap, async ([, componentInfo]) => {
-      // TODO: Strategy for genContext, not for components. Are you crazy?
-      const strategy = createStrategy(componentInfo);
-      await processComponent(strategy, componentInfo, genContext);
-      return [componentInfo, strategy] as [ComponentInfo, StrategyInterface];
-    });
+    const components: ComponentInfo[] = [];
+    const frames: ComponentInfo[] = [];
+    for (const [, componentInfo] of componentsMap) {
+      const { node } = componentInfo;
+      if (node.type === 'FRAME') frames.push(componentInfo);
+      else components.push(componentInfo);
+    }
+
+    // Generate components to "./components"
+    updateLog(`Generating ${components.length} components..`);
+    await pMap(componentsMap, ([, componentInfo]) =>
+      processComponent(componentInfo, genContext)
+    );
+
+    // Generate components to "./pages"
+    updateLog(`Generating ${frames.length} page components..`);
+    await pMap(componentsMap, ([, componentInfo]) =>
+      processComponent(componentInfo, genContext)
+    );
 
     // Generate html to "./public"
-    // XXX: Catastrophic. Refactor.
-    if (await registerTsNodeIfPossible()) {
-      await makeDir(genContext.htmlFullDir);
-      await pMap(result, async ([componentInfo, strategy]) => {
-        await processHtml(strategy, componentInfo, genContext);
-      });
-    }
+    updateLog(`Generating ${frames.length} HTMLs..`);
+    await makeDir(genContext.htmlFullDir);
+    await pMap(frames, (componentInfo) => {
+      return processHtml(componentInfo, genContext);
+    });
+
+    await strategy.dispose();
+
+    figmaFile.name;
+    updateLog(
+      `"${figmaFile.name}" done. ${genContext.imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`
+    );
+    updateLogDone();
   }
 }

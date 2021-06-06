@@ -10,10 +10,10 @@ import {
 
 // XXX: Catastrophic. Refactor.
 export interface StrategyInterface {
-  makeLayout(): NodePath<JSXElement>;
+  makeLayout(_: ComponentInfo): NodePath<JSXElement>;
   postWalk(): void;
-  render(): string;
-  renderHtml(genContext: GenContext): Promise<string>;
+  render(_: ComponentInfo): [content: string, ext: string][];
+  renderHtml(_: ComponentInfo): Promise<string>;
   appendComponentInstanceElement(
     context: VisitContext,
     parentContext: VisitContextWithCursor,
@@ -33,8 +33,9 @@ export interface StrategyInterface {
     context: VisitContext,
     parentContext: ParentVisitContext
   ): void;
+  dispose(): void | Promise<void>;
 }
 
 export interface StrategyModule {
-  createStrategy: (componentInfo: ComponentInfo) => StrategyInterface;
+  createStrategy: (genContext: GenContext) => StrategyInterface;
 }

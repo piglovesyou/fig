@@ -1,7 +1,7 @@
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import * as api from '../src/core/api';
-import { applyDefaultConfig } from '../src/core/config';
+import { createConfig } from '../src/core/config';
 import { shouldRefresh } from '../src/core/env';
 import { gen } from '../src/gen/gen';
 import { readJson } from '../src/__tools/fns';
@@ -15,6 +15,8 @@ const caseArgs: CaseArg[] = [
   ['patagonia', 'Home_1$4', 'pC6EOjjdZpS7PVsPTgjNLL'],
 ];
 
+const originalRequestFile = api.requestFile;
+
 describe('Test full html', () => {
   // Caution: run the tests sequentially. Break down otherwise.
   test.each(caseArgs)(
@@ -23,13 +25,13 @@ describe('Test full html', () => {
       // Spy to read cache by default or update it
       jest
         .spyOn(api, 'requestFile')
-        .mockImplementation(async (fileKey: string) => {
+        .mockImplementation(async (fileKey: string, token: string) => {
           const cacheFullPath = join(
             __dirname,
             `__fixtures/${fileKey}.file.json`
           );
           if (shouldRefresh) {
-            const figmaFile = await api.requestFile(fileKey);
+            const figmaFile = await originalRequestFile(fileKey, token);
             await writeFile(
               cacheFullPath,
               JSON.stringify(figmaFile, undefined, 2)
@@ -40,7 +42,7 @@ describe('Test full html', () => {
         });
 
       const baseDir = join(outDir, name);
-      const config = await applyDefaultConfig({
+      const config = await createConfig({
         fileKeys: [fileKey],
         baseDir,
         strategy: 'react',

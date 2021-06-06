@@ -6,17 +6,17 @@ import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { parseAsRoot } from '../strategies/react/ast-utils';
 import { ComponentInfo, GenContext } from '../types/gen';
-import { StrategyInterface } from '../types/strategy';
 import { EmptyVisitContext } from '../types/visit';
 import { visitNode } from '../visit/visit';
 
 export async function processComponent(
-  strategy: StrategyInterface,
   componentInfo: ComponentInfo,
   genContext: GenContext
 ) {
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
+  const { strategy } = genContext;
+  if (!strategy) throw new Error('Never. Strategy should be instantiated.');
 
   const { baseFullDir } = genContext;
   const componetsDir = join(
@@ -26,22 +26,22 @@ export async function processComponent(
       : genContext.config.componentsDir
   );
   await makeDir(componetsDir);
-  const fullPath = join(componetsDir, `${name}.tsx`);
+  const fullBasePath = join(componetsDir, name);
 
   let rootAst: File;
   let placeholderCursor: NodePath<JSXElement>;
 
-  if (false /*existsSync(fullPath)*/) {
+  if (false /*existsSync(fullBasePath)*/) {
     // TODO: Update mode.
     // 1. Parse and get the File ast
     // 2. Find the root element to update
     // 3. Repeat update and traverse
-    const content = await readFile(fullPath, 'utf-8');
+    const content = await readFile(fullBasePath + '.tsx', 'utf-8');
     rootAst = parseAsRoot(content);
     throw new Error('Implement');
   } else {
     // Create mode.
-    placeholderCursor = strategy.makeLayout();
+    placeholderCursor = strategy.makeLayout(componentInfo);
 
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
     walkNodeTree(
@@ -54,16 +54,7 @@ export async function processComponent(
     strategy.postWalk();
   }
 
-  await writeFile(fullPath, strategy.render());
+  for (const [content, ext] of strategy.render(componentInfo)) {
+    await writeFile(fullBasePath + ext, content);
+  }
 }
-
-// // TODO: Similar to preprocess. Refactor
-// export async function processCanvas(
-//   canvas: Canvas,
-//   genContext: GenContext
-// ): Promise<void> {
-//   for (const screen of canvas.children) {
-//     if (isValidComponentNode(screen))
-//       await processComponent(screen, genContext);
-//   }
-// }

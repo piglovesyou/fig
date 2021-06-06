@@ -97,10 +97,11 @@ export function appendVectorListIfNecessary(
 export async function appendVectorsMap(
   vectorsMap: Map<string, string>,
   vectorList: string[],
-  fileKey: string
+  fileKey: string,
+  token: string
 ): Promise<void> {
   if (!vectorList.length) return;
-  const vectorsJson = await requestVectors(fileKey, vectorList);
+  const vectorsJson = await requestVectors(fileKey, vectorList, token);
   if (vectorsJson.images) {
     await pMap(Object.entries(vectorsJson.images), async ([guid, url]) => {
       if (!url) return;

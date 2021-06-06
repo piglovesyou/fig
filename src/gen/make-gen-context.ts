@@ -29,13 +29,16 @@ function makePaths(config: FigConfig) {
 export async function makeGenContext(
   figmaFile: FigmaFile,
   fileKey: string,
-  config: FigConfig
+  config: FigConfig,
+  cwd: string
 ): Promise<GenContext> {
   const paths = makePaths(config);
+  const { token } = config;
+  const libDir = join(__dirname, '../..');
 
   const componentsMap: ComponentsMap = new Map();
   const vectorsMap = new Map<string, string>();
-  const imagesMap = await makeImagesMap(paths, fileKey);
+  const imagesMap = await makeImagesMap(paths, fileKey, token);
 
   const vectorList: string[] = []; // TODO: Use Set
 
@@ -57,13 +60,21 @@ export async function makeGenContext(
         );
       }
 
-  await appendVectorsMap(vectorsMap, vectorList, fileKey);
+  await appendVectorsMap(vectorsMap, vectorList, fileKey, token);
 
-  return {
+  const genContext: GenContext = {
     componentsMap,
     imagesMap,
     vectorsMap,
     config,
+    cwd,
+    libDir,
     ...paths,
   };
+  const {
+    strategy: { createStrategy },
+  } = config;
+  const strategy = createStrategy(genContext);
+
+  return { ...genContext, strategy };
 }

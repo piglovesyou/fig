@@ -1,10 +1,10 @@
+import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { join } from 'path';
+import Piscina from 'piscina';
 import { format } from 'prettier';
-import React, { ComponentType } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { StrategyInterface } from '../../types/strategy';
 import {
@@ -12,6 +12,7 @@ import {
   VisitContext,
   VisitContextWithCursor,
 } from '../../types/visit';
+import { RenderHtmlArgType } from './render-html';
 import {
   appendComponentInstanceElement,
   appendElement,
@@ -21,20 +22,32 @@ import {
   makeLayout,
 } from './visit-utils';
 
-class JsxStrategy implements StrategyInterface {
-  fid: string;
-  name: string;
+class ReactStrategy implements StrategyInterface {
+  genContext: GenContext;
+  renderHtmlThread: Piscina;
 
-  // rootNode: Node | undefined;
   cursor: NodePath<JSXElement> | undefined;
 
-  constructor({ node, name }: ComponentInfo) {
-    this.fid = node.id;
-    this.name = name;
+  constructor(genContext: GenContext) {
+    this.genContext = genContext;
+
+    const { libDir } = genContext;
+    // The reason using thread is to set NODE_PATH value, otherwise
+    // components can't resolve "react" and "react-dom".
+    this.renderHtmlThread = new Piscina({
+      maxQueue: 'auto',
+      filename: join(
+        __dirname,
+        '../../../dist/strategies/react/render-html.js'
+      ),
+      env: {
+        NODE_PATH: join(libDir, 'node_modules'),
+      },
+    });
   }
 
-  makeLayout() {
-    const cursor = makeLayout(this.name);
+  makeLayout({ node, name }: ComponentInfo) {
+    const cursor = makeLayout(name);
     if (!cursor) throw new Error('should be found');
     this.cursor = cursor;
     return cursor;
@@ -46,49 +59,38 @@ class JsxStrategy implements StrategyInterface {
     erasePlaceholderElement(this.cursor);
   }
 
-  render() {
+  render(): [content: string, ext: string][] {
     if (!this.cursor) throw new Error(`Never. cursor must be set on render().`);
     const program: NodePath<Program> = this.cursor.findParent((path) =>
       isProgram(path.node)
     )! as NodePath<Program>;
-    return format(generate(program.node).code, { parser: 'babel' });
+
+    const { code: tsxCode } = generate(program.node);
+    const { code: jsCode } = transformFromAstSync(program.node, undefined, {
+      filename: 'a.tsx',
+      cwd: __dirname,
+      babelrc: false,
+      plugins: [
+        '@babel/plugin-transform-modules-commonjs',
+        '@babel/plugin-transform-react-jsx',
+        '@babel/plugin-transform-typescript',
+      ],
+    })!;
+
+    return [
+      [format(tsxCode, { parser: 'babel' }), '.tsx'],
+      [format(jsCode!, { parser: 'babel' }), '.js'],
+    ];
   }
 
-  async renderHtml(genContext: GenContext): Promise<string> {
-    const { pagesFullDir } = genContext;
-    const pageComponentModule = await import(join(pagesFullDir, this.name));
-    const {
-      [this.name]: PageComponent,
-    }: { [key: string]: ComponentType<any> } = pageComponentModule;
+  async renderHtml(componentInfo: ComponentInfo): Promise<string> {
+    const { name } = componentInfo;
+    let { pagesFullDir } = this.genContext;
 
-    const pageHtml = renderToStaticMarkup(
-      React.createElement(PageComponent, null)
-    );
-
-    return `<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<style>
-  
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  position: absolute;
-  width: 100vw;
-  min-height: 100vh;
-}
-
-body > * {
-  overflow: hidden;
-  min-width: 100vw;
-  min-height: 100vh;
-}
-
-</style>
-</head>
-<body>${pageHtml}</body>
-</html>`;
+    return await this.renderHtmlThread.run({
+      pagesFullDir,
+      name,
+    } as RenderHtmlArgType);
   }
 
   appendComponentInstanceElement(
@@ -124,8 +126,12 @@ body > * {
       throw new Error(`Never. This function is supposed to emit on TEXT node.`);
     appendTextContext(context, parentContext);
   }
+
+  async dispose(): Promise<void> {
+    // return await this.renderHtmlThread.destroy();
+  }
 }
 
-export function createStrategy(componentInfo: ComponentInfo): JsxStrategy {
-  return new JsxStrategy(componentInfo);
+export function createStrategy(genContext: GenContext): ReactStrategy {
+  return new ReactStrategy(genContext);
 }
