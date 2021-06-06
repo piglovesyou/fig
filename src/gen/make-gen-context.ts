@@ -29,10 +29,12 @@ function makePaths(config: FigConfig) {
 export async function makeGenContext(
   figmaFile: FigmaFile,
   fileKey: string,
-  config: FigConfig
+  config: FigConfig,
+  cwd: string
 ): Promise<GenContext> {
   const paths = makePaths(config);
   const { token } = config;
+  const libDir = join(__dirname, '../..');
 
   const componentsMap: ComponentsMap = new Map();
   const vectorsMap = new Map<string, string>();
@@ -65,6 +67,8 @@ export async function makeGenContext(
     imagesMap,
     vectorsMap,
     config,
+    cwd,
+    libDir,
     ...paths,
   };
 }

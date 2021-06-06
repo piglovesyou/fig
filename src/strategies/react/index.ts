@@ -1,14 +1,13 @@
 import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
-import babelPluginTransformModulesCommonjs from '@babel/plugin-transform-modules-commonjs';
-import babelPluginTransformReactJsx from '@babel/plugin-transform-react-jsx';
-import babelPluginTransformTypescript from '@babel/plugin-transform-typescript';
 import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
+import { createHash } from 'crypto';
 import { join } from 'path';
 import { format } from 'prettier';
 import React, { ComponentType } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import symlinkDir from 'symlink-dir';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { StrategyInterface } from '../../types/strategy';
 import {
@@ -24,6 +23,10 @@ import {
   erasePlaceholderElement,
   makeLayout,
 } from './visit-utils';
+
+function makeHash(s: string | Buffer): string {
+  return createHash('sha1').digest('hex');
+}
 
 class ReactStrategy implements StrategyInterface {
   fid: string;
@@ -59,11 +62,15 @@ class ReactStrategy implements StrategyInterface {
     const { code: tsxCode } = generate(program.node);
     const { code: jsCode } = transformFromAstSync(program.node, undefined, {
       filename: 'a.tsx',
+      cwd: __dirname,
       babelrc: false,
       plugins: [
-        babelPluginTransformReactJsx,
-        babelPluginTransformModulesCommonjs,
-        babelPluginTransformTypescript,
+        '@babel/plugin-transform-modules-commonjs',
+        '@babel/plugin-transform-react-jsx',
+        '@babel/plugin-transform-typescript',
+        // babelPluginTransformReactJsx,
+        // babelPluginTransformModulesCommonjs,
+        // babelPluginTransformTypescript,
       ],
     })!;
 
@@ -74,7 +81,26 @@ class ReactStrategy implements StrategyInterface {
   }
 
   async renderHtml(genContext: GenContext, name: string): Promise<string> {
-    const { pagesFullDir } = genContext;
+    require('react');
+    require('react-dom');
+    let {
+      pagesFullDir,
+      cwd,
+      libDir,
+      config: { pagesDir },
+    } = genContext;
+
+    const isLocalModule = libDir.startsWith(cwd);
+    if (!isLocalModule) {
+      // If user installs fig with "--global", generated
+      // react components cannot import "react" and "react-dom".
+      // To solve it, we force change the import target paths to
+      // our libDir's subdirectory.
+      const symlinkFullPath = join(libDir, '.' + makeHash(cwd));
+      await symlinkDir(cwd, symlinkFullPath);
+      pagesFullDir = join(symlinkFullPath, pagesDir);
+    }
+
     const pageComponentModule = await import(
       join(pagesFullDir, this.name + '.js')
     );

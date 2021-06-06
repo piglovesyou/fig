@@ -12,6 +12,8 @@ export type GenContext = {
   imagesMap: Map<string, string>;
   vectorsMap: Map<string, string>;
   config: FigConfig;
+  cwd: string;
+  libDir: string;
 
   baseFullDir: string;
   componentsFullDir: string;

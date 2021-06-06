@@ -105,7 +105,10 @@ export async function createConfig(
   };
 }
 
-export async function loadConfig(): Promise<FigConfig> {
+export async function loadConfig(): Promise<{
+  config: FigConfig;
+  cwd: string;
+}> {
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();
 
@@ -124,5 +127,5 @@ export async function loadConfig(): Promise<FigConfig> {
   );
 
   verifyConfig(config);
-  return config;
+  return { config, cwd };
 }

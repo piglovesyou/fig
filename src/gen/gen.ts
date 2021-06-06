@@ -30,12 +30,15 @@ export async function processHtml(
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
 }
 
-export async function gen(config: FigConfig): Promise<void> {
+export async function gen(
+  config: FigConfig,
+  cwd = process.cwd()
+): Promise<void> {
   const { fileKeys, token } = config;
   for (const fileKey of fileKeys) {
     const figmaFile: FigmaFile = await requestFile(fileKey, token);
 
-    const genContext = await makeGenContext(figmaFile, fileKey, config);
+    const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
     const {
       componentsMap,
       config: {
