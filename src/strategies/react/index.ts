@@ -4,7 +4,7 @@ import { NodePath } from '@babel/traverse';
 import { isProgram, JSXElement, Program } from '@babel/types';
 import { createHash } from 'crypto';
 import { join } from 'path';
-import piscina from 'piscina';
+import Piscina from 'piscina';
 import { format } from 'prettier';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { StrategyInterface } from '../../types/strategy';
@@ -23,26 +23,33 @@ import {
   makeLayout,
 } from './visit-utils';
 
-const { Piscina } = piscina;
-
-// new StaticPool({});
-
 function makeHash(s: string | Buffer): string {
   return createHash('sha1').digest('hex');
 }
 
 class ReactStrategy implements StrategyInterface {
   genContext: GenContext;
-  // fid: string;
-  // name: string;
+  renderHtmlThread: Piscina;
 
   // rootNode: Node | undefined;
   cursor: NodePath<JSXElement> | undefined;
 
   constructor(genContext: GenContext) {
     this.genContext = genContext;
-    // this.fid = node.id;
-    // this.name = name;
+
+    const { libDir } = genContext;
+    // The reason using thread is to set NODE_PATH value, otherwise
+    // components can't resolve "react" and "react-dom".
+    this.renderHtmlThread = new Piscina({
+      maxQueue: 'auto',
+      filename: join(
+        __dirname,
+        '../../../dist/strategies/react/render-html.js'
+      ),
+      env: {
+        NODE_PATH: join(libDir, 'node_modules'),
+      },
+    });
   }
 
   makeLayout({ node, name }: ComponentInfo) {
@@ -89,21 +96,10 @@ class ReactStrategy implements StrategyInterface {
     const { name } = componentInfo;
     let { pagesFullDir, libDir } = this.genContext;
 
-    // The reason using thread is to set NODE_PATH value, otherwise
-    // components can't resolve "react" and "react-dom".
-    // TODO: Refactor.
-    const thread = new Piscina({
-      maxQueue: 'auto',
-      filename: join(
-        __dirname,
-        '../../../dist/strategies/react/render-html.js'
-      ),
-      env: {
-        NODE_PATH: join(libDir, 'node_modules'),
-      },
-    });
-
-    return await thread.run({ pagesFullDir, name } as RenderHtmlArgType);
+    return await this.renderHtmlThread.run({
+      pagesFullDir,
+      name,
+    } as RenderHtmlArgType);
   }
 
   appendComponentInstanceElement(
@@ -138,6 +134,10 @@ class ReactStrategy implements StrategyInterface {
     if (node.type !== 'TEXT')
       throw new Error(`Never. This function is supposed to emit on TEXT node.`);
     appendTextContext(context, parentContext);
+  }
+
+  dispose(): Promise<void> {
+    return this.renderHtmlThread.destroy();
   }
 }
 

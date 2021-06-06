@@ -39,13 +39,7 @@ export async function gen(
     const figmaFile: FigmaFile = await requestFile(fileKey, token);
 
     const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
-    const {
-      componentsMap,
-      config: {
-        strategy: { createStrategy },
-      },
-      strategy,
-    } = genContext;
+    const { componentsMap, strategy } = genContext;
 
     // Generate components to "components" and "pages"
     const result = await pMap(componentsMap, async ([, componentInfo]) => {
@@ -59,5 +53,7 @@ export async function gen(
     await pMap(result, async ([componentInfo, strategy]) => {
       await processHtml(strategy, componentInfo, genContext);
     });
+
+    await strategy?.dispose();
   }
 }

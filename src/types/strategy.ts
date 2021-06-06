@@ -33,6 +33,7 @@ export interface StrategyInterface {
     context: VisitContext,
     parentContext: ParentVisitContext
   ): void;
+  dispose(): void | Promise<void>;
 }
 
 export interface StrategyModule {
