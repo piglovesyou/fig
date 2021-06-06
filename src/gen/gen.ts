@@ -68,8 +68,9 @@ export async function gen(
 
     await strategy.dispose();
 
+    figmaFile.name;
     updateLog(
-      `Done. Synchronized ${genContext.imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs.`
+      `"${figmaFile.name}" done. ${genContext.imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`
     );
     updateLogDone();
   }
