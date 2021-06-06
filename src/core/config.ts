@@ -86,6 +86,10 @@ export const commandLineOptions: OptionDefinition[] = [
 
 export function verifyConfig(config: FigConfig): void | never {
   const { strategy, fileKeys, token, version } = config;
+  if (version) {
+    console.info(require('../../package.json').version);
+    process.exit(0);
+  }
   if (!fileKeys.length) {
     console.error(`Specify a Figma file key.`);
     showHelpAndExit(1);
@@ -97,10 +101,6 @@ export function verifyConfig(config: FigConfig): void | never {
   if (!strategy) {
     console.error('Specify strategy.');
     showHelpAndExit(1);
-  }
-  if (version) {
-    console.info(require('../../package.json').version);
-    process.exit(0);
   }
 }
 
