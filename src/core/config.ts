@@ -46,7 +46,7 @@ export const commandLineOptions: OptionDefinition[] = [
   {
     name: 'token',
     typeLabel: 'token',
-    description: `{bold Required}. Provide one valid Figma access token. https://www.figma.com/developers/api#access-tokens`,
+    description: `{bold Required}. Provide one valid Figma access token. It also accepts $TOKEN environment variable. See https://www.figma.com/developers/api#access-tokens.`,
   },
   {
     name: 'baseDir',
@@ -76,11 +76,20 @@ export const commandLineOptions: OptionDefinition[] = [
   { name: 'help', type: Boolean, description: `Show this message.` },
 ];
 
-export function verifyConfig(config: FigConfig) {
+export function verifyConfig(config: FigConfig): void | never {
   const { strategy, fileKeys, token } = config;
-  if (!fileKeys.length) throw new Error(`Specify a Figma file key.`);
-  if (!token) throw new Error(`Specify a Figma token.`);
-  if (!strategy) throw new Error('Specify strategy.');
+  if (!fileKeys.length) {
+    console.error(`Specify a Figma file key.`);
+    showHelpAndExit(1);
+  }
+  if (!token) {
+    console.error(`Specify a Figma token.`);
+    showHelpAndExit(1);
+  }
+  if (!strategy) {
+    console.error('Specify strategy.');
+    showHelpAndExit(1);
+  }
 }
 
 async function loadStrategy(
@@ -126,30 +135,32 @@ export async function createConfig(
   };
 }
 
+function showHelpAndExit(code: number) {
+  const sections = [
+    {
+      header: 'Fig',
+      content: `A CLI to generates HTML and Component sources from Figma file.`,
+    },
+    {
+      header: 'Example',
+      content: `$ fig {bold --token} token {bold fileKey} [fileKey ...]`,
+    },
+    {
+      header: 'Options',
+      optionList: commandLineOptions,
+    },
+  ];
+  const usage = commandLineUsage(sections);
+  console.log(usage);
+  process.exit(code);
+}
+
 export async function loadConfig(): Promise<{
   config: FigConfig;
   cwd: string;
 }> {
   const loadedCommandLineArgs = loadCommandLineArgs();
-  if (loadedCommandLineArgs.help) {
-    const sections = [
-      {
-        header: 'Fig',
-        content: `A CLI to generates HTML and Component sources from Figma file.`,
-      },
-      {
-        header: 'Example',
-        content: `$ fig {bold --token} token {bold fileKey} [fileKey ...]`,
-      },
-      {
-        header: 'Options',
-        optionList: commandLineOptions,
-      },
-    ];
-    const usage = commandLineUsage(sections);
-    console.log(usage);
-    process.exit(0);
-  }
+  if (loadedCommandLineArgs.help) showHelpAndExit(0);
 
   const explorer = await cosmiconfig(MODULE_NAME);
   const result = await explorer.search();

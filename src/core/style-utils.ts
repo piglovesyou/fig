@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import findLast from 'lodash.findlast';
 import { Color, EffectShadow, Paint, PaintSolidScaleMode } from '../types/ast';
 
 // const vectorTypes = [
@@ -72,7 +72,7 @@ export function backgroundSize(scaleMode: PaintSolidScaleMode) {
 
 export function getLastVisible<T>(arra: T[]): T | null {
   // @ts-ignore
-  return _.findLast(arra, (e: any) => e.visible != false);
+  return findLast(arra, (e: any) => e.visible != false);
 }
 
 export function paintToLinearGradient(paint: Paint) {
