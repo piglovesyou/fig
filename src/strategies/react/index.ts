@@ -127,8 +127,8 @@ class ReactStrategy implements StrategyInterface {
     appendTextContext(context, parentContext);
   }
 
-  dispose(): Promise<void> {
-    return this.renderHtmlThread.destroy();
+  async dispose(): Promise<void> {
+    // return await this.renderHtmlThread.destroy();
   }
 }
 

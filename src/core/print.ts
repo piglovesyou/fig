@@ -1,6 +1,6 @@
 import logUpdate from 'log-update';
 
-export const PRINT_PREFIX = '[ graphql-let ] ';
+export const PRINT_PREFIX = '[ fig ] ';
 
 export function printInfo(message: string): void {
   console.info(PRINT_PREFIX + message);
