@@ -22,6 +22,7 @@ import {
   erasePlaceholderElement,
   makeLayout,
 } from './visit-utils';
+
 const { Piscina } = piscina;
 
 // new StaticPool({});
@@ -83,13 +84,10 @@ class ReactStrategy implements StrategyInterface {
   }
 
   async renderHtml(genContext: GenContext, name: string): Promise<string> {
-    let {
-      pagesFullDir,
-      cwd,
-      libDir,
-      config: { pagesDir },
-    } = genContext;
+    let { pagesFullDir, libDir } = genContext;
 
+    // The reason using thread is to set NODE_PATH value, otherwise
+    // components can't resolve "react" and "react-dom".
     const thread = new Piscina({
       filename: join(__dirname, 'render-html.js'),
       env: {
@@ -97,61 +95,10 @@ class ReactStrategy implements StrategyInterface {
       },
     });
 
-    const x = await thread.run({
+    return await thread.run({
       pagesFullDir,
       name: this.name,
     } as RenderHtmlArgType);
-
-    return x;
-
-    //     const isLocalModule = libDir.startsWith(cwd);
-    //     if (!isLocalModule) {
-    //       // If user installs fig with "--global", generated
-    //       // react components cannot import "react" and "react-dom".
-    //       // To solve it, we force change the import target paths to
-    //       // our libDir's subdirectory.
-    //       const symlinkFullPath = join(libDir, '.' + makeHash(cwd));
-    //       await symlinkDir(cwd, symlinkFullPath);
-    //       pagesFullDir = join(symlinkFullPath, pagesDir);
-    //     }
-    //
-    //     const pageComponentModule = await import(
-    //       join(pagesFullDir, this.name + '.js')
-    //     );
-    //     const {
-    //       [this.name]: PageComponent,
-    //     }: { [key: string]: ComponentType<any> } = pageComponentModule;
-    //
-    //     const pageHtml = renderToStaticMarkup(
-    //       React.createElement(PageComponent, null)
-    //     );
-    //
-    //     const html = `<html>
-    // <head>
-    // <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    // <style>
-    //
-    // body {
-    //   margin: 0;
-    //   padding: 0;
-    //   font-family: sans-serif;
-    //   position: absolute;
-    //   width: 100vw;
-    //   min-height: 100vh;
-    // }
-    //
-    // body > * {
-    //   overflow: hidden;
-    //   min-width: 100vw;
-    //   min-height: 100vh;
-    // }
-    //
-    // </style>
-    // </head>
-    // <body>${pageHtml}</body>
-    // </html>`;
-    //
-    //     return format(html, { parser: 'html' });
   }
 
   appendComponentInstanceElement(
