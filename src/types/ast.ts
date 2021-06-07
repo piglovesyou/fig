@@ -676,6 +676,7 @@ export interface SLICE {
 }
 /** A node that can have instances created of it that share the same properties */
 export type COMPONENT = FRAME;
+export type COMPONENT_SET = FRAME;
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
 export type INSTANCE<ComponentID = string> = FRAME & {
   /** ID of component that this instance came from, refers to components table (see endpoints section below) */
@@ -711,6 +712,7 @@ export type NodeTypes = {
   SLICE: SLICE;
   /** A node that can have instances created of it that share the same properties */
   COMPONENT: COMPONENT;
+  COMPONENT_SET: COMPONENT_SET;
   /** An instance of a component, changes to the component result in the same changes applied to the instance */
   INSTANCE: INSTANCE;
 };
@@ -762,11 +764,13 @@ export type ComposableNode =
   | Node<'TEXT'>
   | Node<'SLICE'>
   | Node<'COMPONENT'>
+  | Node<'COMPONENT_SET'>
   | Node<'INSTANCE'>;
 
 export type LayoutableNode =
   | Node<'FRAME'>
   | Node<'COMPONENT'>
+  | Node<'COMPONENT_SET'>
   | Node<'INSTANCE'>;
 
 export type VectorTypeNode =
@@ -797,6 +801,7 @@ export function isLayoutableNode(node: Node): node is LayoutableNode {
     case 'FRAME':
     case 'INSTANCE':
     case 'COMPONENT':
+    case 'COMPONENT_SET':
       return true;
   }
   return false;

@@ -47,6 +47,8 @@ export function appendImportDeclaration(
   const program = cursor.findParent((path) =>
     isProgram(path.node)
   )! as NodePath<Program>;
+  if (componentName) {
+  }
   const importFromPage = context.parentNode?.type === 'FRAME';
   const importSource = `${
     importFromPage ? `../${genContext.config.componentsDir}` : '.'

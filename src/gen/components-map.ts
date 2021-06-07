@@ -11,6 +11,7 @@ export function appendComponentsMap(
   switch (node.type) {
     case 'INSTANCE':
     case 'COMPONENT':
+    case 'COMPONENT_SET':
       const val: ComponentInfo = {
         name: makeComponentName(node),
         node: node,
@@ -22,6 +23,7 @@ export function appendComponentsMap(
             componentsMap.set(node.componentId, val);
           break;
         case 'COMPONENT':
+        case 'COMPONENT_SET':
           if (
             !componentsMap.has(node.id) ||
             // We overwrite INSTANCE if it's held already

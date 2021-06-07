@@ -163,6 +163,7 @@ function applyNodeTypeStyle(
     case 'FRAME':
     case 'INSTANCE':
     case 'COMPONENT':
+    case 'COMPONENT_SET':
       // This is needed to overwrite component style by instance
       // TODO: When node has ".backgroundColor" ?
       if (node.backgroundColor)
