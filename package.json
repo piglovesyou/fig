@@ -89,6 +89,7 @@
     "compile-dev": "tsc --project tsconfig.dev.json",
     "build": "rimraf dist && tsc --project tsconfig.compile.json",
     "test": "jest",
-    "gh-pages": "gh-pages -d __tests__/__generated__"
+    "gh-pages": "gh-pages -d __tests__/__generated__",
+    "prepublishOnly": "yarn clean && yarn build && yarn test"
   }
 }
