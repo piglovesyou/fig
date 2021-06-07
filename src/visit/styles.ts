@@ -142,10 +142,11 @@ export function applyFontStyle(styles: CSSProperties, fontStyle: TypeStyle) {
     styles.lineHeight = `${fontStyle.lineHeightPercent * 1.25}%`;
     styles.letterSpacing = `${fontStyle.letterSpacing}px`;
 
-    if (fontStyle.textAlignHorizontal === 'JUSTIFIED') {
+    const { textAlignHorizontal } = fontStyle;
+    if (textAlignHorizontal === 'JUSTIFIED') {
       styles.textAlign = 'justify';
-    } else {
-      styles.textAlign = fontStyle.textAlignHorizontal.toLowerCase() as any;
+    } else if (textAlignHorizontal) {
+      styles.textAlign = textAlignHorizontal.toLowerCase() as any;
     }
   }
 }
