@@ -1,6 +1,6 @@
 {
   "name": "@piglovesyou/fig-cli",
-  "version": "0.3.4-0",
+  "version": "0.3.4",
   "main": "index.js",
   "license": "MIT",
   "husky": {
