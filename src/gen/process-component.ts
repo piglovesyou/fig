@@ -1,12 +1,12 @@
 import { NodePath } from '@babel/traverse';
 import { File, JSXElement } from '@babel/types';
-import { readFile, writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { parseAsRoot } from '../strategies/react/ast-utils';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { EmptyVisitContext } from '../types/visit';
+import { readFile, writeFile } from '../utils/fs';
 import { visitNode } from '../visit/visit';
 
 export async function processComponent(

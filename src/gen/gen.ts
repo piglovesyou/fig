@@ -1,4 +1,3 @@
-import { writeFile } from 'fs/promises';
 import makeDir from 'make-dir';
 import pMap from 'p-map';
 import { join } from 'path';
@@ -7,6 +6,7 @@ import { FigConfig } from '../core/config';
 import { updateLog, updateLogDone } from '../core/print';
 import { FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
+import { writeFile } from '../utils/fs';
 import { makeGenContext } from './make-gen-context';
 import { processComponent } from './process-component';
 

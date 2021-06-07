@@ -1,6 +1,6 @@
-import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { readFile } from '../utils/fs';
 
 export function renderInHtml(element: JSX.Element) {
   return `<html>
