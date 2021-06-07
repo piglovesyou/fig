@@ -1,34 +1,42 @@
 import { ComposableNode } from '../types/ast';
 import { makeComponentName } from './utils';
 
-function testValidForJsVarName(name: string): void | never {
+function testValidJsVarName(name: string): void | never {
   eval(`var ${name} = 0`);
 }
 
 describe('utils.test.ts', () => {
-  test('makeComponentName', async () => {
-    const r1 = makeComponentName({
-      type: 'FRAME',
-      id: 'id',
-      name: 'name',
-    } as ComposableNode);
-    expect(r1).toMatchInlineSnapshot(`"Name_id"`);
-    testValidForJsVarName(r1);
-
-    const r2 = makeComponentName({
+  test('makeComponentName Semi colons', async () => {
+    const actual = makeComponentName({
       type: 'FRAME',
       id: '11:11;00:00;22:22',
       name: 'name',
     } as ComposableNode);
-    expect(r2).toMatchInlineSnapshot(`"Name_11$11$00$00$22$22"`);
-    testValidForJsVarName(r2);
+    expect(actual).toMatchInlineSnapshot(`"Name_11$11$00$00$22$22"`);
+    testValidJsVarName(actual);
+  });
 
-    const r3 = makeComponentName({
+  test('makeComponentName Name with symbols', async () => {
+    const actual = makeComponentName({
       type: 'FRAME',
-      id: 'id',
-      name: '[abc] :a/:b/:c',
+      id: ")%}9_[<28@$6$5##]]{',$6[3/%]><`@}=1~.*1`:|(1#^<}4{",
+      name: ")%}9_[<28@$6$5##]]{',$6[3/%]><`@}=1~.*1`:|(1#^<}4{",
     } as ComposableNode);
-    expect(r3).toMatchInlineSnapshot(`"[abc] :a/:b/:c_id"`);
-    testValidForJsVarName(r3);
+    expect(actual).toMatchInlineSnapshot(
+      `"C92865631114_$9_$28$6$5$6$3$1$1$1$4$"`
+    );
+    testValidJsVarName(actual);
+  });
+
+  test('makeComponentName Name with symbols 2', async () => {
+    const actual = makeComponentName({
+      type: 'FRAME',
+      id: ',W1x2Q.pPglfb^y{<N=}i;W+a?qSbZ39T9o_#tOrfZaePb^Oz@',
+      name: ',W1x2Q.pPglfb^y{<N=}i;W+a?qSbZ39T9o_#tOrfZaePb^Oz@',
+    } as ComposableNode);
+    expect(actual).toMatchInlineSnapshot(
+      `"W1X2QPPglfbYNIWAQSbZ39T9OTOrfZaePbOz_$W1x2Q$pPglfb$y$N$i$W$a$qSbZ39T9o_$tOrfZaePb$Oz$"`
+    );
+    testValidJsVarName(actual);
   });
 });

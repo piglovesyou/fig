@@ -2,8 +2,9 @@ import camelCase from 'camelcase';
 import { ComposableNode } from '../types/ast';
 
 function makeComponentNameFromId(id: string, name: string) {
-  id = id.replace(/;/g, '$$').replace(/\W/g, '$');
-  name = camelCase(name, { pascalCase: true });
+  id = id.replace(/;/g, '$$').replace(/\W+/g, '$');
+  name = camelCase(name.replace(/\W+/g, '_'), { pascalCase: true });
+  if (/^\d/.test(name)) name = `C${name}`;
   return `${name}_${id}`;
 }
 
