@@ -26,7 +26,7 @@ $ npx @piglovesyou/fig-cli@latest --token 0000-0000 pYYYY
 ```
 
 * Get a **Figma access token** by following [this guide](https://www.figma.com/developers/api#access-tokens).
-* Open your Figma file by a browser and get **fileKey** from the location bar as https://www.figma.com/file/:fileKey/:title.
+* **fileKey** is in your browser location bar when you open a Figma file. It should look as https://www.figma.com/file/:fileKey/:title.
 
 Then you'll find files generated like this.
 
