@@ -40,4 +40,4 @@ jobs:
                   yarn test
               env:
                   CI: true
-                  DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
+                  TOKEN: ${{ secrets.TOKEN }}
