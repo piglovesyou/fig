@@ -13,7 +13,7 @@ export function makeComponentName(node: ComposableNode): string | never {
     case 'COMPONENT':
       return makeComponentNameFromId(node.id, node.name);
     case 'INSTANCE':
-      // TODO: zombie component name can be resolved. Fix it.
+      // TODO: zombie component name can be resolved later. Fix it.
       return makeComponentNameFromId(node.id, '__NOT_FOUND__');
     default:
       throw new Error('Component can only be FRAME, COMPONENT, INSTANCE.');
