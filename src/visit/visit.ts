@@ -31,7 +31,12 @@ export function expandChildren(context: VisitContext, offset: number) {
 
   for (const child of children) {
     // TODO: Do we want this?
-    if (parentNode && (node.type === 'COMPONENT' || node.type === 'INSTANCE')) {
+    if (
+      parentNode &&
+      (node.type === 'COMPONENT' ||
+        node.type === 'COMPONENT_SET' ||
+        node.type === 'INSTANCE')
+    ) {
       child.constraints = {
         vertical: LayoutConstraintVertical.TOP_BOTTOM,
         horizontal: LayoutConstraintHorizontal.LEFT_RIGHT,
@@ -85,7 +90,10 @@ function checkShouldImportComponent(
   const { node } = context;
   if (!parentNode) return false;
 
-  if (node.type === 'COMPONENT' && genContext.componentsMap.has(node.id))
+  if (
+    (node.type === 'COMPONENT' || node.type === 'COMPONENT_SET') &&
+    genContext.componentsMap.has(node.id)
+  )
     return true;
 
   if (

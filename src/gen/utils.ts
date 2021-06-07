@@ -12,6 +12,7 @@ export function makeComponentName(node: ComposableNode): string | never {
   switch (node.type) {
     case 'FRAME':
     case 'COMPONENT':
+    case 'COMPONENT_SET':
       return makeComponentNameFromId(node.id, node.name);
     case 'INSTANCE':
       // TODO: zombie component name can be resolved later. Fix it.
