@@ -18,7 +18,7 @@ export async function requestVectors(
   let result: Record<string, string> | null = null;
 
   await pMap(chunk(vectorList, MAX_VECTOR_REQUEST_COUNT), async (ids) => {
-    const idValue = ids.join(',');
+    const idValue = encodeURIComponent(ids.join(','));
     const {
       err,
       images,

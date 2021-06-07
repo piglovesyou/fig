@@ -8,11 +8,12 @@ export function isValidComponentNode(
   | Node<'COMPONENT_SET'>
   | Node<'INSTANCE'> {
   return (
-    (node.type === 'FRAME' ||
-      node.type === 'COMPONENT' ||
-      node.type === 'COMPONENT_SET' ||
-      node.type === 'INSTANCE') &&
-    node.visible !== false
+    node.type === 'FRAME' ||
+    node.type === 'COMPONENT' ||
+    node.type === 'COMPONENT_SET' ||
+    node.type === 'INSTANCE'
+    // TODO: Consider this
+    // && node.visible !== false
   );
 }
 
