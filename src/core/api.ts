@@ -1,7 +1,12 @@
+import chunk from 'lodash.chunk';
 import fetch from 'node-fetch';
+import pMap from 'p-map';
 import { FigmaFile } from '../types/fig';
 
 const baseUrl = 'https://api.figma.com';
+
+// To avoid "Error: 414: Request-URI Too Large"
+const MAX_VECTOR_REQUEST_COUNT = 100;
 
 export async function requestVectors(
   fileKey: string,
@@ -9,16 +14,27 @@ export async function requestVectors(
   token: string
 ) {
   if (!vectorList.length) throw new Error('vectorList is empty');
-  const guids = vectorList.join(',');
-  const imageJSON: {
-    err: any;
-    images?: Record<string, string>;
-  } = await callApi(
-    'GET',
-    `/v1/images/${fileKey}?ids=${guids}&format=svg`,
-    token
-  );
-  return imageJSON;
+
+  let result: Record<string, string> | null = null;
+
+  await pMap(chunk(vectorList, MAX_VECTOR_REQUEST_COUNT), async (ids) => {
+    const idValue = ids.join(',');
+    const {
+      err,
+      images,
+    }: {
+      err: any;
+      images?: Record<string, string>;
+    } = await callApi(
+      'GET',
+      `/v1/images/${fileKey}?ids=${idValue}&format=svg`,
+      token
+    );
+    if (err) throw new Error(JSON.stringify(err));
+    if (images) result = Object.assign(result || {}, images);
+  });
+
+  return result as unknown as Record<string, string>;
 }
 
 export interface RequestImagesResponse {

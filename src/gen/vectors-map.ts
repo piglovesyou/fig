@@ -101,9 +101,9 @@ export async function appendVectorsMap(
   token: string
 ): Promise<void> {
   if (!vectorList.length) return;
-  const vectorsJson = await requestVectors(fileKey, vectorList, token);
-  if (vectorsJson.images) {
-    await pMap(Object.entries(vectorsJson.images), async ([guid, url]) => {
+  const images = await requestVectors(fileKey, vectorList, token);
+  if (images) {
+    await pMap(Object.entries(images), async ([guid, url]) => {
       if (!url) return;
       const rawText = await fetch(url).then((r) => r.text());
       if (!rawText.startsWith('<svg '))
