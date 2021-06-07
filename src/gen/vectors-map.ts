@@ -106,6 +106,10 @@ export async function appendVectorsMap(
     await pMap(Object.entries(images), async ([guid, url]) => {
       if (!url) return;
       const rawText = await fetch(url).then((r) => r.text());
+      if (!rawText.length) {
+        // It can be an empty string
+        return vectorsMap.set(guid, rawText);
+      }
       if (!rawText.startsWith('<svg '))
         throw new Error('Figma API is supposed to retgurn <svg>');
       const svgHtml = rawText.replace(
