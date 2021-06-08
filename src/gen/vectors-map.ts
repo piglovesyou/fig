@@ -1,8 +1,11 @@
 import fetch from 'node-fetch';
 import pMap from 'p-map';
-import { requestVectors } from '../core/api';
+import { basename, join } from 'path';
+import { makeHeader, requestVectors } from '../core/api';
+import { updateLog } from '../core/print';
 import { ComposableNode, Node, Paint } from '../types/ast';
 import { isVectorTypeNode } from '../types/fig';
+import { readFile, writeFile } from '../utils/fs';
 
 function paintsRequireRender(paints: Paint[]) {
   if (!paints) return false;
@@ -95,28 +98,64 @@ export function appendVectorListIfNecessary(
 }
 
 export async function appendVectorsMap(
+  paths: {
+    htmlFullDir: string;
+    componentsFullDir: string;
+    pagesFullDir: string;
+    baseFullDir: string;
+    imagesFullDir: string;
+  },
   vectorsMap: Map<string, string>,
   vectorList: string[],
   fileKey: string,
-  token: string
+  token: string,
+  existingImagesMap: Map<string, string>
 ): Promise<void> {
+  const { imagesFullDir } = paths;
   if (!vectorList.length) return;
-  const images = await requestVectors(fileKey, vectorList, token);
-  if (images) {
-    await pMap(Object.entries(images), async ([guid, url]) => {
-      if (!url) return;
-      const rawText = await fetch(url).then((r) => r.text());
-      if (!rawText.length) {
-        // It can be an empty string
-        return vectorsMap.set(guid, rawText);
-      }
-      if (!rawText.startsWith('<svg '))
-        throw new Error('Figma API is supposed to retgurn <svg>');
-      const svgHtml = rawText.replace(
-        '<svg ',
-        '<svg preserveAspectRatio="none" '
-      );
-      vectorsMap.set(guid, svgHtml);
-    });
+  const vectors = await requestVectors(fileKey, vectorList, token);
+  if (vectors) {
+    let doneCount = 0;
+    const imageEntries = Object.entries(vectors);
+    await pMap(
+      imageEntries,
+      async ([guid, url]) => {
+        updateLog(
+          `Fetching vector data ${++doneCount}/${
+            imageEntries.length
+          } starting..`
+        );
+        if (!url) return;
+        const base = basename(url);
+        if (existingImagesMap.has(base)) {
+          const svgFullPath = existingImagesMap.get(base)!;
+          const svgContent = await readFile(svgFullPath, 'utf-8');
+          vectorsMap.set(guid, svgContent);
+          return;
+        }
+        const rawText = await fetch(url, { headers: makeHeader() })
+          .then((r) => r.text())
+          .catch((r) => {
+            console.error(r);
+            console.error(new Error(r.message));
+            vectorsMap.set(guid, 'error');
+          });
+        if (!rawText) return;
+        if (!rawText.length) {
+          // It can be an empty string
+          return vectorsMap.set(guid, rawText);
+        }
+        if (!rawText.startsWith('<svg '))
+          throw new Error('Figma API is supposed to retgurn <svg>');
+        const svgHtml = rawText.replace(
+          '<svg ',
+          '<svg preserveAspectRatio="none" '
+        );
+        const imageFullPath = join(imagesFullDir, `${base}.svg`);
+        await writeFile(imageFullPath, svgHtml);
+        vectorsMap.set(guid, svgHtml);
+      },
+      { concurrency: 50 }
+    );
   }
 }

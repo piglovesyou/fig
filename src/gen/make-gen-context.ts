@@ -4,7 +4,7 @@ import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { Canvas, FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { appendComponentsMap, ComponentsMap } from './components-map';
-import { makeImagesMap } from './images-map';
+import { makeExistingImagesMap, makeImagesMap } from './images-map';
 import { makeComponentName } from './utils';
 import { appendVectorListIfNecessary, appendVectorsMap } from './vectors-map';
 
@@ -33,12 +33,20 @@ export async function makeGenContext(
   cwd: string
 ): Promise<GenContext> {
   const paths = makePaths(config);
+  const { imagesFullDir } = paths;
   const { token } = config;
   const libDir = join(__dirname, '../..');
 
   const componentsMap: ComponentsMap = new Map();
   const vectorsMap = new Map<string, string>();
-  const imagesMap = await makeImagesMap(paths, fileKey, token);
+
+  const existingImagesMap = await makeExistingImagesMap(imagesFullDir);
+  const imagesMap = await makeImagesMap(
+    paths,
+    fileKey,
+    token,
+    existingImagesMap
+  );
 
   const vectorList: string[] = []; // TODO: Use Set
 
@@ -60,7 +68,14 @@ export async function makeGenContext(
         );
       }
 
-  await appendVectorsMap(vectorsMap, vectorList, fileKey, token);
+  await appendVectorsMap(
+    paths,
+    vectorsMap,
+    vectorList,
+    fileKey,
+    token,
+    existingImagesMap
+  );
 
   const genContext: GenContext = {
     componentsMap,
