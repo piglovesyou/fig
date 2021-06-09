@@ -154,13 +154,23 @@ export function getStatementCursor<T extends Node | unknown = unknown>(
 }
 
 export function parseAsRoot(codeWithCursor: string) {
-  return parse(codeWithCursor, parserOption);
+  try {
+    return parse(codeWithCursor, parserOption);
+  } catch (e) {
+    console.error(e);
+    throw new Error(`${e.message}\n${codeWithCursor}`);
+  }
 }
 
 export function parseExpression<T extends Expression = Expression>(
   codeWithCursor: string
 ): T {
-  return _parseExpression(codeWithCursor, parserOption) as T;
+  try {
+    return _parseExpression(codeWithCursor, parserOption) as T;
+  } catch (e) {
+    console.error(e);
+    throw new Error(`${e.message}\n${codeWithCursor}`);
+  }
 }
 
 export function getRootPath(path: NodePath) {
