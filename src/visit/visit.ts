@@ -4,7 +4,7 @@ import {
   LayoutConstraintVertical,
 } from '../types/fig';
 import { GenContext } from '../types/gen';
-import { FigPlugin } from '../types/strategy';
+import { FigPlugin } from '../types/plugin';
 import {
   ParentVisitContext,
   VisitContext,
@@ -108,10 +108,9 @@ function checkShouldImportComponent(
 export function visitNode(
   node: ComposableNode,
   parentContext: ParentVisitContext,
-  strategy: FigPlugin,
   genContext: GenContext
 ): VisitContextWithCursor | null {
-  const { vectorsMap } = genContext;
+  const { vectorsMap, plugins } = genContext;
 
   const context = makeVisitContext(node, parentContext, genContext);
 
@@ -130,25 +129,34 @@ export function visitNode(
     genContext
   );
   if (shouldImportComponent) {
-    strategy.appendComponentInstanceElement(
-      context,
-      parentContext as VisitContextWithCursor,
-      genContext
+    plugins!.forEach((plugin) =>
+      plugin.appendComponentInstanceElement(
+        context,
+        parentContext as VisitContextWithCursor,
+        genContext
+      )
     );
     return null;
   }
 
   if (vectorsMap.has(node.id)) {
-    strategy.appendSvgElement(context, parentContext, vectorsMap.get(node.id)!);
+    plugins!.forEach((plugin) =>
+      plugin.appendSvgElement(context, parentContext, vectorsMap.get(node.id)!)
+    );
     return null;
   }
 
   if (node?.type === 'TEXT') {
-    strategy.appendTextElement(context, parentContext);
+    plugins!.forEach((plugin) =>
+      plugin.appendTextElement(context, parentContext)
+    );
     return null;
   }
 
-  const cursor = strategy.appendElement(context, parentContext);
+  const cursor = plugins!.reduce(
+    (_, plugin) => plugin.appendElement(context, parentContext),
+    null as null | ReturnType<FigPlugin['appendElement']>
+  ) as ReturnType<FigPlugin['appendElement']>;
 
   return { ...context, cursor };
   // for (const child of centerChildren) {

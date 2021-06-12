@@ -1,7 +1,7 @@
 import { FigConfig } from '../core/config';
 import { ComponentsMap } from '../gen/components-map';
 import { ComposableNode } from './ast';
-import { FigPlugin } from './strategy';
+import { FigPlugin } from './plugin';
 
 export type ComponentInfo = {
   name: string;
@@ -15,9 +15,7 @@ export type GenContext = {
   config: FigConfig;
   cwd: string;
   libDir: string;
-
-  strategy?: FigPlugin;
-
+  plugins?: FigPlugin[];
   baseFullDir: string;
   componentsFullDir: string;
   pagesFullDir: string;

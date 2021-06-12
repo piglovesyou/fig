@@ -1,2 +1,2 @@
 export { FigUserConfig } from './core/config';
-export * from './types/strategy';
+export * from './types/plugin';

@@ -36,6 +36,6 @@ export interface FigPlugin {
   dispose(): void | Promise<void>;
 }
 
-export interface StrategyModule {
-  createStrategy: (genContext: GenContext) => FigPlugin;
+export interface PluginModule {
+  createPlugin: (genContext: GenContext) => FigPlugin;
 }

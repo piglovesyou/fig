@@ -45,7 +45,7 @@ describe('Test full html', () => {
       const config = await createConfig({
         fileKeys: [fileKey],
         baseDir,
-        strategy: 'react',
+        plugins: ['react'],
       });
       await gen(config);
     },
