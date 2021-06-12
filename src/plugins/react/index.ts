@@ -85,7 +85,9 @@ export function createPlugin(genContext: GenContext): FigPlugin {
 
     appendComponentInstanceElement,
 
-    appendElement,
+    appendElement(context, parentContext) {
+      return appendElement(context, parentContext, 'div');
+    },
 
     appendSvgElement,
 

@@ -70,12 +70,10 @@ export function appendImportDeclaration(
 export function appendElement(
   context: VisitContext,
   parentContext: ParentVisitContext,
-  newComponentInfo?: ComponentInfo
-  // tagName: string
+  tagName: string
 ) {
   const { cursor: parentCursor } = parentContext;
   const { classNames, node, parentNode, styles } = context;
-  const tagName = newComponentInfo?.name || 'div';
 
   const classNameAttr = classNames.size
     ? `className="${Array.prototype.join.call(classNames, ' ')}"`
@@ -128,7 +126,7 @@ export function appendTextElement(
   if (node.type !== 'TEXT')
     throw new Error(`Never. This function is supposed to emit on TEXT node.`);
 
-  let cursor = appendElement(context, parentContext);
+  let cursor = appendElement(context, parentContext, 'div');
   const content = makeTextContent(node);
   if (node.name.startsWith('$')) {
     const varName = node.name.substring(1);
@@ -170,7 +168,7 @@ export function appendComponentInstanceElement(
   const componentName = componentInfo.name;
 
   appendImportDeclaration(componentInfo, context, parentContext, genContext);
-  appendElement(context, parentContext, componentInfo);
+  appendElement(context, parentContext, componentInfo.name);
 }
 
 export function appendSvgElement(
@@ -179,7 +177,7 @@ export function appendSvgElement(
   parentContext: ParentVisitContext,
   genContext: GenContext
 ) {
-  const cursor = appendElement(context, parentContext);
+  const cursor = appendElement(context, parentContext, 'div');
 
   // Use dangerous SVG instead of building DOM
   appendJsxNode(
