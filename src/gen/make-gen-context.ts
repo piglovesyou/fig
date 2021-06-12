@@ -88,7 +88,7 @@ export async function makeGenContext(
     ...paths,
   };
 
-  const ps: FigPlugin[] = [];
+  const ps: FigPlugin<unknown>[] = [];
   const { plugins } = config;
   for (const plugin of plugins) ps.push(plugin.createPlugin(genContext));
 

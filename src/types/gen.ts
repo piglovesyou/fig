@@ -15,7 +15,7 @@ export type GenContext = {
   config: FigConfig;
   cwd: string;
   libDir: string;
-  plugins?: FigPlugin[];
+  plugins?: FigPlugin<unknown>[];
   baseFullDir: string;
   componentsFullDir: string;
   pagesFullDir: string;

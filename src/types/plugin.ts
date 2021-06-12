@@ -1,5 +1,3 @@
-import { NodePath } from '@babel/traverse';
-import { JSXElement } from '@babel/types';
 import { ComponentInfo, GenContext } from './gen';
 import {
   EmptyVisitContext,
@@ -9,36 +7,36 @@ import {
 } from './visit';
 
 // XXX: Catastrophic. Refactor.
-export interface FigPlugin {
-  makeLayout(_: ComponentInfo, __: GenContext): NodePath<JSXElement>;
+export interface FigPlugin<CursorType> {
+  makeLayout(_: ComponentInfo, __: GenContext): CursorType;
   postWalk(_: ComponentInfo, __: GenContext): void;
   render(_: ComponentInfo, __: GenContext): [content: string, ext: string][];
   renderHtml(_: ComponentInfo, __: GenContext): Promise<string>;
 
   appendComponentInstanceElement(
     context: VisitContext,
-    parentContext: VisitContextWithCursor,
+    parentContext: VisitContextWithCursor<CursorType>,
     genContext: GenContext
   ): void;
   appendElement(
     context: VisitContext,
-    parentContext: EmptyVisitContext,
+    parentContext: EmptyVisitContext<CursorType>,
     genContext: GenContext
-  ): NodePath<JSXElement>;
+  ): CursorType;
   appendSvgElement(
     context: VisitContext,
-    parentContext: ParentVisitContext,
+    parentContext: ParentVisitContext<CursorType>,
     genContext: GenContext,
     svgHtml: string
   ): void;
   appendTextElement(
     context: VisitContext,
-    parentContext: ParentVisitContext,
+    parentContext: ParentVisitContext<CursorType>,
     genContext: GenContext
   ): void;
   dispose(): void | Promise<void>;
 }
 
-export interface PluginModule {
-  createPlugin: (genContext: GenContext) => FigPlugin;
+export interface PluginModule<CursorType = unknown> {
+  createPlugin: (genContext: GenContext) => FigPlugin<CursorType>;
 }

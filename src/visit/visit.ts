@@ -81,9 +81,9 @@ export function expandChildren(context: VisitContext, offset: number) {
 //   }
 // }
 
-function checkShouldImportComponent(
+function checkShouldImportComponent<CursorType>(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<CursorType>,
   genContext: GenContext
 ) {
   const { node: parentNode } = parentContext;
@@ -105,14 +105,14 @@ function checkShouldImportComponent(
   return false;
 }
 
-export function visitNode(
+export function visitNode<CursorType>(
   node: ComposableNode,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<CursorType>,
   genContext: GenContext
-): VisitContextWithCursor | null {
+): VisitContextWithCursor<CursorType> | null {
   const { vectorsMap, plugins } = genContext;
 
-  const context = makeVisitContext(node, parentContext, genContext);
+  const context = makeVisitContext<CursorType>(node, parentContext, genContext);
 
   // TODO: Rethink whether we want this.
   expandChildren(context, 0);
@@ -132,7 +132,7 @@ export function visitNode(
     plugins!.forEach((plugin) =>
       plugin.appendComponentInstanceElement(
         context,
-        parentContext as VisitContextWithCursor,
+        parentContext as VisitContextWithCursor<CursorType>,
         genContext
       )
     );
@@ -159,10 +159,14 @@ export function visitNode(
   }
 
   const cursor = plugins!.reduce((_, plugin) => {
-    const cursor = plugin.appendElement(context, parentContext, genContext);
+    const cursor = plugin.appendElement(
+      context,
+      parentContext,
+      genContext
+    ) as CursorType;
     parentContext.cursor = cursor; // for next loop
     return cursor;
-  }, null as null | ReturnType<FigPlugin['appendElement']>)!;
+  }, null as null | ReturnType<FigPlugin<CursorType>['appendElement']>)!;
 
   return { ...context, cursor };
   // for (const child of centerChildren) {

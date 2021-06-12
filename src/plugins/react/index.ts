@@ -1,13 +1,14 @@
 import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
-import { isProgram, JSXElement, Program } from '@babel/types';
+import { isProgram, Program } from '@babel/types';
 import { join } from 'path';
 import Piscina from 'piscina';
 import { format } from 'prettier';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { FigPlugin } from '../../types/plugin';
 import { RenderHtmlArgType } from './render-html';
+import { ReactCursorType } from './types';
 import {
   appendComponentInstanceElement,
   appendElement,
@@ -24,8 +25,10 @@ function findReactResolvablePath(): string | never {
   throw new Error(`Never. Couldn't find react resolvable path.`);
 }
 
-export function createPlugin(genContext: GenContext): FigPlugin {
-  let cursor: NodePath<JSXElement> | null = null;
+export function createPlugin(
+  genContext: GenContext
+): FigPlugin<ReactCursorType> {
+  let cursor: ReactCursorType | null = null;
 
   // The reason using thread is to set NODE_PATH value, otherwise
   // components can't resolve "react" and "react-dom".
@@ -51,7 +54,7 @@ export function createPlugin(genContext: GenContext): FigPlugin {
 
     render(): [content: string, ext: string][] {
       if (!cursor) throw new Error(`Never. cursor must be set on render().`);
-      const program: NodePath<Program> = cursor.findParent((path) =>
+      const program = cursor.findParent((path) =>
         isProgram(path.node)
       )! as NodePath<Program>;
 
@@ -96,5 +99,5 @@ export function createPlugin(genContext: GenContext): FigPlugin {
     dispose(): Promise<void> {
       return renderHtmlThread.destroy();
     },
-  } as FigPlugin;
+  };
 }

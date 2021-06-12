@@ -1,5 +1,4 @@
-import { NodePath } from '@babel/traverse';
-import { File, JSXElement } from '@babel/types';
+import { File } from '@babel/types';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
@@ -8,7 +7,7 @@ import { EmptyVisitContext } from '../types/visit';
 import { readFile, writeFile } from '../utils/fs';
 import { visitNode } from '../visit/visit';
 
-export async function processComponent(
+export async function processComponent<CursorType>(
   componentInfo: ComponentInfo,
   genContext: GenContext
 ) {
@@ -29,7 +28,7 @@ export async function processComponent(
   const fullBasePath = join(componetsDir, name);
 
   let rootAst: File;
-  let placeholderCursor: NodePath<JSXElement> | null = null;
+  let placeholderCursor: CursorType | null = null;
 
   if (false /*existsSync(fullBasePath)*/) {
     // TODO: Update mode.
@@ -42,10 +41,15 @@ export async function processComponent(
   } else {
     // Create mode.
     for (const plugin of plugins)
-      placeholderCursor = plugin.makeLayout(componentInfo, genContext);
+      placeholderCursor = plugin.makeLayout(
+        componentInfo,
+        genContext
+      ) as CursorType;
     if (!placeholderCursor) throw new Error('Never. Plugin must assign cursor');
 
-    const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
+    const parentContext: EmptyVisitContext<unknown> = {
+      cursor: placeholderCursor,
+    };
     walkNodeTree(
       node,
       (node, parentContext) => {

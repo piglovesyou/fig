@@ -24,9 +24,10 @@ import {
   parseExpression,
   TEMP_REF_ATTR,
 } from './ast-utils';
+import { ReactCursorType } from './types';
 
 export function erasePlaceholderElement(
-  placeholderCursor: NodePath<JSXElement>
+  placeholderCursor: ReactCursorType
 ): void {
   // Merge attributes before removing the top placeholder element
   const placeholderElement = placeholderCursor.node;
@@ -41,7 +42,7 @@ export function erasePlaceholderElement(
 export function appendImportDeclaration(
   newComponentInfo: ComponentInfo,
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<ReactCursorType>,
   genContext: GenContext
 ) {
   const { name: componentName } = newComponentInfo;
@@ -69,7 +70,7 @@ export function appendImportDeclaration(
 
 export function appendElement(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<ReactCursorType>,
   tagName: string
 ) {
   const { cursor: parentCursor } = parentContext;
@@ -120,7 +121,7 @@ export const ${name}: FC<{style: CSSProperties}> = (props) => {
 
 export function appendTextElement(
   context: VisitContext,
-  parentContext: ParentVisitContext
+  parentContext: ParentVisitContext<ReactCursorType>
 ) {
   const { node } = context;
   if (node.type !== 'TEXT')
@@ -156,7 +157,7 @@ export function appendTextElement(
 
 export function appendComponentInstanceElement(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<ReactCursorType>,
   genContext: GenContext
 ) {
   const { node } = context;
@@ -173,7 +174,7 @@ export function appendComponentInstanceElement(
 
 export function appendSvgElement(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<ReactCursorType>,
   genContext: GenContext,
   svgHtml: string
 ) {

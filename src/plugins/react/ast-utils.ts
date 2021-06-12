@@ -16,6 +16,7 @@ import {
   JSXExpressionContainer,
   Node,
 } from '@babel/types';
+import { ReactCursorType } from './types';
 
 export const parserOption: ParserOptions = {
   sourceType: 'module',
@@ -25,7 +26,7 @@ export const parserOption: ParserOptions = {
 
 export const TEMP_REF_ATTR = 'TEMP_REF_ATTR';
 
-export function findTempRefAttrIndex(el: NodePath<JSXElement>): number {
+export function findTempRefAttrIndex(el: ReactCursorType): number {
   return el.node.openingElement.attributes.findIndex(
     (a) =>
       isJSXAttribute(a) &&
@@ -34,14 +35,11 @@ export function findTempRefAttrIndex(el: NodePath<JSXElement>): number {
   );
 }
 
-export function hasTempRefAttr(el: NodePath<JSXElement>): boolean {
+export function hasTempRefAttr(el: ReactCursorType): boolean {
   return findTempRefAttrIndex(el) >= 0;
 }
 
-export function removeTempRefAttr(
-  el: NodePath<JSXElement>,
-  index: number
-): void {
+export function removeTempRefAttr(el: ReactCursorType, index: number): void {
   if (index < 0) throw new Error(`${TEMP_REF_ATTR} not found.`);
   el.node.openingElement.attributes.splice(index, 1);
 }
@@ -54,11 +52,11 @@ export function makeFidAttr(fid: string): string {
 
 export function findJsxElement(
   tree: File | NodePath,
-  condition: (path: NodePath<JSXElement>) => boolean
-): NodePath<JSXElement> | null {
-  let el: null | NodePath<JSXElement> = null;
+  condition: (path: ReactCursorType) => boolean
+): ReactCursorType | null {
+  let el: null | ReactCursorType = null;
   const visitOption = {
-    JSXElement(jsxElement: NodePath<JSXElement>) {
+    JSXElement(jsxElement: ReactCursorType) {
       const found = condition(jsxElement);
       if (found) {
         if (el)
@@ -75,9 +73,7 @@ export function findJsxElement(
   return el;
 }
 
-export function findTempRefJsxElement(
-  tree: File | NodePath
-): NodePath<JSXElement> {
+export function findTempRefJsxElement(tree: File | NodePath): ReactCursorType {
   const el = findJsxElement(tree, (el) => {
     const index = findTempRefAttrIndex(el);
     if (index >= 0) {
@@ -92,7 +88,7 @@ export function findTempRefJsxElement(
 }
 
 export function findJsxElementByFid(tree: File | NodePath, fid: string) {
-  return findJsxElement(tree, (el: NodePath<JSXElement>) => {
+  return findJsxElement(tree, (el: ReactCursorType) => {
     const attrs = el.node.openingElement.attributes;
     return attrs.some(
       (a) =>
@@ -105,10 +101,10 @@ export function findJsxElementByFid(tree: File | NodePath, fid: string) {
   });
 }
 
-export function getJsxCursor(ast: File | NodePath): NodePath<JSXElement> {
-  let cursor: NodePath<JSXElement>;
+export function getJsxCursor(ast: File | NodePath): ReactCursorType {
+  let cursor: ReactCursorType;
   const visitOption = {
-    JSXElement(path: NodePath<JSXElement>) {
+    JSXElement(path: ReactCursorType) {
       let attrs = path.node.openingElement.attributes;
       const attrIndex = attrs.findIndex(
         (a) => isJSXAttribute(a) && String(a.name.name).includes(TEMP_REF_ATTR)
@@ -181,7 +177,7 @@ export function getRootPath(path: NodePath) {
 }
 
 export function appendJsxChild(
-  jsxCursor: NodePath<JSXElement>,
+  jsxCursor: ReactCursorType,
   jsxContent: JSXElement
 ) {
   if (!jsxCursor.node.closingElement) {
@@ -195,7 +191,7 @@ export function appendJsxChild(
 }
 
 export function appendJsxNode(
-  cursor: NodePath<JSXElement>,
+  cursor: ReactCursorType,
   child: JSXElement | JSXExpressionContainer
 ): void {
   cursor.node.children.push(child);

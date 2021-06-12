@@ -27,7 +27,7 @@ export async function processHtml(
     (html, plugin) => {
       return plugin.renderHtml(componentInfo, genContext);
     },
-    null as null | ReturnType<FigPlugin['renderHtml']>
+    null as null | ReturnType<FigPlugin<unknown>['renderHtml']>
   ))!;
 
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
