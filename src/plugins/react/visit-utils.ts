@@ -39,17 +39,17 @@ export function erasePlaceholderElement(
 }
 
 export function appendImportDeclaration(
-  cursor: NodePath<JSXElement>,
+  newComponentInfo: ComponentInfo,
   context: VisitContext,
-  genContext: GenContext,
-  componentName: string
+  parentContext: ParentVisitContext,
+  genContext: GenContext
 ) {
+  const { name: componentName } = newComponentInfo;
+  const { cursor } = parentContext;
   // Import component if not exists
   const program = cursor.findParent((path) =>
     isProgram(path.node)
   )! as NodePath<Program>;
-  if (componentName) {
-  }
   const importFromPage = context.parentNode?.type === 'FRAME';
   const importSource = `${
     importFromPage ? `../${genContext.config.componentsDir}` : '.'
@@ -70,10 +70,12 @@ export function appendImportDeclaration(
 export function appendElement(
   context: VisitContext,
   parentContext: ParentVisitContext,
-  tagName: string
+  newComponentInfo?: ComponentInfo
+  // tagName: string
 ) {
   const { cursor: parentCursor } = parentContext;
   const { classNames, node, parentNode, styles } = context;
+  const tagName = newComponentInfo?.name || 'div';
 
   const classNameAttr = classNames.size
     ? `className="${Array.prototype.join.call(classNames, ' ')}"`
@@ -126,7 +128,7 @@ export function appendTextElement(
   if (node.type !== 'TEXT')
     throw new Error(`Never. This function is supposed to emit on TEXT node.`);
 
-  let cursor = appendElement(context, parentContext, 'div');
+  let cursor = appendElement(context, parentContext);
   const content = makeTextContent(node);
   if (node.name.startsWith('$')) {
     const varName = node.name.substring(1);
@@ -160,7 +162,6 @@ export function appendComponentInstanceElement(
   genContext: GenContext
 ) {
   const { node } = context;
-  const { cursor: parentCursor } = parentContext;
   const componentInfo = genContext.componentsMap.get(
     node.type === 'INSTANCE' ? node.componentId : node.id
   );
@@ -168,8 +169,8 @@ export function appendComponentInstanceElement(
     throw new Error('Never. It should appear in componentsMap.');
   const componentName = componentInfo.name;
 
-  appendImportDeclaration(parentCursor, context, genContext, componentName);
-  appendElement(context, parentContext, componentName);
+  appendImportDeclaration(componentInfo, context, parentContext, genContext);
+  appendElement(context, parentContext, componentInfo);
 }
 
 export function appendSvgElement(
@@ -178,7 +179,7 @@ export function appendSvgElement(
   parentContext: ParentVisitContext,
   genContext: GenContext
 ) {
-  const cursor = appendElement(context, parentContext, 'div');
+  const cursor = appendElement(context, parentContext);
 
   // Use dangerous SVG instead of building DOM
   appendJsxNode(

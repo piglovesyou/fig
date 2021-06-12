@@ -23,7 +23,8 @@ export interface FigPlugin {
   appendElement(
     context: VisitContext,
     parentContext: EmptyVisitContext,
-    tagName?: string
+    newComponentInfo?: ComponentInfo
+    // tagName?: string
   ): NodePath<JSXElement>;
 
   appendSvgElement(
