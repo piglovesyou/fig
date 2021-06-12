@@ -12,7 +12,7 @@ import {
   stringLiteral,
 } from '@babel/types';
 import escape from 'escape-html';
-import { GenContext } from '../../types/gen';
+import { ComponentInfo, GenContext } from '../../types/gen';
 import { ParentVisitContext, VisitContext } from '../../types/visit';
 import { makeTextContent } from '../../visit/text';
 import {
@@ -101,7 +101,8 @@ export function appendElement(
   return findTempRefJsxElement(parentCursor);
 }
 
-export function makeLayout(name: string) {
+export function makeLayout(componentInfo: ComponentInfo) {
+  const { name } = componentInfo;
   const root = parseAsRoot(`
 import React, {FC, CSSProperties} from "react"
 
