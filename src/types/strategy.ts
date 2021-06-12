@@ -9,7 +9,7 @@ import {
 } from './visit';
 
 // XXX: Catastrophic. Refactor.
-export interface StrategyInterface {
+export interface FigPlugin {
   makeLayout(_: ComponentInfo): NodePath<JSXElement>;
   postWalk(): void;
   render(_: ComponentInfo): [content: string, ext: string][];
@@ -37,5 +37,5 @@ export interface StrategyInterface {
 }
 
 export interface StrategyModule {
-  createStrategy: (genContext: GenContext) => StrategyInterface;
+  createStrategy: (genContext: GenContext) => FigPlugin;
 }

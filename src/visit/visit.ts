@@ -4,7 +4,7 @@ import {
   LayoutConstraintVertical,
 } from '../types/fig';
 import { GenContext } from '../types/gen';
-import { StrategyInterface } from '../types/strategy';
+import { FigPlugin } from '../types/strategy';
 import {
   ParentVisitContext,
   VisitContext,
@@ -108,7 +108,7 @@ function checkShouldImportComponent(
 export function visitNode(
   node: ComposableNode,
   parentContext: ParentVisitContext,
-  strategy: StrategyInterface,
+  strategy: FigPlugin,
   genContext: GenContext
 ): VisitContextWithCursor | null {
   const { vectorsMap } = genContext;

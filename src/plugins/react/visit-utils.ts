@@ -114,7 +114,7 @@ export const ${name}: FC<{style: CSSProperties}> = (props) => {
   return findTempRefJsxElement(root);
 }
 
-export function appendTextContext(
+export function appendTextElement(
   context: VisitContext,
   parentContext: ParentVisitContext
 ) {
@@ -168,7 +168,7 @@ export function appendComponentInstanceElement(
   appendElement(context, parentContext, componentName);
 }
 
-export function appendSvgContent(
+export function appendSvgElement(
   context: VisitContext,
   parentContext: ParentVisitContext,
   svgHtml: string
