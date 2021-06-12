@@ -20,7 +20,7 @@ export async function processHtml(
   if (node.type !== 'FRAME')
     throw new Error('Never. node.type should be FRAME');
   const { plugins } = genContext;
-  if (!plugins) throw new Error('Never. Strategy should be instantiated.');
+  if (!plugins) throw new Error('Never. Plugins should be instantiated.');
 
   const html = (await pReduce(
     plugins,
@@ -45,7 +45,7 @@ export async function gen(
     updateLog(`Fetching image resources..`);
     const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
     const { componentsMap, plugins } = genContext;
-    if (!plugins) throw new Error('Never. Strategy should be instantiated.');
+    if (!plugins) throw new Error('Never. Plugins should be instantiated.');
 
     const components: ComponentInfo[] = [];
     const frames: ComponentInfo[] = [];
