@@ -39,8 +39,8 @@ export function createPlugin(genContext: GenContext): FigPlugin {
 
   // return new ReactPlugin(genContext);
   return {
-    makeLayout(componentInfo: ComponentInfo) {
-      return (cursor = makeLayout(componentInfo));
+    makeLayout(componentInfo: ComponentInfo, genContext: GenContext) {
+      return (cursor = makeLayout(componentInfo, genContext));
     },
 
     postWalk() {

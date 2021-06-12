@@ -10,10 +10,11 @@ import {
 
 // XXX: Catastrophic. Refactor.
 export interface FigPlugin {
-  makeLayout(_: ComponentInfo): NodePath<JSXElement>;
-  postWalk(): void;
-  render(_: ComponentInfo): [content: string, ext: string][];
-  renderHtml(_: ComponentInfo): Promise<string>;
+  makeLayout(_: ComponentInfo, __: GenContext): NodePath<JSXElement>;
+  postWalk(_: ComponentInfo, __: GenContext): void;
+  render(_: ComponentInfo, __: GenContext): [content: string, ext: string][];
+  renderHtml(_: ComponentInfo, __: GenContext): Promise<string>;
+
   appendComponentInstanceElement(
     context: VisitContext,
     parentContext: VisitContextWithCursor,
@@ -24,10 +25,12 @@ export interface FigPlugin {
     parentContext: EmptyVisitContext,
     tagName?: string
   ): NodePath<JSXElement>;
+
   appendSvgElement(
+    svgHtml: string,
     context: VisitContext,
     parentContext: ParentVisitContext,
-    svgHtml: string
+    genContext: GenContext
   ): void;
   appendTextElement(
     context: VisitContext,

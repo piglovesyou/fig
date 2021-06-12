@@ -42,7 +42,7 @@ export async function processComponent(
   } else {
     // Create mode.
     for (const plugin of plugins)
-      placeholderCursor = plugin.makeLayout(componentInfo);
+      placeholderCursor = plugin.makeLayout(componentInfo, genContext);
     if (!placeholderCursor) throw new Error('Never. Plugin must assign cursor');
 
     const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
@@ -54,11 +54,11 @@ export async function processComponent(
       parentContext
     );
 
-    for (const plugin of plugins) plugin.postWalk();
+    for (const plugin of plugins) plugin.postWalk(componentInfo, genContext);
   }
 
   for (const plugin of plugins) {
-    for (const [content, ext] of plugin.render(componentInfo)) {
+    for (const [content, ext] of plugin.render(componentInfo, genContext)) {
       await writeFile(fullBasePath + ext, content);
     }
   }

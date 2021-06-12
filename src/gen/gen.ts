@@ -25,7 +25,7 @@ export async function processHtml(
   const html = (await pReduce(
     plugins,
     (html, plugin) => {
-      return plugin.renderHtml(componentInfo);
+      return plugin.renderHtml(componentInfo, genContext);
     },
     null as null | ReturnType<FigPlugin['renderHtml']>
   ))!;

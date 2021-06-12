@@ -101,7 +101,10 @@ export function appendElement(
   return findTempRefJsxElement(parentCursor);
 }
 
-export function makeLayout(componentInfo: ComponentInfo) {
+export function makeLayout(
+  componentInfo: ComponentInfo,
+  genContext: GenContext
+) {
   const { name } = componentInfo;
   const root = parseAsRoot(`
 import React, {FC, CSSProperties} from "react"
@@ -170,9 +173,10 @@ export function appendComponentInstanceElement(
 }
 
 export function appendSvgElement(
+  svgHtml: string,
   context: VisitContext,
   parentContext: ParentVisitContext,
-  svgHtml: string
+  genContext: GenContext
 ) {
   const cursor = appendElement(context, parentContext, 'div');
 

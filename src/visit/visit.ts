@@ -141,7 +141,12 @@ export function visitNode(
 
   if (vectorsMap.has(node.id)) {
     plugins!.forEach((plugin) =>
-      plugin.appendSvgElement(context, parentContext, vectorsMap.get(node.id)!)
+      plugin.appendSvgElement(
+        vectorsMap.get(node.id)!,
+        context,
+        parentContext,
+        genContext
+      )
     );
     return null;
   }
