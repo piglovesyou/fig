@@ -142,10 +142,10 @@ export function visitNode(
   if (vectorsMap.has(node.id)) {
     plugins!.forEach((plugin) =>
       plugin.appendSvgElement(
-        vectorsMap.get(node.id)!,
         context,
         parentContext,
-        genContext
+        genContext,
+        vectorsMap.get(node.id)!
       )
     );
     return null;
@@ -153,13 +153,13 @@ export function visitNode(
 
   if (node?.type === 'TEXT') {
     plugins!.forEach((plugin) =>
-      plugin.appendTextElement(context, parentContext)
+      plugin.appendTextElement(context, parentContext, genContext)
     );
     return null;
   }
 
   const cursor = plugins!.reduce((_, plugin) => {
-    const cursor = plugin.appendElement(context, parentContext);
+    const cursor = plugin.appendElement(context, parentContext, genContext);
     parentContext.cursor = cursor; // for next loop
     return cursor;
   }, null as null | ReturnType<FigPlugin['appendElement']>)!;

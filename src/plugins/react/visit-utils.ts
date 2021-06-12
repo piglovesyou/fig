@@ -172,10 +172,10 @@ export function appendComponentInstanceElement(
 }
 
 export function appendSvgElement(
-  svgHtml: string,
   context: VisitContext,
   parentContext: ParentVisitContext,
-  genContext: GenContext
+  genContext: GenContext,
+  svgHtml: string
 ) {
   const cursor = appendElement(context, parentContext, 'div');
 

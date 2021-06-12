@@ -22,18 +22,19 @@ export interface FigPlugin {
   ): void;
   appendElement(
     context: VisitContext,
-    parentContext: EmptyVisitContext
+    parentContext: EmptyVisitContext,
+    genContext: GenContext
   ): NodePath<JSXElement>;
-
   appendSvgElement(
-    svgHtml: string,
     context: VisitContext,
     parentContext: ParentVisitContext,
-    genContext: GenContext
+    genContext: GenContext,
+    svgHtml: string
   ): void;
   appendTextElement(
     context: VisitContext,
-    parentContext: ParentVisitContext
+    parentContext: ParentVisitContext,
+    genContext: GenContext
   ): void;
   dispose(): void | Promise<void>;
 }
