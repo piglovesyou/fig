@@ -116,7 +116,7 @@ async function loadStrategy(
       moduleRelPath.startsWith('.') ? moduleRelPath : './' + moduleRelPath
     );
   }
-  return await import(`../strategies/${strategyName}`);
+  return await import(`../plugins/${strategyName}`);
 }
 
 function loadCommandLineArgs() {

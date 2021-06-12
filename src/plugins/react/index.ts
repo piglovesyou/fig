@@ -43,10 +43,7 @@ class ReactStrategy implements StrategyInterface {
     // components can't resolve "react" and "react-dom".
     this.renderHtmlThread = new Piscina({
       maxQueue: 'auto',
-      filename: join(
-        __dirname,
-        '../../../dist/strategies/react/render-html.js'
-      ),
+      filename: join(__dirname, '../../../dist/plugins/react/render-html.js'),
       env: {
         NODE_PATH: findReactResolvablePath(),
       },

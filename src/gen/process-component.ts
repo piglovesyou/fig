@@ -3,7 +3,6 @@ import { File, JSXElement } from '@babel/types';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
-import { parseAsRoot } from '../strategies/react/ast-utils';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { EmptyVisitContext } from '../types/visit';
 import { readFile, writeFile } from '../utils/fs';
@@ -37,7 +36,7 @@ export async function processComponent(
     // 2. Find the root element to update
     // 3. Repeat update and traverse
     const content = await readFile(fullBasePath + '.tsx', 'utf-8');
-    rootAst = parseAsRoot(content);
+    // rootAst = parseAsRoot(content);
     throw new Error('Implement');
   } else {
     // Create mode.

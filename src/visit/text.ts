@@ -1,9 +1,10 @@
 import { JSXElement } from '@babel/types';
 import { CSSProperties } from 'react';
-import { parseExpression } from '../strategies/react/ast-utils';
+import { parseExpression } from '../plugins/react/ast-utils';
 import { Node } from '../types/ast';
 import { applyFontStyle } from './styles';
 
+// TODO: Move to plugin
 export function makeTextContent(node: Node<'TEXT'>): JSXElement[] {
   if (node.name.startsWith('input:')) {
     return [
