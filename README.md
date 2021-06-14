@@ -22,7 +22,7 @@ Run this command in your terminal.
 
 ```bash
 # Required options: --token token fileKey [fileKey ...]
-$ npx @piglovesyou/fig-cli@latest --token 0000-0000 pYYYY
+$ npx @piglovesyou/fig-cli@latest --token YOUR_TOKEN FILE_KEY
 ```
 
 * Get a **Figma access token** by following [this guide](https://www.figma.com/developers/api#access-tokens).
