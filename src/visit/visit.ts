@@ -158,15 +158,11 @@ export function visitNode<CursorType>(
     return null;
   }
 
-  const cursor = plugins!.reduce((_, plugin) => {
-    const cursor = plugin.appendElement(
-      context,
-      parentContext,
-      genContext
-    ) as CursorType;
-    parentContext.cursor = cursor; // for next loop
-    return cursor;
-  }, null as null | ReturnType<FigPlugin<CursorType>['appendElement']>)!;
+  const cursor = plugins!.reduce(
+    (_, plugin) =>
+      plugin.appendElement(context, parentContext, genContext) as CursorType,
+    null as null | ReturnType<FigPlugin<CursorType>['appendElement']>
+  )!;
 
   return { ...context, cursor };
   // for (const child of centerChildren) {
