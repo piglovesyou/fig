@@ -1,11 +1,13 @@
 import makeDir from 'make-dir';
 import pMap from 'p-map';
+import pReduce from 'p-reduce';
 import { join } from 'path';
 import { requestFile } from '../core/api';
 import { FigConfig } from '../core/config';
 import { updateLog, updateLogDone } from '../core/print';
 import { FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
+import { FigPlugin } from '../types/plugin';
 import { writeFile } from '../utils/fs';
 import { makeGenContext } from './make-gen-context';
 import { processComponent } from './process-component';
@@ -17,10 +19,16 @@ export async function processHtml(
   const { node, name } = componentInfo;
   if (node.type !== 'FRAME')
     throw new Error('Never. node.type should be FRAME');
-  const { strategy } = genContext;
-  if (!strategy) throw new Error('Never. Strategy should be instantiated.');
+  const { plugins } = genContext;
+  if (!plugins) throw new Error('Never. Plugins should be instantiated.');
 
-  const html = await strategy.renderHtml(componentInfo);
+  const html = (await pReduce(
+    plugins,
+    (html, plugin) => {
+      return plugin.renderHtml(componentInfo, genContext);
+    },
+    null as null | ReturnType<FigPlugin<unknown>['renderHtml']>
+  ))!;
 
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
 }
@@ -36,8 +44,8 @@ export async function gen(
 
     updateLog(`Fetching image resources..`);
     const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
-    const { componentsMap, strategy } = genContext;
-    if (!strategy) throw new Error('Never. Strategy should be instantiated.');
+    const { componentsMap, plugins } = genContext;
+    if (!plugins) throw new Error('Never. Plugins should be instantiated.');
 
     const components: ComponentInfo[] = [];
     const frames: ComponentInfo[] = [];
@@ -66,7 +74,7 @@ export async function gen(
       return processHtml(componentInfo, genContext);
     });
 
-    await strategy.dispose();
+    for (const plugin of plugins) await plugin.dispose();
 
     figmaFile.name;
     updateLog(

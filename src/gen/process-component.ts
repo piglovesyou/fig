@@ -1,22 +1,21 @@
-import { NodePath } from '@babel/traverse';
-import { File, JSXElement } from '@babel/types';
+import { File } from '@babel/types';
 import makeDir from 'make-dir';
 import { join } from 'path';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
-import { parseAsRoot } from '../strategies/react/ast-utils';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { EmptyVisitContext } from '../types/visit';
 import { readFile, writeFile } from '../utils/fs';
 import { visitNode } from '../visit/visit';
 
-export async function processComponent(
+export async function processComponent<CursorType>(
   componentInfo: ComponentInfo,
   genContext: GenContext
 ) {
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
-  const { strategy } = genContext;
-  if (!strategy) throw new Error('Never. Strategy should be instantiated.');
+  const { plugins } = genContext;
+  if (!plugins?.length)
+    throw new Error('Never. Plugins should be instantiated.');
 
   const { baseFullDir } = genContext;
   const componetsDir = join(
@@ -29,7 +28,7 @@ export async function processComponent(
   const fullBasePath = join(componetsDir, name);
 
   let rootAst: File;
-  let placeholderCursor: NodePath<JSXElement>;
+  let placeholderCursor: CursorType | null = null;
 
   if (false /*existsSync(fullBasePath)*/) {
     // TODO: Update mode.
@@ -37,24 +36,34 @@ export async function processComponent(
     // 2. Find the root element to update
     // 3. Repeat update and traverse
     const content = await readFile(fullBasePath + '.tsx', 'utf-8');
-    rootAst = parseAsRoot(content);
+    // rootAst = parseAsRoot(content);
     throw new Error('Implement');
   } else {
     // Create mode.
-    placeholderCursor = strategy.makeLayout(componentInfo);
+    for (const plugin of plugins)
+      placeholderCursor = plugin.makeLayout(
+        componentInfo,
+        genContext
+      ) as CursorType;
+    if (!placeholderCursor) throw new Error('Never. Plugin must assign cursor');
 
-    const parentContext: EmptyVisitContext = { cursor: placeholderCursor };
+    const parentContext: EmptyVisitContext<unknown> = {
+      cursor: placeholderCursor,
+    };
     walkNodeTree(
       node,
       (node, parentContext) => {
-        return visitNode(node, parentContext, strategy, genContext);
+        return visitNode(node, parentContext, genContext);
       },
       parentContext
     );
-    strategy.postWalk();
+
+    for (const plugin of plugins) plugin.postWalk(componentInfo, genContext);
   }
 
-  for (const [content, ext] of strategy.render(componentInfo)) {
-    await writeFile(fullBasePath + ext, content);
+  for (const plugin of plugins) {
+    for (const [content, ext] of plugin.render(componentInfo, genContext)) {
+      await writeFile(fullBasePath + ext, content);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { relative } from 'path';
 import { CSSProperties } from 'react';
+import slash from 'slash';
 import {
   backgroundSize,
   colorString,
@@ -180,9 +181,8 @@ function applyNodeTypeStyle(
             const imageFullPath = imagesMap.get(lastFill.imageRef || '');
             if (!imageFullPath)
               throw new Error('Something wrong with Figma API');
-            const imageRelPath = relative(
-              genContext.htmlFullDir,
-              imageFullPath
+            const imageRelPath = slash(
+              relative(genContext.htmlFullDir, imageFullPath)
             );
             styles.backgroundImage = `url(${imageRelPath})`; // TODO: Sanitize
             styles.backgroundSize = backgroundSize(lastFill.scaleMode!);

@@ -4,7 +4,7 @@ import {
   LayoutConstraintVertical,
 } from '../types/fig';
 import { GenContext } from '../types/gen';
-import { StrategyInterface } from '../types/strategy';
+import { FigPlugin } from '../types/plugin';
 import {
   ParentVisitContext,
   VisitContext,
@@ -81,9 +81,9 @@ export function expandChildren(context: VisitContext, offset: number) {
 //   }
 // }
 
-function checkShouldImportComponent(
+function checkShouldImportComponent<CursorType>(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<CursorType>,
   genContext: GenContext
 ) {
   const { node: parentNode } = parentContext;
@@ -105,15 +105,14 @@ function checkShouldImportComponent(
   return false;
 }
 
-export function visitNode(
+export function visitNode<CursorType>(
   node: ComposableNode,
-  parentContext: ParentVisitContext,
-  strategy: StrategyInterface,
+  parentContext: ParentVisitContext<CursorType>,
   genContext: GenContext
-): VisitContextWithCursor | null {
-  const { vectorsMap } = genContext;
+): VisitContextWithCursor<CursorType> | null {
+  const { vectorsMap, plugins } = genContext;
 
-  const context = makeVisitContext(node, parentContext, genContext);
+  const context = makeVisitContext<CursorType>(node, parentContext, genContext);
 
   // TODO: Rethink whether we want this.
   expandChildren(context, 0);
@@ -130,25 +129,40 @@ export function visitNode(
     genContext
   );
   if (shouldImportComponent) {
-    strategy.appendComponentInstanceElement(
-      context,
-      parentContext as VisitContextWithCursor,
-      genContext
+    plugins!.forEach((plugin) =>
+      plugin.appendComponentInstanceElement(
+        context,
+        parentContext as VisitContextWithCursor<CursorType>,
+        genContext
+      )
     );
     return null;
   }
 
   if (vectorsMap.has(node.id)) {
-    strategy.appendSvgElement(context, parentContext, vectorsMap.get(node.id)!);
+    plugins!.forEach((plugin) =>
+      plugin.appendSvgElement(
+        context,
+        parentContext,
+        genContext,
+        vectorsMap.get(node.id)!
+      )
+    );
     return null;
   }
 
   if (node?.type === 'TEXT') {
-    strategy.appendTextElement(context, parentContext);
+    plugins!.forEach((plugin) =>
+      plugin.appendTextElement(context, parentContext, genContext)
+    );
     return null;
   }
 
-  const cursor = strategy.appendElement(context, parentContext);
+  const cursor = plugins!.reduce(
+    (_, plugin) =>
+      plugin.appendElement(context, parentContext, genContext) as CursorType,
+    null as null | ReturnType<FigPlugin<CursorType>['appendElement']>
+  )!;
 
   return { ...context, cursor };
   // for (const child of centerChildren) {

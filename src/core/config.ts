@@ -2,17 +2,17 @@ import commandLineArgs from 'command-line-args';
 import commandLineUsage, { OptionDefinition } from 'command-line-usage';
 import { cosmiconfig } from 'cosmiconfig';
 import { dirname, join, relative } from 'path';
-import { StrategyModule } from '../types/strategy';
+import { PluginModule } from '../types/plugin';
 
 const MODULE_NAME = 'fig';
 
-interface _FigConfigBase<StrategySpecifier> {
+interface _FigConfigBase<PluginSpecifier> {
   baseDir?: string;
   componentsDir?: string;
   pagesDir?: string;
   htmlDir?: string;
   imagesDir?: string;
-  strategy: StrategySpecifier;
+  plugins?: PluginSpecifier[];
   fileKeys: string[];
   token?: string;
   require?: string[];
@@ -28,14 +28,14 @@ const DEFAULT_FIG_CONFIG: FigUserConfig = {
   pagesDir: 'pages',
   htmlDir: 'public',
   imagesDir: 'images',
-  strategy: 'react',
+  plugins: ['react'],
   fileKeys: [],
   token: '',
   help: false,
   version: false,
 };
 
-export type FigConfig = Required<_FigConfigBase<StrategyModule>>;
+export type FigConfig = Required<_FigConfigBase<PluginModule>>;
 
 export const commandLineOptions: OptionDefinition[] = [
   {
@@ -72,8 +72,9 @@ export const commandLineOptions: OptionDefinition[] = [
     description: `"images" by default. A directory to fetch your image resources to.`,
   },
   {
-    name: 'strategy',
-    description: `"react" by default, and is the only supported strategy for now.`,
+    name: 'plugins',
+    multiple: true,
+    description: `"react" by default, and is the only supported plugin for now.`,
   },
   { name: 'help', type: Boolean, description: `Show this message.` },
   {
@@ -85,7 +86,7 @@ export const commandLineOptions: OptionDefinition[] = [
 ];
 
 export function verifyConfig(config: FigConfig): void | never {
-  const { strategy, fileKeys, token, version } = config;
+  const { plugins, fileKeys, token, version } = config;
   if (version) {
     console.info(require('../../package.json').version);
     process.exit(0);
@@ -98,25 +99,33 @@ export function verifyConfig(config: FigConfig): void | never {
     console.error(`Specify a Figma token.`);
     showHelpAndExit(1);
   }
-  if (!strategy) {
-    console.error('Specify strategy.');
+  if (!plugins) {
+    console.error('Specify plugins.');
     showHelpAndExit(1);
   }
 }
 
-async function loadStrategy(
-  strategyName: FigUserConfig['strategy'],
+async function loadPlugin(
+  plugins: FigUserConfig['plugins'] = ['react'],
   configFullPath?: string
-): Promise<StrategyModule> {
-  if (strategyName.startsWith('./')) {
-    if (!configFullPath) throw new Error(`Never`);
-    const moduleFullPath = join(dirname(configFullPath), strategyName);
-    const moduleRelPath = relative(__dirname, moduleFullPath);
-    return await import(
-      moduleRelPath.startsWith('.') ? moduleRelPath : './' + moduleRelPath
-    );
+): Promise<PluginModule[]> {
+  const ps: PluginModule[] = [];
+  for (const pluginName of plugins) {
+    const isLocalModule = pluginName.startsWith('./');
+    if (isLocalModule) {
+      // Load user local module as plugin
+      if (!configFullPath) throw new Error(`Never`);
+      const moduleFullPath = join(dirname(configFullPath), pluginName);
+      const moduleRelPath = relative(__dirname, moduleFullPath);
+      const mod = await import(
+        moduleRelPath.startsWith('.') ? moduleRelPath : './' + moduleRelPath
+      );
+      ps.push(mod);
+    } else {
+      ps.push(await import(`../plugins/${pluginName}`));
+    }
   }
-  return await import(`../strategies/${strategyName}`);
+  return ps;
 }
 
 function loadCommandLineArgs() {
@@ -143,7 +152,7 @@ export async function createConfig(
 
   return {
     ...fullConfig,
-    strategy: await loadStrategy(fullConfig.strategy, cwd),
+    plugins: await loadPlugin(fullConfig.plugins, cwd),
   };
 }
 

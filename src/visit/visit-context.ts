@@ -23,9 +23,9 @@ function makeBounds(parentNode: ComposableNode, nodeBounds: Rectangle) {
   };
 }
 
-export function makeVisitContext(
+export function makeVisitContext<CursorType>(
   node: ComposableNode,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<CursorType>,
   genContext: GenContext
   // lastVertical: number | null
 ): VisitContext {

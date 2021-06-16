@@ -12,7 +12,7 @@ import {
   stringLiteral,
 } from '@babel/types';
 import escape from 'escape-html';
-import { GenContext } from '../../types/gen';
+import { ComponentInfo, GenContext } from '../../types/gen';
 import { ParentVisitContext, VisitContext } from '../../types/visit';
 import { makeTextContent } from '../../visit/text';
 import {
@@ -24,9 +24,10 @@ import {
   parseExpression,
   TEMP_REF_ATTR,
 } from './ast-utils';
+import { ReactCursorType } from './types';
 
 export function erasePlaceholderElement(
-  placeholderCursor: NodePath<JSXElement>
+  placeholderCursor: ReactCursorType
 ): void {
   // Merge attributes before removing the top placeholder element
   const placeholderElement = placeholderCursor.node;
@@ -39,17 +40,17 @@ export function erasePlaceholderElement(
 }
 
 export function appendImportDeclaration(
-  cursor: NodePath<JSXElement>,
+  newComponentInfo: ComponentInfo,
   context: VisitContext,
-  genContext: GenContext,
-  componentName: string
+  parentContext: ParentVisitContext<ReactCursorType>,
+  genContext: GenContext
 ) {
+  const { name: componentName } = newComponentInfo;
+  const { cursor } = parentContext;
   // Import component if not exists
   const program = cursor.findParent((path) =>
     isProgram(path.node)
   )! as NodePath<Program>;
-  if (componentName) {
-  }
   const importFromPage = context.parentNode?.type === 'FRAME';
   const importSource = `${
     importFromPage ? `../${genContext.config.componentsDir}` : '.'
@@ -69,7 +70,7 @@ export function appendImportDeclaration(
 
 export function appendElement(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<ReactCursorType>,
   tagName: string
 ) {
   const { cursor: parentCursor } = parentContext;
@@ -101,7 +102,11 @@ export function appendElement(
   return findTempRefJsxElement(parentCursor);
 }
 
-export function makeLayout(name: string) {
+export function makeLayout(
+  componentInfo: ComponentInfo,
+  genContext: GenContext
+) {
+  const { name } = componentInfo;
   const root = parseAsRoot(`
 import React, {FC, CSSProperties} from "react"
 
@@ -114,9 +119,9 @@ export const ${name}: FC<{style: CSSProperties}> = (props) => {
   return findTempRefJsxElement(root);
 }
 
-export function appendTextContext(
+export function appendTextElement(
   context: VisitContext,
-  parentContext: ParentVisitContext
+  parentContext: ParentVisitContext<ReactCursorType>
 ) {
   const { node } = context;
   if (node.type !== 'TEXT')
@@ -152,11 +157,10 @@ export function appendTextContext(
 
 export function appendComponentInstanceElement(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<ReactCursorType>,
   genContext: GenContext
 ) {
   const { node } = context;
-  const { cursor: parentCursor } = parentContext;
   const componentInfo = genContext.componentsMap.get(
     node.type === 'INSTANCE' ? node.componentId : node.id
   );
@@ -164,13 +168,14 @@ export function appendComponentInstanceElement(
     throw new Error('Never. It should appear in componentsMap.');
   const componentName = componentInfo.name;
 
-  appendImportDeclaration(parentCursor, context, genContext, componentName);
-  appendElement(context, parentContext, componentName);
+  appendImportDeclaration(componentInfo, context, parentContext, genContext);
+  appendElement(context, parentContext, componentInfo.name);
 }
 
-export function appendSvgContent(
+export function appendSvgElement(
   context: VisitContext,
-  parentContext: ParentVisitContext,
+  parentContext: ParentVisitContext<ReactCursorType>,
+  genContext: GenContext,
   svgHtml: string
 ) {
   const cursor = appendElement(context, parentContext, 'div');

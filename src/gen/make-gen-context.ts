@@ -3,6 +3,7 @@ import { FigConfig } from '../core/config';
 import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { Canvas, FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
+import { FigPlugin } from '../types/plugin';
 import { appendComponentsMap, ComponentsMap } from './components-map';
 import { makeExistingImagesMap, makeImagesMap } from './images-map';
 import { makeComponentName } from './utils';
@@ -31,7 +32,7 @@ export async function makeGenContext(
   fileKey: string,
   config: FigConfig,
   cwd: string
-): Promise<GenContext> {
+): Promise<Required<GenContext>> {
   const paths = makePaths(config);
   const { imagesFullDir } = paths;
   const { token } = config;
@@ -86,10 +87,10 @@ export async function makeGenContext(
     libDir,
     ...paths,
   };
-  const {
-    strategy: { createStrategy },
-  } = config;
-  const strategy = createStrategy(genContext);
 
-  return { ...genContext, strategy };
+  const ps: FigPlugin<unknown>[] = [];
+  const { plugins } = config;
+  for (const plugin of plugins) ps.push(plugin.createPlugin(genContext));
+
+  return { ...genContext, plugins: ps };
 }

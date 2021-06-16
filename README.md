@@ -25,8 +25,8 @@ Run this command in your terminal.
 $ npx @piglovesyou/fig-cli@latest --token YOUR_TOKEN FILE_KEY
 ```
 
-* Get a **Figma access token** by following [this guide](https://www.figma.com/developers/api#access-tokens).
-* **fileKey** is in your browser location bar when you open a Figma file. It should look as https://www.figma.com/file/:fileKey/:title.
+- Get a **Figma access token** by following [this guide](https://www.figma.com/developers/api#access-tokens).
+- **fileKey** is in your browser location bar when you open a Figma file. It should look as https://www.figma.com/file/:fileKey/:title.
 
 Then you'll find files generated like this.
 
@@ -49,7 +49,7 @@ Then you'll find files generated like this.
 - [x] Publish alpha release to generate simple React component source
 - [ ] Support "synchronize" behavior
 - [ ] Make it pluggable to generate multiple template language source
-- [ ] Support another Stylesheet strategy perhaps to support Tailwind CSS
+- [ ] Support another Stylesheet plugin perhaps to support Tailwind CSS
 - [ ] Beta that supports another language, maybe Vue.js?
 
 ## Contributions

@@ -1,5 +1,3 @@
-import { NodePath } from '@babel/traverse';
-import { JSXElement } from '@babel/types';
 import { ComposableNode } from './ast';
 import { Bound } from './fig';
 
@@ -16,11 +14,15 @@ export type VisitContext = {
   outFullDir: string;
 };
 
-type _WithCursor = { cursor: NodePath<JSXElement> };
+type _WithCursor<CursorType> = { cursor: CursorType };
 
-export type VisitContextWithCursor = VisitContext & _WithCursor;
+export type VisitContextWithCursor<CursorType> = VisitContext &
+  _WithCursor<CursorType>;
 
 // For parentContext of root node
-export type EmptyVisitContext = Partial<VisitContext> & _WithCursor;
+export type EmptyVisitContext<CursorType> = Partial<VisitContext> &
+  _WithCursor<CursorType>;
 
-export type ParentVisitContext = VisitContextWithCursor | EmptyVisitContext;
+export type ParentVisitContext<CursorType> =
+  | VisitContextWithCursor<CursorType>
+  | EmptyVisitContext<CursorType>;
