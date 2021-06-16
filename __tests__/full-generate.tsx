@@ -3,7 +3,7 @@ import * as api from '../src/core/api';
 import { createConfig } from '../src/core/config';
 import { shouldRefresh } from '../src/core/env';
 import { gen } from '../src/gen/gen';
-import { writeFile } from '../src/utils/fs';
+import { readFile, writeFile } from '../src/utils/fs';
 import { readJson } from '../src/__tools/fns';
 
 const outDir = join(__dirname, '__generated__');
@@ -48,6 +48,12 @@ describe('Test full html', () => {
         plugins: ['react'],
       });
       await gen(config);
+
+      const html = await readFile(
+        join(baseDir, 'public', `${componentName}.html`),
+        'utf-8'
+      );
+      expect(html).toMatchSnapshot();
     },
     1000 * 60 * 30
   );
