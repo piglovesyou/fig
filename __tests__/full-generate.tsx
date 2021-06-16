@@ -53,7 +53,7 @@ describe('Test full html', () => {
         join(baseDir, 'public', `${componentName}.html`),
         'utf-8'
       );
-      expect(html.replaceAll('\\', '/')).toMatchSnapshot();
+      expect(html.replaceAll('\\\\', '/')).toMatchSnapshot();
     },
     1000 * 60 * 30
   );
