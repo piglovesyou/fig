@@ -1,4 +1,3 @@
-import { platform } from 'os';
 import { join } from 'path';
 import * as api from '../src/core/api';
 import { createConfig } from '../src/core/config';
@@ -50,8 +49,6 @@ describe('Test full html', () => {
       });
       await gen(config);
 
-      // Ignore OS having strange paths
-      if (platform() === 'win32') return;
       const html = await readFile(
         join(baseDir, 'public', `${componentName}.html`),
         'utf-8'
