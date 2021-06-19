@@ -5,6 +5,7 @@ import { makeHeader, requestVectors } from '../core/api';
 import { updateLog } from '../core/print';
 import { ComposableNode, Node, Paint } from '../types/ast';
 import { isVectorTypeNode } from '../types/fig';
+import { GenContext } from '../types/gen';
 import { readFile, writeFile } from '../utils/fs';
 
 function paintsRequireRender(paints: Paint[]) {
@@ -98,22 +99,21 @@ export function appendVectorListIfNecessary(
 }
 
 export async function appendVectorsMap(
-  paths: {
-    htmlFullDir: string;
-    componentsFullDir: string;
-    pagesFullDir: string;
-    baseFullDir: string;
-    imagesFullDir: string;
-  },
-  vectorsMap: Map<string, string>,
-  vectorList: string[],
+  {
+    htmlFullDir,
+    componentsFullDir,
+    pagesFullDir,
+    baseFullDir,
+    imagesFullDir,
+    vectorsMap,
+    vectorsList,
+  }: GenContext,
   fileKey: string,
   token: string,
   existingImagesMap: Map<string, string>
 ): Promise<void> {
-  const { imagesFullDir } = paths;
-  if (!vectorList.length) return;
-  const vectors = await requestVectors(fileKey, vectorList, token);
+  if (!vectorsList.length) return;
+  const vectors = await requestVectors(fileKey, vectorsList, token);
   if (vectors) {
     let doneCount = 0;
     const imageEntries = Object.entries(vectors);

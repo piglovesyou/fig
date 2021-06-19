@@ -9,6 +9,7 @@ import { pipeline as _pipeline } from 'stream';
 import { promisify } from 'util';
 import { makeHeader, requestImages } from '../core/api';
 import { updateLog } from '../core/print';
+import { GenContext } from '../types/gen';
 
 const pipeline = promisify(_pipeline);
 
@@ -25,20 +26,19 @@ export async function makeExistingImagesMap(
 }
 
 export async function appendImagesMap(
-  imagesMap: Map<string, string>,
-  paths: {
-    htmlFullDir: string;
-    componentsFullDir: string;
-    pagesFullDir: string;
-    baseFullDir: string;
-    imagesFullDir: string;
-  },
+  {
+    imagesMap,
+    htmlFullDir,
+    componentsFullDir,
+    pagesFullDir,
+    baseFullDir,
+    imagesFullDir,
+  }: GenContext,
   fileKey: string,
   token: string,
   existingImagesMap: Map<string, string>
 ) {
   // TODO: Refactor. Call them only if needed.
-  const { imagesFullDir } = paths;
   await makeDir(imagesFullDir);
   const {
     meta: { images },

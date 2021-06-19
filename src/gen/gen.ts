@@ -52,22 +52,11 @@ export async function gen(
     const existingImagesMap = await makeExistingImagesMap(
       genContext.imagesFullDir
     );
-    const paths = makePaths(config); // refactor
-    await appendImagesMap(
-      genContext.imagesMap,
-      paths,
-      fileKey,
-      token,
-      existingImagesMap
-    );
-    await appendVectorsMap(
-      paths,
-      genContext.vectorsMap,
-      genContext.vectorsList,
-      fileKey,
-      token,
-      existingImagesMap
-    );
+
+    const paths = makePaths(config); // TODO: refactor
+
+    await appendImagesMap(genContext, fileKey, token, existingImagesMap);
+    await appendVectorsMap(genContext, fileKey, token, existingImagesMap);
 
     const components: ComponentInfo[] = [];
     const frames: ComponentInfo[] = [];
