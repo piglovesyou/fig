@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import pMap from 'p-map';
 import { basename, join } from 'path';
+import { Subscriber } from 'rxjs';
 import { makeHeader, requestVectors } from '../core/api';
-import { updateLog } from '../core/print';
 import { ComposableNode, Node, Paint } from '../types/ast';
 import { isVectorTypeNode } from '../types/fig';
 import { GenContext } from '../types/gen';
@@ -110,17 +110,18 @@ export async function appendVectorsMap(
   }: GenContext,
   fileKey: string,
   token: string,
-  existingImagesMap: Map<string, string>
+  existingImagesMap: Map<string, string>,
+  progress: Subscriber<string>
 ): Promise<void> {
   if (!vectorsList.length) return;
-  const vectors = await requestVectors(fileKey, vectorsList, token);
+  const vectors = await requestVectors(fileKey, vectorsList, token, progress);
   if (vectors) {
     let doneCount = 0;
     const imageEntries = Object.entries(vectors);
     await pMap(
       imageEntries,
       async ([guid, url]) => {
-        updateLog(
+        progress.next(
           `Fetching vector data ${++doneCount}/${
             imageEntries.length
           } starting..`
@@ -155,7 +156,7 @@ export async function appendVectorsMap(
         await writeFile(imageFullPath, svgHtml);
         vectorsMap.set(guid, svgHtml);
       },
-      { concurrency: 50 }
+      { concurrency: 40 }
     );
   }
 }

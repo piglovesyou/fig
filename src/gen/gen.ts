@@ -3,6 +3,7 @@ import makeDir from 'make-dir';
 import pMap from 'p-map';
 import pReduce from 'p-reduce';
 import { join } from 'path';
+import { Observable } from 'rxjs';
 import { requestFile } from '../core/api';
 import { FigConfig } from '../core/config';
 import { printInfo } from '../core/print';
@@ -69,30 +70,41 @@ async function genWithFileKey(
           genContext.imagesFullDir
         );
 
-        return new Listr([
-          {
-            title: `Synchronizing bitmaps`,
-            task: async () => {
-              await appendImagesMap(
-                genContext,
-                fileKey,
-                token,
-                existingImagesMap
-              );
+        return new Listr(
+          [
+            {
+              title: `Synchronizing bitmaps`,
+              task: async () => {
+                return new Observable<string>((progress) => {
+                  progress.next(`Preparing`);
+                  appendImagesMap(
+                    genContext,
+                    fileKey,
+                    token,
+                    existingImagesMap,
+                    progress
+                  ).finally(() => progress.complete());
+                });
+              },
             },
-          },
-          {
-            title: `Sychronizing vectors`,
-            task: async () => {
-              await appendVectorsMap(
-                genContext,
-                fileKey,
-                token,
-                existingImagesMap
-              );
+            {
+              title: `Sychronizing vectors`,
+              task: async () => {
+                return new Observable<string>((progress) => {
+                  progress.next(`Preparing`);
+                  appendVectorsMap(
+                    genContext,
+                    fileKey,
+                    token,
+                    existingImagesMap,
+                    progress
+                  ).finally(() => progress.complete());
+                });
+              },
             },
-          },
-        ]);
+          ],
+          { concurrent: true }
+        );
       },
     },
     {
@@ -109,17 +121,41 @@ async function genWithFileKey(
         }
         Object.assign(ctx, { frames, components });
 
+        return new Listr([
+          {
+            title: `Components`,
+            task: async (ctx) => {
+              return new Observable<string>((progress) => {
+                pMap(components, (componentInfo, i) => {
+                  progress.next(`${i}/${components.length}`);
+                  processComponent(componentInfo, genContext);
+                }).finally(() => progress.complete());
+              });
+            },
+          },
+          {
+            title: `Pages`,
+            task: async (ctx) => {
+              return new Observable<string>((progress) => {
+                pMap(frames, (componentInfo, i) => {
+                  progress.next(`${i}/${frames.length}`);
+                  processComponent(componentInfo, genContext);
+                }).finally(() => progress.complete());
+              });
+            },
+          },
+        ]);
         // Generate components to "./components"
         // updateLog(`Generating ${components.length} components..`);
-        await pMap(componentsMap, ([, componentInfo]) =>
-          processComponent(componentInfo, genContext)
-        );
+        // await pMap(componentsMap, ([, componentInfo]) =>
+        //   processComponent(componentInfo, genContext)
+        // );
 
         // Generate components to "./pages"
         // updateLog(`Generating ${frames.length} page components..`);
-        await pMap(componentsMap, ([, componentInfo]) =>
-          processComponent(componentInfo, genContext)
-        );
+        // await pMap(componentsMap, ([, componentInfo]) =>
+        //   processComponent(componentInfo, genContext)
+        // );
       },
     },
     {

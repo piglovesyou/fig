@@ -1,8 +1,8 @@
 import chunk from 'lodash.chunk';
 import fetch from 'node-fetch';
 import pMap from 'p-map';
+import { Subscriber } from 'rxjs';
 import { FigmaFile } from '../types/fig';
-import { updateLog } from './print';
 
 const baseUrl = 'https://api.figma.com';
 
@@ -21,7 +21,8 @@ export function makeHeader(token?: string) {
 export async function requestVectors(
   fileKey: string,
   vectorList: string[],
-  token: string
+  token: string,
+  progress: Subscriber<string>
 ) {
   if (!vectorList.length) throw new Error('vectorList is empty');
 
@@ -30,7 +31,7 @@ export async function requestVectors(
   await pMap(
     chunk(vectorList, MAX_VECTOR_REQUEST_COUNT),
     async (ids, i) => {
-      updateLog(
+      progress.next(
         `Fetching vector info ${i * MAX_VECTOR_REQUEST_COUNT}/${
           vectorList.length
         } starting..`
@@ -50,7 +51,7 @@ export async function requestVectors(
       if (err) throw new Error(JSON.stringify(err));
       if (images) result = Object.assign(result || {}, images);
     },
-    { concurrency: 100 }
+    { concurrency: 40 }
   );
 
   return result as unknown as Record<string, string>;

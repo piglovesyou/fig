@@ -5,10 +5,10 @@ import { extension } from 'mime-types';
 import fetch from 'node-fetch';
 import pMap from 'p-map';
 import { basename, extname, join } from 'path';
+import { Subscriber } from 'rxjs';
 import { pipeline as _pipeline } from 'stream';
 import { promisify } from 'util';
 import { makeHeader, requestImages } from '../core/api';
-import { updateLog } from '../core/print';
 import { GenContext } from '../types/gen';
 
 const pipeline = promisify(_pipeline);
@@ -36,7 +36,8 @@ export async function appendImagesMap(
   }: GenContext,
   fileKey: string,
   token: string,
-  existingImagesMap: Map<string, string>
+  existingImagesMap: Map<string, string>,
+  progress: Subscriber<string>
 ) {
   // TODO: Refactor. Call them only if needed.
   await makeDir(imagesFullDir);
@@ -49,7 +50,7 @@ export async function appendImagesMap(
   await pMap(
     imageEntries,
     async ([key, u]) => {
-      updateLog(`Fetching images ${++doneCount}/${imageEntries.length}..`);
+      progress.next(`Fetching images ${++doneCount}/${imageEntries.length}..`);
       const imageUrl = new URL(u);
       const base = basename(imageUrl.pathname);
       if (existingImagesMap.has(base)) {
@@ -69,7 +70,7 @@ export async function appendImagesMap(
       await pipeline(res.body, createWriteStream(imageFullPath));
     },
     // They return "read ECONNRESET" if we step on the gas pedal
-    { concurrency: 50 }
+    { concurrency: 40 }
   );
   return imagesMap;
 }
