@@ -6,38 +6,40 @@
 
 Fig is another “Figma to React” tool to generate and synchronize various template languages, designed to be AST-based, pluggable platform.
 
-## Demo
+![Screen Recording 2021-06-20 at 11 19 13](https://user-images.githubusercontent.com/217530/122660189-4b288100-d1ba-11eb-83d8-f538775e4cca.gif)
 
-Not perfect, but it seems pretty neat. [Give me a feedback](https://github.com/piglovesyou/fig/issues/new).
+## Sample output
 
-- [Website example](https://piglovesyou.github.io/fig/patagonia/public/Home_1%244.html), [Figma file](https://www.figma.com/file/pC6EOjjdZpS7PVsPTgjNLL/Patagonia?node-id=1%3A4)
-- [Auto layout example](https://piglovesyou.github.io/fig/mini/public/Home_1$2.html), [Figma file](https://www.figma.com/file/MhB9ljAxaGlIk1IttXa09f/mini)
-- [More pictures example](https://piglovesyou.github.io/fig/basic/public/Home_2$2.html), [Figma file](https://www.figma.com/file/QAIja81RKgYhQnIIJ0h9PJ/basic?node-id=0%3A1)
+[This website example](https://piglovesyou.github.io/fig/patagonia/public/Home_1%244.html) is generated from [a Figma file](https://www.figma.com/file/pC6EOjjdZpS7PVsPTgjNLL/Patagonia?node-id=1%3A4). Not perfect, but it seems okay.
 
 ## Try it out (Note: Alpha spec)
 
 Make sure you have [Node.js](https://nodejs.org/) installed in your machine.
 
+1. Prepare your **Figma access token** by following [this guide](https://www.figma.com/developers/api#access-tokens).
+2. Find out your **fileKey** in your browser location bar. It should look like `https://www.figma.com/file/:fileKey/:title`.
 Run this command in your terminal.
+3. Run this command.
 
 ```bash
-# Required options: --token token fileKey [fileKey ...]
-$ npx @piglovesyou/fig-cli@latest --token YOUR_TOKEN FILE_KEY
+$ npx @piglovesyou/fig-cli@latest --token FIGMA_ACCESS_TOKEN FILE_KEY
 ```
 
-- Get a **Figma access token** by following [this guide](https://www.figma.com/developers/api#access-tokens).
-- **fileKey** is in your browser location bar when you open a Figma file. It should look as https://www.figma.com/file/:fileKey/:title.
-
-Then you'll find files generated like this.
+You'll find files generated like these.
 
 ```
-./images/f3d3bc2931ffab08c3df439b1392ed07.jpeg
-./images/f893d788c09554ac3f7c80d6a9bfb22e.png
-./components/Button_1$48.tsx
-./components/Button_1$48.js
-./pages/Home_1$4.tsx
-./pages/Home_1$4.js
-./public/Home_1$4.html
+├── components
+│   ├── Button_1$48.js
+│   ├── Button_1$48.tsx
+├── images
+│   ├── 02d6c74b348c68bacf5b0a87d670e94f.jpeg
+│   ├── 1b823b23208a6cf9ec484609d96aadcb.svg
+│   ├── f893d788c09554ac3f7c80d6a9bfb22e.png
+├── pages
+│   ├── Home_1$4.js
+│   └── Home_1$4.tsx
+└── public
+    └── Home_1$4.html
 ```
 
 ## Sponsors
