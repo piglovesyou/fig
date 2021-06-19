@@ -1,10 +1,11 @@
+import Listr from 'listr';
 import makeDir from 'make-dir';
 import pMap from 'p-map';
 import pReduce from 'p-reduce';
 import { join } from 'path';
 import { requestFile } from '../core/api';
 import { FigConfig } from '../core/config';
-import { updateLog, updateLogDone } from '../core/print';
+import { printInfo } from '../core/print';
 import { FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { FigPlugin } from '../types/plugin';
@@ -41,55 +42,155 @@ async function genWithFileKey(
   config: FigConfig,
   cwd: string
 ) {
-  updateLog(`Fetching data of "${fileKey}"..`);
-  const figmaFile: FigmaFile = await requestFile(fileKey, token);
+  const listrCtx = await new Listr<{
+    figmaFile: FigmaFile;
+    genContext: GenContext;
+    frames: ComponentInfo[];
+    components: ComponentInfo[];
+  }>([
+    {
+      title: `Fetching Figma file data of "${fileKey}"`,
+      task: async (ctx) => {
+        const figmaFile: FigmaFile = await requestFile(fileKey, token);
+        const genContext = await makeGenContext(
+          figmaFile,
+          fileKey,
+          config,
+          cwd
+        );
+        Object.assign(ctx, { figmaFile, genContext });
+      },
+    },
+    {
+      title: `Synchronizing images`,
+      task: async (ctx) => {
+        const { genContext } = ctx;
+        const existingImagesMap = await makeExistingImagesMap(
+          genContext.imagesFullDir
+        );
 
-  updateLog(`Fetching image resources..`);
-  const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
-  const { componentsMap, plugins } = genContext;
-  if (!plugins) throw new Error('Never. Plugins should be instantiated.');
+        return new Listr([
+          {
+            title: `Synchronizing bitmaps`,
+            task: async () => {
+              await appendImagesMap(
+                genContext,
+                fileKey,
+                token,
+                existingImagesMap
+              );
+            },
+          },
+          {
+            title: `Sychronizing vectors`,
+            task: async () => {
+              await appendVectorsMap(
+                genContext,
+                fileKey,
+                token,
+                existingImagesMap
+              );
+            },
+          },
+        ]);
+      },
+    },
+    {
+      title: `Synchronizing components`,
+      task: async (ctx) => {
+        const { genContext } = ctx;
+        const { componentsMap } = genContext;
+        const components: ComponentInfo[] = [];
+        const frames: ComponentInfo[] = [];
+        for (const [, componentInfo] of componentsMap) {
+          const { node } = componentInfo;
+          if (node.type === 'FRAME') frames.push(componentInfo);
+          else components.push(componentInfo);
+        }
+        Object.assign(ctx, { frames, components });
 
-  const existingImagesMap = await makeExistingImagesMap(
-    genContext.imagesFullDir
-  );
+        // Generate components to "./components"
+        // updateLog(`Generating ${components.length} components..`);
+        await pMap(componentsMap, ([, componentInfo]) =>
+          processComponent(componentInfo, genContext)
+        );
 
-  await appendImagesMap(genContext, fileKey, token, existingImagesMap);
-  await appendVectorsMap(genContext, fileKey, token, existingImagesMap);
+        // Generate components to "./pages"
+        // updateLog(`Generating ${frames.length} page components..`);
+        await pMap(componentsMap, ([, componentInfo]) =>
+          processComponent(componentInfo, genContext)
+        );
+      },
+    },
+    {
+      title: `Generating HTML samples`,
+      task: async (ctx) => {
+        const { genContext, frames } = ctx;
+        const { plugins } = genContext;
+        for (const plugin of plugins) await plugin.dispose();
 
-  const components: ComponentInfo[] = [];
-  const frames: ComponentInfo[] = [];
-  for (const [, componentInfo] of componentsMap) {
-    const { node } = componentInfo;
-    if (node.type === 'FRAME') frames.push(componentInfo);
-    else components.push(componentInfo);
-  }
+        // Generate html to "./public"
+        // updateLog(`Generating ${frames.length} HTMLs..`);
+        await makeDir(genContext.htmlFullDir);
+        await pMap(frames, (componentInfo) => {
+          return processHtml(componentInfo, genContext);
+        });
+      },
+    },
 
-  // Generate components to "./components"
-  updateLog(`Generating ${components.length} components..`);
-  await pMap(componentsMap, ([, componentInfo]) =>
-    processComponent(componentInfo, genContext)
-  );
+    // {
+    //   title: ``,
+    //   task: async ctx => {},
+    // },
+  ]).run();
 
-  // Generate components to "./pages"
-  updateLog(`Generating ${frames.length} page components..`);
-  await pMap(componentsMap, ([, componentInfo]) =>
-    processComponent(componentInfo, genContext)
-  );
+  // updateLog(`Fetching data of "${fileKey}"..`);
+  // const figmaFile: FigmaFile = await requestFile(fileKey, token);
+
+  // updateLog(`Fetching image resources..`);
+  // // const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
+  // const { componentsMap, plugins } = genContext;
+  //
+  // const existingImagesMap = await makeExistingImagesMap(
+  //   genContext.imagesFullDir
+  // );
+  //
+  // await appendImagesMap(genContext, fileKey, token, existingImagesMap);
+  // await appendVectorsMap(genContext, fileKey, token, existingImagesMap);
+
+  // const components: ComponentInfo[] = [];
+  // const frames: ComponentInfo[] = [];
+  // for (const [, componentInfo] of componentsMap) {
+  //   const { node } = componentInfo;
+  //   if (node.type === 'FRAME') frames.push(componentInfo);
+  //   else components.push(componentInfo);
+  // }
+  //
+  // // Generate components to "./components"
+  // updateLog(`Generating ${components.length} components..`);
+  // await pMap(componentsMap, ([, componentInfo]) =>
+  //   processComponent(componentInfo, genContext)
+  // );
+  //
+  // // Generate components to "./pages"
+  // updateLog(`Generating ${frames.length} page components..`);
+  // await pMap(componentsMap, ([, componentInfo]) =>
+  //   processComponent(componentInfo, genContext)
+  // );
 
   // Generate html to "./public"
-  updateLog(`Generating ${frames.length} HTMLs..`);
-  await makeDir(genContext.htmlFullDir);
-  await pMap(frames, (componentInfo) => {
-    return processHtml(componentInfo, genContext);
-  });
+  // updateLog(`Generating ${frames.length} HTMLs..`);
+  // await makeDir(genContext.htmlFullDir);
+  // await pMap(frames, (componentInfo) => {
+  //   return processHtml(componentInfo, genContext);
+  // });
 
-  for (const plugin of plugins) await plugin.dispose();
+  const { genContext, figmaFile, frames, components } = listrCtx;
+  const { imagesMap } = genContext;
 
-  figmaFile.name;
-  updateLog(
-    `"${figmaFile.name}" done. ${genContext.imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`
+  printInfo(
+    `"${figmaFile.name}" done. ${imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`
   );
-  updateLogDone();
 }
 
 export async function gen(
