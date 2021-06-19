@@ -1,13 +1,14 @@
 import chunk from 'lodash.chunk';
 import fetch from 'node-fetch';
 import pMap from 'p-map';
+import { Subscriber } from 'rxjs';
 import { FigmaFile } from '../types/fig';
-import { updateLog } from './print';
+import { getCurr } from './print';
 
 const baseUrl = 'https://api.figma.com';
 
 // To avoid "Error: 414: Request-URI Too Large"
-const MAX_VECTOR_REQUEST_COUNT = 200;
+const MAX_CHUNK_COUNT = 200;
 
 // I think I should say hi before my account gets frozen
 const GREET_FIGMA_DEVELOPER = `Hi. Sorry for high load. Contact me on github.com/piglovesyou/fig`;
@@ -21,20 +22,17 @@ export function makeHeader(token?: string) {
 export async function requestVectors(
   fileKey: string,
   vectorList: string[],
-  token: string
+  token: string,
+  progress: Subscriber<string>
 ) {
   if (!vectorList.length) throw new Error('vectorList is empty');
 
   let result: Record<string, string> | null = null;
 
+  let doneCount = 0;
   await pMap(
-    chunk(vectorList, MAX_VECTOR_REQUEST_COUNT),
-    async (ids, i) => {
-      updateLog(
-        `Fetching vector info ${i * MAX_VECTOR_REQUEST_COUNT}/${
-          vectorList.length
-        } starting..`
-      );
+    chunk(vectorList, MAX_CHUNK_COUNT),
+    async (ids) => {
       const idValue = encodeURIComponent(ids.join(','));
       const {
         err,
@@ -49,8 +47,15 @@ export async function requestVectors(
       );
       if (err) throw new Error(JSON.stringify(err));
       if (images) result = Object.assign(result || {}, images);
+
+      progress.next(
+        `${getCurr(
+          ++doneCount * MAX_CHUNK_COUNT + ids.length,
+          vectorList.length
+        )} SVG URLs resolved`
+      );
     },
-    { concurrency: 100 }
+    { concurrency: 40 }
   );
 
   return result as unknown as Record<string, string>;

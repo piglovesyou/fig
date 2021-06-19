@@ -1,10 +1,12 @@
 import fetch from 'node-fetch';
 import pMap from 'p-map';
 import { basename, join } from 'path';
+import { Subscriber } from 'rxjs';
 import { makeHeader, requestVectors } from '../core/api';
-import { updateLog } from '../core/print';
+import { getCurr } from '../core/print';
 import { ComposableNode, Node, Paint } from '../types/ast';
 import { isVectorTypeNode } from '../types/fig';
+import { GenContext } from '../types/gen';
 import { readFile, writeFile } from '../utils/fs';
 
 function paintsRequireRender(paints: Paint[]) {
@@ -98,39 +100,42 @@ export function appendVectorListIfNecessary(
 }
 
 export async function appendVectorsMap(
-  paths: {
-    htmlFullDir: string;
-    componentsFullDir: string;
-    pagesFullDir: string;
-    baseFullDir: string;
-    imagesFullDir: string;
-  },
-  vectorsMap: Map<string, string>,
-  vectorList: string[],
+  {
+    htmlFullDir,
+    componentsFullDir,
+    pagesFullDir,
+    baseFullDir,
+    imagesFullDir,
+    vectorsMap,
+    vectorsList,
+  }: GenContext,
   fileKey: string,
   token: string,
-  existingImagesMap: Map<string, string>
+  existingImagesMap: Map<string, string>,
+  progress: Subscriber<string>
 ): Promise<void> {
-  const { imagesFullDir } = paths;
-  if (!vectorList.length) return;
-  const vectors = await requestVectors(fileKey, vectorList, token);
+  if (!vectorsList.length) return;
+  const vectors = await requestVectors(fileKey, vectorsList, token, progress);
   if (vectors) {
     let doneCount = 0;
-    const imageEntries = Object.entries(vectors);
+    const vectorEntries = Object.entries(vectors);
     await pMap(
-      imageEntries,
+      vectorEntries,
       async ([guid, url]) => {
-        updateLog(
-          `Fetching vector data ${++doneCount}/${
-            imageEntries.length
-          } starting..`
-        );
         if (!url) return;
+
         const base = basename(url);
+        const fileName = `${base}.svg`;
+        const inc = () =>
+          progress.next(
+            `${getCurr(++doneCount, vectorEntries.length)} ${fileName}`
+          );
+
         if (existingImagesMap.has(base)) {
           const svgFullPath = existingImagesMap.get(base)!;
           const svgContent = await readFile(svgFullPath, 'utf-8');
           vectorsMap.set(guid, svgContent);
+          inc();
           return;
         }
         const rawText = await fetch(url, { headers: makeHeader() })
@@ -151,11 +156,12 @@ export async function appendVectorsMap(
           '<svg ',
           '<svg preserveAspectRatio="none" '
         );
-        const imageFullPath = join(imagesFullDir, `${base}.svg`);
+        const imageFullPath = join(imagesFullDir, fileName);
         await writeFile(imageFullPath, svgHtml);
         vectorsMap.set(guid, svgHtml);
+        inc();
       },
-      { concurrency: 50 }
+      { concurrency: 40 }
     );
   }
 }

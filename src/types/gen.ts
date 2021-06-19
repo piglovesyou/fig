@@ -12,10 +12,11 @@ export type GenContext = {
   componentsMap: ComponentsMap;
   imagesMap: Map<string, string>;
   vectorsMap: Map<string, string>;
+  vectorsList: string[];
   config: FigConfig;
   cwd: string;
   libDir: string;
-  plugins?: FigPlugin<unknown>[];
+  plugins: FigPlugin<unknown>[];
   baseFullDir: string;
   componentsFullDir: string;
   pagesFullDir: string;

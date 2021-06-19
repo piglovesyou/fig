@@ -5,11 +5,10 @@ import { Canvas, FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { FigPlugin } from '../types/plugin';
 import { appendComponentsMap, ComponentsMap } from './components-map';
-import { makeExistingImagesMap, makeImagesMap } from './images-map';
 import { makeComponentName } from './utils';
-import { appendVectorListIfNecessary, appendVectorsMap } from './vectors-map';
+import { appendVectorListIfNecessary } from './vectors-map';
 
-function makePaths(config: FigConfig) {
+export function makePaths(config: FigConfig) {
   const { baseDir } = config;
   const baseFullDir = isAbsolute(baseDir)
     ? baseDir
@@ -32,7 +31,7 @@ export async function makeGenContext(
   fileKey: string,
   config: FigConfig,
   cwd: string
-): Promise<Required<GenContext>> {
+): Promise<GenContext> {
   const paths = makePaths(config);
   const { imagesFullDir } = paths;
   const { token } = config;
@@ -40,16 +39,9 @@ export async function makeGenContext(
 
   const componentsMap: ComponentsMap = new Map();
   const vectorsMap = new Map<string, string>();
+  const imagesMap = new Map<string, string>();
 
-  const existingImagesMap = await makeExistingImagesMap(imagesFullDir);
-  const imagesMap = await makeImagesMap(
-    paths,
-    fileKey,
-    token,
-    existingImagesMap
-  );
-
-  const vectorList: string[] = []; // TODO: Use Set
+  const vectorsList: string[] = []; // TODO: Use Set
 
   for (const canvas of figmaFile.document.children as Canvas[])
     for (const screen of canvas.children)
@@ -63,34 +55,28 @@ export async function makeGenContext(
           screen,
           (node) => {
             appendComponentsMap(node, componentsMap);
-            appendVectorListIfNecessary(node, vectorList);
+            appendVectorListIfNecessary(node, vectorsList);
           },
           undefined
         );
       }
 
-  await appendVectorsMap(
-    paths,
-    vectorsMap,
-    vectorList,
-    fileKey,
-    token,
-    existingImagesMap
-  );
+  const plugins: FigPlugin<unknown>[] = [];
 
   const genContext: GenContext = {
     componentsMap,
     imagesMap,
     vectorsMap,
+    vectorsList,
     config,
     cwd,
     libDir,
+    plugins,
     ...paths,
   };
 
-  const ps: FigPlugin<unknown>[] = [];
-  const { plugins } = config;
-  for (const plugin of plugins) ps.push(plugin.createPlugin(genContext));
+  for (const plugin of config.plugins)
+    plugins.push(plugin.createPlugin(genContext));
 
-  return { ...genContext, plugins: ps };
+  return genContext;
 }
