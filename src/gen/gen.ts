@@ -10,7 +10,7 @@ import { ComponentInfo, GenContext } from '../types/gen';
 import { FigPlugin } from '../types/plugin';
 import { writeFile } from '../utils/fs';
 import { appendImagesMap, makeExistingImagesMap } from './images-map';
-import { makeGenContext, makePaths } from './make-gen-context';
+import { makeGenContext } from './make-gen-context';
 import { processComponent } from './process-component';
 import { appendVectorsMap } from './vectors-map';
 
@@ -52,8 +52,6 @@ export async function gen(
     const existingImagesMap = await makeExistingImagesMap(
       genContext.imagesFullDir
     );
-
-    const paths = makePaths(config); // TODO: refactor
 
     await appendImagesMap(genContext, fileKey, token, existingImagesMap);
     await appendVectorsMap(genContext, fileKey, token, existingImagesMap);
