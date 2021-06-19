@@ -24,7 +24,8 @@ export async function makeExistingImagesMap(
   return new Map(existingFiles);
 }
 
-export async function makeImagesMap(
+export async function appendImagesMap(
+  imagesMap: Map<string, string>,
   paths: {
     htmlFullDir: string;
     componentsFullDir: string;
@@ -38,7 +39,6 @@ export async function makeImagesMap(
 ) {
   // TODO: Refactor. Call them only if needed.
   const { imagesFullDir } = paths;
-  const imagesMap = new Map<string, string>();
   await makeDir(imagesFullDir);
   const {
     meta: { images },

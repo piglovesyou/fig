@@ -5,7 +5,7 @@ import { Canvas, FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { FigPlugin } from '../types/plugin';
 import { appendComponentsMap, ComponentsMap } from './components-map';
-import { makeExistingImagesMap, makeImagesMap } from './images-map';
+import { appendImagesMap, makeExistingImagesMap } from './images-map';
 import { makeComponentName } from './utils';
 import { appendVectorListIfNecessary, appendVectorsMap } from './vectors-map';
 
@@ -42,12 +42,8 @@ export async function makeGenContext(
   const vectorsMap = new Map<string, string>();
 
   const existingImagesMap = await makeExistingImagesMap(imagesFullDir);
-  const imagesMap = await makeImagesMap(
-    paths,
-    fileKey,
-    token,
-    existingImagesMap
-  );
+  const imagesMap = new Map<string, string>();
+  await appendImagesMap(imagesMap, paths, fileKey, token, existingImagesMap);
 
   const vectorList: string[] = []; // TODO: Use Set
 
