@@ -9,8 +9,10 @@ import { FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { FigPlugin } from '../types/plugin';
 import { writeFile } from '../utils/fs';
-import { makeGenContext } from './make-gen-context';
+import { appendImagesMap, makeExistingImagesMap } from './images-map';
+import { makeGenContext, makePaths } from './make-gen-context';
 import { processComponent } from './process-component';
+import { appendVectorsMap } from './vectors-map';
 
 export async function processHtml(
   componentInfo: ComponentInfo,
@@ -46,6 +48,26 @@ export async function gen(
     const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
     const { componentsMap, plugins } = genContext;
     if (!plugins) throw new Error('Never. Plugins should be instantiated.');
+
+    const existingImagesMap = await makeExistingImagesMap(
+      genContext.imagesFullDir
+    );
+    const paths = makePaths(config); // refactor
+    await appendImagesMap(
+      genContext.imagesMap,
+      paths,
+      fileKey,
+      token,
+      existingImagesMap
+    );
+    await appendVectorsMap(
+      paths,
+      genContext.vectorsMap,
+      genContext.vectorsList,
+      fileKey,
+      token,
+      existingImagesMap
+    );
 
     const components: ComponentInfo[] = [];
     const frames: ComponentInfo[] = [];
