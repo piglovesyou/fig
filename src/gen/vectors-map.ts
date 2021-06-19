@@ -117,17 +117,22 @@ export async function appendVectorsMap(
   const vectors = await requestVectors(fileKey, vectorsList, token, progress);
   if (vectors) {
     let doneCount = 0;
-    const imageEntries = Object.entries(vectors);
+    const vectorEntries = Object.entries(vectors);
     await pMap(
-      imageEntries,
+      vectorEntries,
       async ([guid, url]) => {
-        progress.next(`Fetching ${++doneCount}/${imageEntries.length}`);
         if (!url) return;
+
         const base = basename(url);
+        const fileName = `${base}.svg`;
+        const inc = () =>
+          progress.next(`${fileName}\t${++doneCount}/${vectorEntries.length}`);
+
         if (existingImagesMap.has(base)) {
           const svgFullPath = existingImagesMap.get(base)!;
           const svgContent = await readFile(svgFullPath, 'utf-8');
           vectorsMap.set(guid, svgContent);
+          inc();
           return;
         }
         const rawText = await fetch(url, { headers: makeHeader() })
@@ -148,9 +153,10 @@ export async function appendVectorsMap(
           '<svg ',
           '<svg preserveAspectRatio="none" '
         );
-        const imageFullPath = join(imagesFullDir, `${base}.svg`);
+        const imageFullPath = join(imagesFullDir, fileName);
         await writeFile(imageFullPath, svgHtml);
         vectorsMap.set(guid, svgHtml);
+        inc();
       },
       { concurrency: 40 }
     );

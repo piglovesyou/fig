@@ -28,13 +28,10 @@ export async function requestVectors(
 
   let result: Record<string, string> | null = null;
 
-  progress.next(`Checking 0/${vectorList.length}`);
+  let doneCount = 0;
   await pMap(
     chunk(vectorList, MAX_CHUNK_COUNT),
-    async (ids, i) => {
-      progress.next(
-        `Checking ${i * MAX_CHUNK_COUNT + ids.length}/${vectorList.length}`
-      );
+    async (ids) => {
       const idValue = encodeURIComponent(ids.join(','));
       const {
         err,
@@ -49,6 +46,12 @@ export async function requestVectors(
       );
       if (err) throw new Error(JSON.stringify(err));
       if (images) result = Object.assign(result || {}, images);
+
+      progress.next(
+        `SVG URL\t${++doneCount * MAX_CHUNK_COUNT + ids.length}/${
+          vectorList.length
+        }`
+      );
     },
     { concurrency: 40 }
   );

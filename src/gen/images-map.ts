@@ -50,12 +50,14 @@ export async function appendImagesMap(
   await pMap(
     imageEntries,
     async ([key, u]) => {
-      progress.next(`Fetching ${++doneCount}/${imageEntries.length}`);
+      const inc = () =>
+        progress.next(`Fetching ${++doneCount}/${imageEntries.length}`);
       const imageUrl = new URL(u);
       const base = basename(imageUrl.pathname);
       if (existingImagesMap.has(base)) {
         const imageFullPath = existingImagesMap.get(base)!;
         imagesMap.set(key, imageFullPath);
+        inc();
         return;
       }
       const res = await fetch(imageUrl.href, { headers: makeHeader() }).catch(
@@ -68,6 +70,7 @@ export async function appendImagesMap(
       const imageFullPath = join(imagesFullDir, `${base}.${ext}`);
       imagesMap.set(key, imageFullPath);
       await pipeline(res.body, createWriteStream(imageFullPath));
+      inc();
     },
     // They return "read ECONNRESET" if we step on the gas pedal
     { concurrency: 40 }

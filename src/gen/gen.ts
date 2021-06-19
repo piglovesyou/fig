@@ -55,8 +55,14 @@ async function taskGenHtml(ctx: ListrContext) {
 
   // Generate html to "./public"
   await makeDir(genContext.htmlFullDir);
-  await pMap(frames, (componentInfo) => {
-    return processHtml(componentInfo, genContext);
+  let doneCount = 0;
+  return new Observable<string>((progress) => {
+    pMap(frames, async (componentInfo) => {
+      await processHtml(componentInfo, genContext);
+      progress.next(`${++doneCount}/${frames.length}`);
+    }).finally(() => {
+      progress.complete();
+    });
   });
 }
 
@@ -72,37 +78,30 @@ async function taskSyncComponents(ctx: ListrContext) {
   }
   Object.assign(ctx, { frames, components });
 
-  return new Listr([
-    {
-      title: `Components`,
-      task: async (ctx) => {
-        return new Observable<string>((progress) => {
-          pMap(components, async (componentInfo, i) => {
-            progress.next(`${i + 1}/${components.length}`);
-            await processComponent(componentInfo, genContext);
-          }).finally(() => {
-            // Since order is not guaranteed
-            progress.next(`${components.length}/${components.length}`);
-            progress.complete();
+  const listrArgs = [
+    [components, 'Components'] as const,
+    [frames, 'Pages'] as const,
+  ];
+
+  return new Listr(
+    listrArgs.map(([array, title]) => {
+      return {
+        title,
+        task: async () => {
+          let doneCount = 0;
+          return new Observable<string>((progress) => {
+            pMap(components, async (componentInfo) => {
+              await processComponent(componentInfo, genContext);
+              progress.next(`${++doneCount}/${components.length}`);
+            }).finally(() => {
+              progress.complete();
+            });
           });
-        });
-      },
-    },
-    {
-      title: `Pages`,
-      task: async (ctx) => {
-        return new Observable<string>((progress) => {
-          pMap(frames, async (componentInfo, i) => {
-            progress.next(`${i + 1}/${frames.length}`);
-            await processComponent(componentInfo, genContext);
-          }).finally(() => {
-            progress.next(`${frames.length}/${frames.length}`);
-            progress.complete();
-          });
-        });
-      },
-    },
-  ]);
+        },
+      };
+    }),
+    { concurrent: true }
+  );
 }
 
 async function taskSyncImages(ctx: ListrContext) {
@@ -117,7 +116,7 @@ async function taskSyncImages(ctx: ListrContext) {
         title: `Synchronizing bitmaps`,
         task: async () => {
           return new Observable<string>((progress) => {
-            progress.next(`Preparing`);
+            progress.next(`Fetching`);
             appendImagesMap(
               genContext,
               fileKey,
@@ -132,7 +131,7 @@ async function taskSyncImages(ctx: ListrContext) {
         title: `Sychronizing vectors`,
         task: async () => {
           return new Observable<string>((progress) => {
-            progress.next(`Preparing`);
+            progress.next(`Fetching`);
             appendVectorsMap(
               genContext,
               fileKey,
@@ -163,7 +162,7 @@ async function genWithFileKey(
 ) {
   const listrCtx = await new Listr<ListrContext>([
     {
-      title: `Fetching Figma file data of "${fileKey}"`,
+      title: `Fetching Figma file data "${fileKey}"`,
       task: taskFetchFigmaFile,
     },
     {
