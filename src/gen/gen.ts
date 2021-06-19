@@ -35,60 +35,68 @@ export async function processHtml(
   await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
 }
 
+async function genWithFileKey(
+  fileKey: string,
+  token: string,
+  config: FigConfig,
+  cwd: string
+) {
+  updateLog(`Fetching data of "${fileKey}"..`);
+  const figmaFile: FigmaFile = await requestFile(fileKey, token);
+
+  updateLog(`Fetching image resources..`);
+  const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
+  const { componentsMap, plugins } = genContext;
+  if (!plugins) throw new Error('Never. Plugins should be instantiated.');
+
+  const existingImagesMap = await makeExistingImagesMap(
+    genContext.imagesFullDir
+  );
+
+  await appendImagesMap(genContext, fileKey, token, existingImagesMap);
+  await appendVectorsMap(genContext, fileKey, token, existingImagesMap);
+
+  const components: ComponentInfo[] = [];
+  const frames: ComponentInfo[] = [];
+  for (const [, componentInfo] of componentsMap) {
+    const { node } = componentInfo;
+    if (node.type === 'FRAME') frames.push(componentInfo);
+    else components.push(componentInfo);
+  }
+
+  // Generate components to "./components"
+  updateLog(`Generating ${components.length} components..`);
+  await pMap(componentsMap, ([, componentInfo]) =>
+    processComponent(componentInfo, genContext)
+  );
+
+  // Generate components to "./pages"
+  updateLog(`Generating ${frames.length} page components..`);
+  await pMap(componentsMap, ([, componentInfo]) =>
+    processComponent(componentInfo, genContext)
+  );
+
+  // Generate html to "./public"
+  updateLog(`Generating ${frames.length} HTMLs..`);
+  await makeDir(genContext.htmlFullDir);
+  await pMap(frames, (componentInfo) => {
+    return processHtml(componentInfo, genContext);
+  });
+
+  for (const plugin of plugins) await plugin.dispose();
+
+  figmaFile.name;
+  updateLog(
+    `"${figmaFile.name}" done. ${genContext.imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`
+  );
+  updateLogDone();
+}
+
 export async function gen(
   config: FigConfig,
   cwd = process.cwd()
 ): Promise<void> {
   const { fileKeys, token } = config;
-  for (const fileKey of fileKeys) {
-    updateLog(`Fetching data of "${fileKey}"..`);
-    const figmaFile: FigmaFile = await requestFile(fileKey, token);
-
-    updateLog(`Fetching image resources..`);
-    const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
-    const { componentsMap, plugins } = genContext;
-    if (!plugins) throw new Error('Never. Plugins should be instantiated.');
-
-    const existingImagesMap = await makeExistingImagesMap(
-      genContext.imagesFullDir
-    );
-
-    await appendImagesMap(genContext, fileKey, token, existingImagesMap);
-    await appendVectorsMap(genContext, fileKey, token, existingImagesMap);
-
-    const components: ComponentInfo[] = [];
-    const frames: ComponentInfo[] = [];
-    for (const [, componentInfo] of componentsMap) {
-      const { node } = componentInfo;
-      if (node.type === 'FRAME') frames.push(componentInfo);
-      else components.push(componentInfo);
-    }
-
-    // Generate components to "./components"
-    updateLog(`Generating ${components.length} components..`);
-    await pMap(componentsMap, ([, componentInfo]) =>
-      processComponent(componentInfo, genContext)
-    );
-
-    // Generate components to "./pages"
-    updateLog(`Generating ${frames.length} page components..`);
-    await pMap(componentsMap, ([, componentInfo]) =>
-      processComponent(componentInfo, genContext)
-    );
-
-    // Generate html to "./public"
-    updateLog(`Generating ${frames.length} HTMLs..`);
-    await makeDir(genContext.htmlFullDir);
-    await pMap(frames, (componentInfo) => {
-      return processHtml(componentInfo, genContext);
-    });
-
-    for (const plugin of plugins) await plugin.dispose();
-
-    figmaFile.name;
-    updateLog(
-      `"${figmaFile.name}" done. ${genContext.imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`
-    );
-    updateLogDone();
-  }
+  for (const fileKey of fileKeys)
+    await genWithFileKey(fileKey, token, config, cwd);
 }
