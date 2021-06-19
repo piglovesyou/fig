@@ -121,7 +121,7 @@ export async function appendVectorsMap(
     await pMap(
       imageEntries,
       async ([guid, url]) => {
-        progress.next(`Fetching ${++doneCount}/${imageEntries.length}`);
+        progress.next(`Fetching ${doneCount++}/${imageEntries.length}`);
         if (!url) return;
         const base = basename(url);
         if (existingImagesMap.has(base)) {

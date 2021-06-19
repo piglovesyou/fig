@@ -51,7 +51,7 @@ export function appendImportDeclaration(
   const program = cursor.findParent((path) =>
     isProgram(path.node)
   )! as NodePath<Program>;
-  const importFromPage = context.parentNode?.type === 'FRAME';
+  const importFromPage = context.outFullDir === genContext.pagesFullDir;
   const importSource = `${
     importFromPage ? `../${genContext.config.componentsDir}` : '.'
   }/${componentName}`;
@@ -167,6 +167,9 @@ export function appendComponentInstanceElement(
   if (!componentInfo)
     throw new Error('Never. It should appear in componentsMap.');
   const componentName = componentInfo.name;
+  if (componentName === 'TierFigmaFoundingMember_309$32045') {
+    debugger;
+  }
 
   appendImportDeclaration(componentInfo, context, parentContext, genContext);
   appendElement(context, parentContext, componentInfo.name);

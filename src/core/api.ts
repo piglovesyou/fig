@@ -7,7 +7,7 @@ import { FigmaFile } from '../types/fig';
 const baseUrl = 'https://api.figma.com';
 
 // To avoid "Error: 414: Request-URI Too Large"
-const MAX_VECTOR_REQUEST_COUNT = 200;
+const MAX_CHUNK_COUNT = 200;
 
 // I think I should say hi before my account gets frozen
 const GREET_FIGMA_DEVELOPER = `Hi. Sorry for high load. Contact me on github.com/piglovesyou/fig`;
@@ -28,11 +28,12 @@ export async function requestVectors(
 
   let result: Record<string, string> | null = null;
 
+  progress.next(`Checking 0/${vectorList.length}`);
   await pMap(
-    chunk(vectorList, MAX_VECTOR_REQUEST_COUNT),
+    chunk(vectorList, MAX_CHUNK_COUNT),
     async (ids, i) => {
       progress.next(
-        `Fetching ${i * MAX_VECTOR_REQUEST_COUNT}/${vectorList.length}`
+        `Checking ${i * MAX_CHUNK_COUNT + ids.length}/${vectorList.length}`
       );
       const idValue = encodeURIComponent(ids.join(','));
       const {
