@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import pMap from 'p-map';
 import { Subscriber } from 'rxjs';
 import { FigmaFile } from '../types/fig';
+import { getCurr } from './print';
 
 const baseUrl = 'https://api.figma.com';
 
@@ -48,9 +49,10 @@ export async function requestVectors(
       if (images) result = Object.assign(result || {}, images);
 
       progress.next(
-        `SVG URL\t${++doneCount * MAX_CHUNK_COUNT + ids.length}/${
+        `${getCurr(
+          ++doneCount * MAX_CHUNK_COUNT + ids.length,
           vectorList.length
-        }`
+        )} SVG URLs resolved`
       );
     },
     { concurrency: 40 }

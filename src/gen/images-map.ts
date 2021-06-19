@@ -9,6 +9,7 @@ import { Subscriber } from 'rxjs';
 import { pipeline as _pipeline } from 'stream';
 import { promisify } from 'util';
 import { makeHeader, requestImages } from '../core/api';
+import { getCurr } from '../core/print';
 import { GenContext } from '../types/gen';
 
 const pipeline = promisify(_pipeline);
@@ -50,10 +51,11 @@ export async function appendImagesMap(
   await pMap(
     imageEntries,
     async ([key, u]) => {
-      const inc = () =>
-        progress.next(`Fetching ${++doneCount}/${imageEntries.length}`);
       const imageUrl = new URL(u);
       const base = basename(imageUrl.pathname);
+      const inc = () =>
+        progress.next(`${getCurr(++doneCount, imageEntries.length)} ${base}`);
+
       if (existingImagesMap.has(base)) {
         const imageFullPath = existingImagesMap.get(base)!;
         imagesMap.set(key, imageFullPath);

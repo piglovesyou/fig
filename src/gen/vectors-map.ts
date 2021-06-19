@@ -3,6 +3,7 @@ import pMap from 'p-map';
 import { basename, join } from 'path';
 import { Subscriber } from 'rxjs';
 import { makeHeader, requestVectors } from '../core/api';
+import { getCurr } from '../core/print';
 import { ComposableNode, Node, Paint } from '../types/ast';
 import { isVectorTypeNode } from '../types/fig';
 import { GenContext } from '../types/gen';
@@ -126,7 +127,9 @@ export async function appendVectorsMap(
         const base = basename(url);
         const fileName = `${base}.svg`;
         const inc = () =>
-          progress.next(`${fileName}\t${++doneCount}/${vectorEntries.length}`);
+          progress.next(
+            `${getCurr(++doneCount, vectorEntries.length)} ${fileName}`
+          );
 
         if (existingImagesMap.has(base)) {
           const svgFullPath = existingImagesMap.get(base)!;

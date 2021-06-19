@@ -6,7 +6,7 @@ import { join } from 'path';
 import { Observable } from 'rxjs';
 import { requestFile } from '../core/api';
 import { FigConfig } from '../core/config';
-import { printInfo } from '../core/print';
+import { getCurr, printInfo } from '../core/print';
 import { FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { FigPlugin } from '../types/plugin';
@@ -45,7 +45,9 @@ export async function processHtml(
     null as null | ReturnType<FigPlugin<unknown>['renderHtml']>
   ))!;
 
-  await writeFile(join(genContext.htmlFullDir, name + '.html'), html);
+  const fileName = name + '.html';
+  await writeFile(join(genContext.htmlFullDir, fileName), html);
+  return { fileName };
 }
 
 async function taskGenHtml(ctx: ListrContext) {
@@ -58,8 +60,8 @@ async function taskGenHtml(ctx: ListrContext) {
   let doneCount = 0;
   return new Observable<string>((progress) => {
     pMap(frames, async (componentInfo) => {
-      await processHtml(componentInfo, genContext);
-      progress.next(`${++doneCount}/${frames.length}`);
+      const { fileName } = await processHtml(componentInfo, genContext);
+      progress.next(`${getCurr(++doneCount, frames.length)} ${fileName}`);
     }).finally(() => {
       progress.complete();
     });
@@ -90,9 +92,9 @@ async function taskSyncComponents(ctx: ListrContext) {
         task: async () => {
           let doneCount = 0;
           return new Observable<string>((progress) => {
-            pMap(components, async (componentInfo) => {
+            pMap(array, async (componentInfo) => {
               await processComponent(componentInfo, genContext);
-              progress.next(`${++doneCount}/${components.length}`);
+              progress.next(`${getCurr(++doneCount, array.length)}`);
             }).finally(() => {
               progress.complete();
             });
@@ -166,7 +168,7 @@ async function genWithFileKey(
       task: taskFetchFigmaFile,
     },
     {
-      title: `Synchronizing images`,
+      title: `Synchronizing assets`,
       task: taskSyncImages,
     },
     {

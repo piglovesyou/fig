@@ -1,5 +1,3 @@
-import logUpdate from 'log-update';
-
 export const PRINT_PREFIX = '[ fig ] ';
 
 export function printInfo(message: string): void {
@@ -11,13 +9,10 @@ export function printWarning(message: string): void {
 }
 
 export function printError(err: Error): void {
-  console.error(PRINT_PREFIX + err.message + '\n' + err.stack);
+  console.error(PRINT_PREFIX + err.toString() + '\n' + err.stack);
 }
 
-export function updateLog(message: string) {
-  logUpdate(PRINT_PREFIX + message);
-}
-
-export function updateLogDone() {
-  logUpdate.done();
+export function getCurr(curr: number, max: number) {
+  const maxStr = String(max);
+  return `${String(curr).padStart(maxStr.length, ' ')}/${maxStr}`;
 }
