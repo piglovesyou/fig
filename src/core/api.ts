@@ -32,9 +32,7 @@ export async function requestVectors(
     chunk(vectorList, MAX_VECTOR_REQUEST_COUNT),
     async (ids, i) => {
       progress.next(
-        `Fetching vector info ${i * MAX_VECTOR_REQUEST_COUNT}/${
-          vectorList.length
-        } starting..`
+        `Fetching ${i * MAX_VECTOR_REQUEST_COUNT}/${vectorList.length}`
       );
       const idValue = encodeURIComponent(ids.join(','));
       const {
