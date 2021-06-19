@@ -78,9 +78,13 @@ async function taskSyncComponents(ctx: ListrContext) {
       task: async (ctx) => {
         return new Observable<string>((progress) => {
           pMap(components, async (componentInfo, i) => {
-            progress.next(`${i}/${components.length}`);
+            progress.next(`${i + 1}/${components.length}`);
             await processComponent(componentInfo, genContext);
-          }).finally(() => progress.complete());
+          }).finally(() => {
+            // Since order is not guaranteed
+            progress.next(`${components.length}/${components.length}`);
+            progress.complete();
+          });
         });
       },
     },
@@ -89,9 +93,12 @@ async function taskSyncComponents(ctx: ListrContext) {
       task: async (ctx) => {
         return new Observable<string>((progress) => {
           pMap(frames, async (componentInfo, i) => {
-            progress.next(`${i}/${frames.length}`);
+            progress.next(`${i + 1}/${frames.length}`);
             await processComponent(componentInfo, genContext);
-          }).finally(() => progress.complete());
+          }).finally(() => {
+            progress.next(`${frames.length}/${frames.length}`);
+            progress.complete();
+          });
         });
       },
     },

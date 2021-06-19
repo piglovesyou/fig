@@ -47,14 +47,10 @@ export async function appendImagesMap(
   const imageEntries = Object.entries(images);
   let doneCount = 0;
 
-  const progressInc = () =>
-    progress.next(`Fetching ${doneCount++}/${imageEntries.length}`);
-
-  progressInc();
   await pMap(
     imageEntries,
     async ([key, u]) => {
-      progressInc();
+      progress.next(`Fetching ${++doneCount}/${imageEntries.length}`);
       const imageUrl = new URL(u);
       const base = basename(imageUrl.pathname);
       if (existingImagesMap.has(base)) {
