@@ -56,7 +56,8 @@ You'll find files generated like these.
 
 ## Contributions
 
-It's still in progress to design the plugin architecture. Please share this project and wait until it's prepared for the contribution!
+* I'd like you to [make an issue](https://github.com/piglovesyou/fig/issues/new) to report CSS bugs/improvements. I'm happy even more if you make the PR for it, but not necessary!
+* [A new Plugin PR](https://github.com/piglovesyou/fig/tree/main/src/plugins) is not ready since the architecture's still unstable. Please [issue it](https://github.com/piglovesyou/fig/issues/new) instead, e.g. "I want Vue!"
 
 ## License
 
