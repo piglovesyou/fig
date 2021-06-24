@@ -6,20 +6,27 @@ import {
   VisitContextWithCursor,
 } from './visit';
 
-type Args<CursorType> = [
-  context: VisitContext,
-  parentContext: VisitContextWithCursor<CursorType>,
-  genContext: GenContext
-];
+type MaybeAsync<R> = R | Promise<R>;
+
+type PerComponentArgs = [componentInfo: ComponentInfo, GenContext: GenContext];
 
 // XXX: Catastrophic. Refactor.
 export interface FigPlugin<CursorType> {
-  createLayout?(_: ComponentInfo, __: GenContext): CursorType;
-  postWalkTree?(_: ComponentInfo, __: GenContext): void;
-  render?(_: ComponentInfo, __: GenContext): [content: string, ext: string][];
-  renderHtml?(_: ComponentInfo, __: GenContext): Promise<string>;
+  // Per Component functions
+  createLayout?(...args: PerComponentArgs): MaybeAsync<CursorType>;
+  postWalkTree?(...args: PerComponentArgs): MaybeAsync<void>;
+  render?(
+    ...args: PerComponentArgs
+  ): MaybeAsync<[content: string, ext: string][]>;
+  renderHtml?(_: ComponentInfo, __: GenContext): MaybeAsync<string>;
+  dispose?(): void | Promise<void>;
 
-  appendComponentInstanceElement?(...args: Args<CursorType>): void;
+  // Per Node functions
+  appendComponentInstanceElement?(
+    context: VisitContext,
+    parentContext: VisitContextWithCursor<CursorType>,
+    genContext: GenContext
+  ): void;
   appendElement?(
     context: VisitContext,
     parentContext: EmptyVisitContext<CursorType>,

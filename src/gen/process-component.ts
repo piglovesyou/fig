@@ -64,7 +64,10 @@ export async function processComponent<CursorType>(
 
   for (const plugin of plugins) {
     if (plugin.render)
-      for (const [content, ext] of plugin.render(componentInfo, genContext))
+      for (const [content, ext] of await plugin.render(
+        componentInfo,
+        genContext
+      ))
         await writeFile(fullBasePath + ext, content);
   }
 }
