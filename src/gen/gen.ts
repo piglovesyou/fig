@@ -1,7 +1,6 @@
 import Listr from 'listr';
 import makeDir from 'make-dir';
 import pMap from 'p-map';
-import pReduce from 'p-reduce';
 import { join } from 'path';
 import { Observable } from 'rxjs';
 import { requestFile } from '../core/api';
@@ -9,7 +8,6 @@ import { FigConfig } from '../core/config';
 import { getCurr, printInfo } from '../core/print';
 import { FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
-import { FigPlugin } from '../types/plugin';
 import { writeFile } from '../utils/fs';
 import { appendImagesMap, makeExistingImagesMap } from './images-map';
 import { makeGenContext } from './make-gen-context';
@@ -37,13 +35,10 @@ export async function processHtml(
   const { plugins } = genContext;
   if (!plugins) throw new Error('Never. Plugins should be instantiated.');
 
-  const html = (await pReduce(
-    plugins,
-    (html, plugin) => {
-      return plugin.renderHtml(componentInfo, genContext);
-    },
-    null as null | ReturnType<FigPlugin<unknown>['renderHtml']>
-  ))!;
+  let html: string | undefined;
+  for (const plugin of plugins)
+    html = (await plugin.renderHtml?.(componentInfo, genContext)) || '';
+  if (!html) throw new Error(`No plugin implements "renderHtml".`);
 
   const fileName = name + '.html';
   await writeFile(join(genContext.htmlFullDir, fileName), html);
@@ -53,7 +48,7 @@ export async function processHtml(
 async function taskGenHtml(ctx: ListrContext) {
   const { genContext, frames } = ctx;
   const { plugins } = genContext;
-  for (const plugin of plugins) await plugin.dispose();
+  for (const plugin of plugins) await plugin.dispose?.();
 
   // Generate html to "./public"
   await makeDir(genContext.htmlFullDir);

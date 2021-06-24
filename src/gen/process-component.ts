@@ -41,7 +41,7 @@ export async function processComponent<CursorType>(
   } else {
     // Create mode.
     for (const plugin of plugins)
-      placeholderCursor = plugin.makeLayout(
+      placeholderCursor = plugin.createLayout?.(
         componentInfo,
         genContext
       ) as CursorType;
@@ -58,12 +58,13 @@ export async function processComponent<CursorType>(
       parentContext
     );
 
-    for (const plugin of plugins) plugin.postWalk(componentInfo, genContext);
+    for (const plugin of plugins)
+      plugin.postWalkTree?.(componentInfo, genContext);
   }
 
   for (const plugin of plugins) {
-    for (const [content, ext] of plugin.render(componentInfo, genContext)) {
-      await writeFile(fullBasePath + ext, content);
-    }
+    if (plugin.render)
+      for (const [content, ext] of plugin.render(componentInfo, genContext))
+        await writeFile(fullBasePath + ext, content);
   }
 }

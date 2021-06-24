@@ -42,11 +42,11 @@ export function createPlugin(
 
   // return new ReactPlugin(genContext);
   return {
-    makeLayout(componentInfo: ComponentInfo, genContext: GenContext) {
+    createLayout(componentInfo: ComponentInfo, genContext: GenContext) {
       return (cursor = makeLayout(componentInfo, genContext));
     },
 
-    postWalk() {
+    postWalkTree() {
       if (!cursor)
         throw new Error(`Never. placeholderCursor must be set on postWalk() `);
       erasePlaceholderElement(cursor);
