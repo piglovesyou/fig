@@ -47,8 +47,6 @@ export async function processHtml(
 
 async function taskGenHtml(ctx: ListrContext) {
   const { genContext, frames } = ctx;
-  const { plugins } = genContext;
-  for (const plugin of plugins) await plugin.dispose?.();
 
   // Generate html to "./public"
   await makeDir(genContext.htmlFullDir);
@@ -176,8 +174,14 @@ async function genWithFileKey(
     },
   ]).run({ fileKey, token, config, cwd } as ListrContext);
 
-  const { genContext, figmaFile, frames, components } = listrCtx;
-  const { imagesMap } = genContext;
+  const {
+    genContext: { imagesMap, plugins },
+    figmaFile,
+    frames,
+    components,
+  } = listrCtx;
+
+  for (const plugin of plugins) await plugin.dispose?.();
 
   printInfo(
     `"${figmaFile.name}" done. ${imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`

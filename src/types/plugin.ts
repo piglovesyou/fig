@@ -43,7 +43,6 @@ export interface FigPlugin<CursorType> {
     parentContext: ParentVisitContext<CursorType>,
     genContext: GenContext
   ): void;
-  dispose?(): void | Promise<void>;
 }
 
 export interface PluginModule<CursorType = unknown> {
