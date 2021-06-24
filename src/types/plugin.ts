@@ -21,7 +21,7 @@ export interface FigPlugin<CursorType> {
   render?(
     ...args: PerComponentArgs
   ): MaybeAsync<[content: string, ext: string][]>;
-  renderHtml?(_: ComponentInfo, __: GenContext): MaybeAsync<string>;
+  renderHtml?(...args: PerComponentArgs): MaybeAsync<string>;
 
   // Per Node functions
   appendComponentInstanceElement?(

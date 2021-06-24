@@ -33,7 +33,6 @@ export async function processHtml(
   if (node.type !== 'FRAME')
     throw new Error('Never. node.type should be FRAME');
   const { plugins } = genContext;
-  if (!plugins) throw new Error('Never. Plugins should be instantiated.');
 
   let html: string | undefined;
   for (const plugin of plugins)
