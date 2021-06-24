@@ -12,6 +12,9 @@ type PerComponentArgs = [componentInfo: ComponentInfo, GenContext: GenContext];
 
 // XXX: Catastrophic. Refactor.
 export interface FigPlugin<CursorType> {
+  // Per Figma file functions
+  dispose?(): void | Promise<void>;
+
   // Per Component functions
   createLayout?(...args: PerComponentArgs): MaybeAsync<CursorType>;
   postWalkTree?(...args: PerComponentArgs): MaybeAsync<void>;
@@ -19,7 +22,6 @@ export interface FigPlugin<CursorType> {
     ...args: PerComponentArgs
   ): MaybeAsync<[content: string, ext: string][]>;
   renderHtml?(_: ComponentInfo, __: GenContext): MaybeAsync<string>;
-  dispose?(): void | Promise<void>;
 
   // Per Node functions
   appendComponentInstanceElement?(
