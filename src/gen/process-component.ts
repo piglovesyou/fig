@@ -28,7 +28,7 @@ export async function processComponent<CursorType>(
   const fullBasePath = join(componetsDir, name);
 
   let rootAst: File;
-  let placeholderCursor: CursorType | null = null;
+  let rootCursor: CursorType | null = null;
 
   if (false /*existsSync(fullBasePath)*/) {
     // TODO: Update mode.
@@ -41,14 +41,15 @@ export async function processComponent<CursorType>(
   } else {
     // Create mode.
     for (const plugin of plugins)
-      placeholderCursor = plugin.createLayout?.(
+      rootCursor = plugin.createLayout?.(
+        rootCursor,
         componentInfo,
         genContext
       ) as CursorType;
-    if (!placeholderCursor) throw new Error('Never. Plugin must assign cursor');
+    if (!rootCursor) throw new Error('Never. Plugin must assign cursor');
 
     const parentContext: EmptyVisitContext<unknown> = {
-      cursor: placeholderCursor,
+      cursor: rootCursor,
     };
     walkNodeTree(
       node,
@@ -59,12 +60,13 @@ export async function processComponent<CursorType>(
     );
 
     for (const plugin of plugins)
-      plugin.postWalkTree?.(componentInfo, genContext);
+      plugin.postWalkTree?.(rootCursor, componentInfo, genContext);
   }
 
   for (const plugin of plugins) {
     if (plugin.render)
       for (const [content, ext] of await plugin.render(
+        rootCursor,
         componentInfo,
         genContext
       ))

@@ -8,7 +8,11 @@ import {
 
 type MaybeAsync<R> = R | Promise<R>;
 
-type PerComponentArgs = [componentInfo: ComponentInfo, GenContext: GenContext];
+type PerComponentArgs<CursorType> = [
+  firstCursor: CursorType,
+  componentInfo: ComponentInfo,
+  GenContext: GenContext
+];
 
 // XXX: Catastrophic. Refactor.
 export interface FigPlugin<CursorType> {
@@ -16,12 +20,15 @@ export interface FigPlugin<CursorType> {
   dispose?(): void | Promise<void>;
 
   // Per Component functions
-  createLayout?(...args: PerComponentArgs): MaybeAsync<CursorType>;
-  postWalkTree?(...args: PerComponentArgs): MaybeAsync<void>;
+  createLayout?(...args: PerComponentArgs<CursorType>): MaybeAsync<CursorType>;
+  postWalkTree?(...args: PerComponentArgs<CursorType>): MaybeAsync<void>;
   render?(
-    ...args: PerComponentArgs
+    ...args: PerComponentArgs<CursorType>
   ): MaybeAsync<[content: string, ext: string][]>;
-  renderHtml?(...args: PerComponentArgs): MaybeAsync<string>;
+  renderHtml?(
+    componentInfo: ComponentInfo,
+    GenContext: GenContext
+  ): MaybeAsync<string>;
 
   // Per Node functions
   appendComponentInstanceElement?(

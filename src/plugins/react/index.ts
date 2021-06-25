@@ -42,7 +42,7 @@ export function createPlugin(
 
   // return new ReactPlugin(genContext);
   return {
-    createLayout(componentInfo: ComponentInfo, genContext: GenContext) {
+    createLayout(_, componentInfo: ComponentInfo, genContext: GenContext) {
       return (cursor = makeLayout(componentInfo, genContext));
     },
 
