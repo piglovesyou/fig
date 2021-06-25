@@ -4,7 +4,6 @@ import {
   LayoutConstraintVertical,
 } from '../types/fig';
 import { GenContext } from '../types/gen';
-import { FigPlugin } from '../types/plugin';
 import {
   ParentVisitContext,
   VisitContext,
@@ -130,7 +129,7 @@ export function visitNode<CursorType>(
   );
   if (shouldImportComponent) {
     plugins!.forEach((plugin) =>
-      plugin.appendComponentInstanceElement(
+      plugin.appendComponentInstanceElement?.(
         context,
         parentContext as VisitContextWithCursor<CursorType>,
         genContext
@@ -141,7 +140,7 @@ export function visitNode<CursorType>(
 
   if (vectorsMap.has(node.id)) {
     plugins!.forEach((plugin) =>
-      plugin.appendSvgElement(
+      plugin.appendSvgElement?.(
         context,
         parentContext,
         genContext,
@@ -153,16 +152,26 @@ export function visitNode<CursorType>(
 
   if (node?.type === 'TEXT') {
     plugins!.forEach((plugin) =>
-      plugin.appendTextElement(context, parentContext, genContext)
+      plugin.appendTextElement?.(context, parentContext, genContext)
     );
     return null;
   }
 
-  const cursor = plugins!.reduce(
-    (_, plugin) =>
-      plugin.appendElement(context, parentContext, genContext) as CursorType,
-    null as null | ReturnType<FigPlugin<CursorType>['appendElement']>
-  )!;
+  let cursor: CursorType | undefined;
+  for (const plugin of plugins)
+    if (plugin.appendElement)
+      cursor = plugin.appendElement(
+        context,
+        parentContext,
+        genContext
+      ) as CursorType;
+  if (!cursor) throw new Error(`No plugins implements "appendElement".`);
+
+  // const cursor = plugins!.reduce(
+  //   (_, plugin) =>
+  //     plugin.appendElement?.(context, parentContext, genContext) as CursorType,
+  //   null as null | ReturnType<FigPlugin<CursorType>['appendElement']>
+  // )!;
 
   return { ...context, cursor };
   // for (const child of centerChildren) {

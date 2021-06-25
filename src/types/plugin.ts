@@ -6,35 +6,51 @@ import {
   VisitContextWithCursor,
 } from './visit';
 
+type MaybeAsync<R> = R | Promise<R>;
+
+type PerComponentArgs<CursorType> = [
+  firstCursor: CursorType,
+  componentInfo: ComponentInfo,
+  GenContext: GenContext
+];
+
 // XXX: Catastrophic. Refactor.
 export interface FigPlugin<CursorType> {
-  makeLayout(_: ComponentInfo, __: GenContext): CursorType;
-  postWalk(_: ComponentInfo, __: GenContext): void;
-  render(_: ComponentInfo, __: GenContext): [content: string, ext: string][];
-  renderHtml(_: ComponentInfo, __: GenContext): Promise<string>;
+  // Per Figma file members and functions
+  dispose?(): void | Promise<void>;
+  componentFileExtension?: string;
 
-  appendComponentInstanceElement(
+  // Per Component functions
+  createLayout?(...args: PerComponentArgs<CursorType>): MaybeAsync<CursorType>;
+  postWalkTree?(...args: PerComponentArgs<CursorType>): MaybeAsync<void>;
+  renderComponent?(...args: PerComponentArgs<CursorType>): MaybeAsync<string>;
+  renderHtml?(
+    componentInfo: ComponentInfo,
+    GenContext: GenContext
+  ): MaybeAsync<string>;
+
+  // Per Node functions
+  appendComponentInstanceElement?(
     context: VisitContext,
     parentContext: VisitContextWithCursor<CursorType>,
     genContext: GenContext
   ): void;
-  appendElement(
+  appendElement?(
     context: VisitContext,
     parentContext: EmptyVisitContext<CursorType>,
     genContext: GenContext
   ): CursorType;
-  appendSvgElement(
+  appendSvgElement?(
     context: VisitContext,
     parentContext: ParentVisitContext<CursorType>,
     genContext: GenContext,
     svgHtml: string
   ): void;
-  appendTextElement(
+  appendTextElement?(
     context: VisitContext,
     parentContext: ParentVisitContext<CursorType>,
     genContext: GenContext
   ): void;
-  dispose(): void | Promise<void>;
 }
 
 export interface PluginModule<CursorType = unknown> {

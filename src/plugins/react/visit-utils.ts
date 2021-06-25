@@ -105,7 +105,7 @@ export function appendElement(
 export function makeLayout(
   componentInfo: ComponentInfo,
   genContext: GenContext
-) {
+): ReactCursorType {
   const { name } = componentInfo;
   const root = parseAsRoot(`
 import React, {FC, CSSProperties} from "react"
