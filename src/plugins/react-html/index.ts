@@ -1,5 +1,9 @@
+import { transformFromAstSync } from '@babel/core';
+import { NodePath } from '@babel/traverse';
+import { isProgram, Program } from '@babel/types';
 import { join } from 'path';
 import Piscina from 'piscina';
+import { format } from 'prettier';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { FigPlugin } from '../../types/plugin';
 import { RenderHtmlArgType } from '../react/render-html';
@@ -25,6 +29,25 @@ export function createPlugin(
     },
   });
   return {
+    render(rootCursor): [content: string, ext: string][] {
+      const program = rootCursor.findParent((path) =>
+        isProgram(path.node)
+      )! as NodePath<Program>;
+
+      const { code: jsCode } = transformFromAstSync(program.node, undefined, {
+        filename: 'a.tsx',
+        cwd: __dirname,
+        babelrc: false,
+        plugins: [
+          '@babel/plugin-transform-modules-commonjs',
+          '@babel/plugin-transform-react-jsx',
+          '@babel/plugin-transform-typescript',
+        ],
+      })!;
+
+      return [[format(jsCode!, { parser: 'babel' }), '.js']];
+    },
+
     async renderHtml(componentInfo: ComponentInfo): Promise<string> {
       const { name } = componentInfo;
       let { pagesFullDir } = genContext;

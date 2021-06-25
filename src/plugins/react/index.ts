@@ -1,4 +1,3 @@
-import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, Program } from '@babel/types';
@@ -37,21 +36,7 @@ export function createPlugin(
       )! as NodePath<Program>;
 
       const { code: tsxCode } = generate(program.node);
-      const { code: jsCode } = transformFromAstSync(program.node, undefined, {
-        filename: 'a.tsx',
-        cwd: __dirname,
-        babelrc: false,
-        plugins: [
-          '@babel/plugin-transform-modules-commonjs',
-          '@babel/plugin-transform-react-jsx',
-          '@babel/plugin-transform-typescript',
-        ],
-      })!;
-
-      return [
-        [format(tsxCode, { parser: 'babel' }), '.tsx'],
-        [format(jsCode!, { parser: 'babel' }), '.js'],
-      ];
+      return [[format(tsxCode, { parser: 'babel' }), '.tsx']];
     },
 
     appendComponentInstanceElement,
