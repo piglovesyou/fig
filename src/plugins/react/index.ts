@@ -28,8 +28,6 @@ function findReactResolvablePath(): string | never {
 export function createPlugin(
   genContext: GenContext
 ): FigPlugin<ReactCursorType> {
-  let cursor: ReactCursorType | null = null;
-
   // The reason using thread is to set NODE_PATH value, otherwise
   // components can't resolve "react" and "react-dom".
   const renderHtmlThread = new Piscina({
@@ -43,18 +41,19 @@ export function createPlugin(
   // return new ReactPlugin(genContext);
   return {
     createLayout(_, componentInfo: ComponentInfo, genContext: GenContext) {
-      return (cursor = makeLayout(componentInfo, genContext));
+      return makeLayout(componentInfo, genContext);
     },
 
-    postWalkTree() {
-      if (!cursor)
-        throw new Error(`Never. placeholderCursor must be set on postWalk() `);
-      erasePlaceholderElement(cursor);
+    postWalkTree(rootCursor) {
+      // if (!rootCursor)
+      //   throw new Error(`Never. placeholderCursor must be set on postWalk() `);
+      erasePlaceholderElement(rootCursor);
     },
 
-    render(): [content: string, ext: string][] {
-      if (!cursor) throw new Error(`Never. cursor must be set on render().`);
-      const program = cursor.findParent((path) =>
+    render(rootCursor): [content: string, ext: string][] {
+      // if (!rootCursor)
+      //   throw new Error(`Never. cursor must be set on render().`);
+      const program = rootCursor.findParent((path) =>
         isProgram(path.node)
       )! as NodePath<Program>;
 
