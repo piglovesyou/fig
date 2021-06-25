@@ -36,7 +36,8 @@ export async function processHtml(
 
   let html: string | undefined;
   for (const plugin of plugins)
-    html = (await plugin.renderHtml?.(componentInfo, genContext)) || '';
+    if (plugin.renderHtml)
+      html = await plugin.renderHtml(componentInfo, genContext);
   if (!html) throw new Error(`No plugin implements "renderHtml".`);
 
   const fileName = name + '.html';

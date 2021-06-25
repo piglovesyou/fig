@@ -159,11 +159,12 @@ export function visitNode<CursorType>(
 
   let cursor: CursorType | undefined;
   for (const plugin of plugins)
-    cursor = plugin.appendElement?.(
-      context,
-      parentContext,
-      genContext
-    ) as CursorType;
+    if (plugin.appendElement)
+      cursor = plugin.appendElement(
+        context,
+        parentContext,
+        genContext
+      ) as CursorType;
   if (!cursor) throw new Error(`No plugins implements "appendElement".`);
 
   // const cursor = plugins!.reduce(

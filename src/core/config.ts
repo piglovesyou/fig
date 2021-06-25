@@ -28,7 +28,7 @@ const DEFAULT_FIG_CONFIG: FigUserConfig = {
   pagesDir: 'pages',
   htmlDir: 'public',
   imagesDir: 'images',
-  plugins: ['react'],
+  plugins: ['react', 'react-html'],
   fileKeys: [],
   token: '',
   help: false,

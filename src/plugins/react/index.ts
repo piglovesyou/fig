@@ -2,12 +2,9 @@ import { transformFromAstSync } from '@babel/core';
 import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, Program } from '@babel/types';
-import { join } from 'path';
-import Piscina from 'piscina';
 import { format } from 'prettier';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { FigPlugin } from '../../types/plugin';
-import { RenderHtmlArgType } from './render-html';
 import { ReactCursorType } from './types';
 import {
   appendComponentInstanceElement,
@@ -18,27 +15,9 @@ import {
   makeLayout,
 } from './visit-utils';
 
-function findReactResolvablePath(): string | never {
-  const reactPath = require.resolve('react');
-  for (const nodePath of require.resolve.paths('react') || [])
-    if (reactPath.startsWith(nodePath)) return nodePath;
-  throw new Error(`Never. Couldn't find react resolvable path.`);
-}
-
 export function createPlugin(
   genContext: GenContext
 ): FigPlugin<ReactCursorType> {
-  // The reason using thread is to set NODE_PATH value, otherwise
-  // components can't resolve "react" and "react-dom".
-  const renderHtmlThread = new Piscina({
-    maxQueue: 'auto',
-    filename: join(__dirname, '../../../dist/plugins/react/render-html.js'),
-    env: {
-      NODE_PATH: findReactResolvablePath(),
-    },
-  });
-
-  // return new ReactPlugin(genContext);
   return {
     createLayout(_, componentInfo: ComponentInfo, genContext: GenContext) {
       return makeLayout(componentInfo, genContext);
@@ -75,16 +54,6 @@ export function createPlugin(
       ];
     },
 
-    async renderHtml(componentInfo: ComponentInfo): Promise<string> {
-      const { name } = componentInfo;
-      let { pagesFullDir } = genContext;
-
-      return await renderHtmlThread.run({
-        pagesFullDir,
-        name,
-      } as RenderHtmlArgType);
-    },
-
     appendComponentInstanceElement,
 
     appendElement(context, parentContext) {
@@ -94,9 +63,5 @@ export function createPlugin(
     appendSvgElement,
 
     appendTextElement,
-
-    dispose(): Promise<void> {
-      return renderHtmlThread.destroy();
-    },
   };
 }
