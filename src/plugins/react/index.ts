@@ -23,16 +23,12 @@ export function createPlugin(
     },
 
     postWalkTree(rootCursor) {
-      // if (!rootCursor)
-      //   throw new Error(`Never. placeholderCursor must be set on postWalk() `);
       erasePlaceholderElement(rootCursor);
     },
 
-    componentFileExtension: '.tsx',
+    componentFileExtension: 'tsx',
 
     renderComponent(rootCursor) {
-      // if (!rootCursor)
-      //   throw new Error(`Never. cursor must be set on render().`);
       const program = rootCursor.findParent((path) =>
         isProgram(path.node)
       )! as NodePath<Program>;

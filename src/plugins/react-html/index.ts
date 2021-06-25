@@ -29,7 +29,7 @@ export function createPlugin(
     },
   });
   return {
-    componentFileExtension: '.js',
+    componentFileExtension: 'js',
 
     renderComponent(rootCursor) {
       const program = rootCursor.findParent((path) =>

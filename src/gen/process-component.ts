@@ -66,21 +66,13 @@ export async function processComponent<CursorType>(
 
   for (const plugin of plugins)
     if (plugin.renderComponent) {
+      const componentFullPath =
+        fullBasePath + '.' + plugin.componentFileExtension;
       const content = await plugin.renderComponent(
         rootCursor,
         componentInfo,
         genContext
       );
-      await writeFile(fullBasePath + plugin.componentFileExtension, content);
+      await writeFile(componentFullPath, content);
     }
-
-  // for (const plugin of plugins) {
-  //   if (plugin.renderComponent)
-  //     for (const [content, ext] of await plugin.renderComponent(
-  //       rootCursor,
-  //       componentInfo,
-  //       genContext
-  //     ))
-  //       await writeFile(fullBasePath + ext, content);
-  // }
 }
