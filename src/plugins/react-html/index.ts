@@ -4,7 +4,7 @@ import { isProgram, Program } from '@babel/types';
 import { join } from 'path';
 import Piscina from 'piscina';
 import { format } from 'prettier';
-import { ComponentInfo, GenContext } from '../../types/gen';
+import { GenContext } from '../../types/gen';
 import { FigPlugin } from '../../types/plugin';
 import { RenderHtmlArgType } from '../react/render-html';
 import { ReactCursorType } from '../react/types';
@@ -29,7 +29,9 @@ export function createPlugin(
     },
   });
   return {
-    render(rootCursor): [content: string, ext: string][] {
+    componentFileExtension: '.js',
+
+    renderComponent(rootCursor) {
       const program = rootCursor.findParent((path) =>
         isProgram(path.node)
       )! as NodePath<Program>;
@@ -45,10 +47,10 @@ export function createPlugin(
         ],
       })!;
 
-      return [[format(jsCode!, { parser: 'babel' }), '.js']];
+      return format(jsCode!, { parser: 'babel' });
     },
 
-    async renderHtml(componentInfo: ComponentInfo): Promise<string> {
+    async renderHtml(componentInfo) {
       const { name } = componentInfo;
       let { pagesFullDir } = genContext;
 
@@ -58,7 +60,7 @@ export function createPlugin(
       } as RenderHtmlArgType);
     },
 
-    dispose(): Promise<void> {
+    dispose() {
       return renderHtmlThread.destroy();
     },
   };

@@ -64,13 +64,23 @@ export async function processComponent<CursorType>(
       plugin.postWalkTree?.(rootCursor, componentInfo, genContext);
   }
 
-  for (const plugin of plugins) {
-    if (plugin.render)
-      for (const [content, ext] of await plugin.render(
+  for (const plugin of plugins)
+    if (plugin.renderComponent) {
+      const content = await plugin.renderComponent(
         rootCursor,
         componentInfo,
         genContext
-      ))
-        await writeFile(fullBasePath + ext, content);
-  }
+      );
+      await writeFile(fullBasePath + plugin.componentFileExtension, content);
+    }
+
+  // for (const plugin of plugins) {
+  //   if (plugin.renderComponent)
+  //     for (const [content, ext] of await plugin.renderComponent(
+  //       rootCursor,
+  //       componentInfo,
+  //       genContext
+  //     ))
+  //       await writeFile(fullBasePath + ext, content);
+  // }
 }

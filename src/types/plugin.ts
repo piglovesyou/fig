@@ -16,15 +16,14 @@ type PerComponentArgs<CursorType> = [
 
 // XXX: Catastrophic. Refactor.
 export interface FigPlugin<CursorType> {
-  // Per Figma file functions
+  // Per Figma file members and functions
   dispose?(): void | Promise<void>;
+  componentFileExtension?: string;
 
   // Per Component functions
   createLayout?(...args: PerComponentArgs<CursorType>): MaybeAsync<CursorType>;
   postWalkTree?(...args: PerComponentArgs<CursorType>): MaybeAsync<void>;
-  render?(
-    ...args: PerComponentArgs<CursorType>
-  ): MaybeAsync<[content: string, ext: string][]>;
+  renderComponent?(...args: PerComponentArgs<CursorType>): MaybeAsync<string>;
   renderHtml?(
     componentInfo: ComponentInfo,
     GenContext: GenContext
