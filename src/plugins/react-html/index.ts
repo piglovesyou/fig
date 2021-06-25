@@ -6,8 +6,8 @@ import Piscina from 'piscina';
 import { format } from 'prettier';
 import { GenContext } from '../../types/gen';
 import { FigPlugin } from '../../types/plugin';
-import { RenderHtmlArgType } from '../react/render-html';
 import { ReactCursorType } from '../react/types';
+import { RenderHtmlArgType } from './render-html';
 
 function findReactResolvablePath(): string | never {
   const reactPath = require.resolve('react');
@@ -23,7 +23,10 @@ export function createPlugin(
   // components can't resolve "react" and "react-dom".
   const renderHtmlThread = new Piscina({
     maxQueue: 'auto',
-    filename: join(__dirname, '../../../dist/plugins/react/render-html.js'),
+    filename: join(
+      __dirname,
+      '../../../dist/plugins/react-html/render-html.js'
+    ),
     env: {
       NODE_PATH: findReactResolvablePath(),
     },

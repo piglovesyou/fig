@@ -42,11 +42,11 @@ export async function processComponent<CursorType>(
     // Create mode.
     for (const plugin of plugins)
       if (plugin.createLayout)
-        rootCursor = plugin.createLayout(
+        rootCursor = (await plugin.createLayout(
           rootCursor,
           componentInfo,
           genContext
-        ) as CursorType;
+        )) as CursorType;
     if (!rootCursor) throw new Error('Never. Plugin must assign cursor');
 
     const parentContext: EmptyVisitContext<unknown> = {
@@ -61,7 +61,7 @@ export async function processComponent<CursorType>(
     );
 
     for (const plugin of plugins)
-      plugin.postWalkTree?.(rootCursor, componentInfo, genContext);
+      await plugin.postWalkTree?.(rootCursor, componentInfo, genContext);
   }
 
   for (const plugin of plugins)
