@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`process-component.test.ts createComponent 1`] = `
+"<__PLACEHOLDER__>
+  <div
+    data-fid=\\"1:2\\"
+    style={{
+      ...{
+        display: \\"flex\\",
+        flexDirection: \\"column\\",
+        paddingTop: 16,
+        paddingRight: 16,
+        paddingBottom: 16,
+        paddingLeft: 16,
+        gap: 16,
+        position: \\"absolute\\",
+        boxSizing: \\"border-box\\",
+        backgroundColor: \\"#ffffff\\",
+      },
+      ...props.style,
+    }}
+    data-fname=\\"My Frame\\"
+  >
+    <MyComponent_4$4
+      data-fid=\\"4:5\\"
+      style={{
+        display: \\"flex\\",
+        flexDirection: \\"row\\",
+        gap: 4,
+        alignItems: \\"center\\",
+        position: \\"relative\\",
+        boxSizing: \\"border-box\\",
+        flexGrow: 0,
+        alignSelf: \\"inherit\\",
+        width: 139,
+        height: 24,
+        backgroundColor: \\"rgba(0, 0, 0, 0)\\",
+      }}
+      data-fname=\\"My Component\\"
+    ></MyComponent_4$4>
+    <MyComponent_4$4
+      data-fid=\\"4:8\\"
+      style={{
+        display: \\"flex\\",
+        flexDirection: \\"row\\",
+        gap: 4,
+        alignItems: \\"center\\",
+        position: \\"relative\\",
+        boxSizing: \\"border-box\\",
+        flexGrow: 0,
+        alignSelf: \\"inherit\\",
+        width: 139,
+        height: 24,
+        backgroundColor: \\"rgba(0, 0, 0, 0)\\",
+      }}
+      data-fname=\\"My Component\\"
+    ></MyComponent_4$4>
+    <MyComponent_4$4
+      data-fid=\\"4:11\\"
+      style={{
+        display: \\"flex\\",
+        flexDirection: \\"row\\",
+        gap: 4,
+        alignItems: \\"center\\",
+        position: \\"relative\\",
+        boxSizing: \\"border-box\\",
+        flexGrow: 0,
+        alignSelf: \\"inherit\\",
+        width: 139,
+        height: 24,
+        backgroundColor: \\"rgba(0, 0, 0, 0)\\",
+      }}
+      data-fname=\\"My Component\\"
+    ></MyComponent_4$4>
+  </div>
+</__PLACEHOLDER__>;
+"
+`;
