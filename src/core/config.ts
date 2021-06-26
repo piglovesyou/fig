@@ -99,7 +99,7 @@ export function verifyConfig(config: FigConfig): void | never {
     console.error(`Specify a Figma token.`);
     showHelpAndExit(1);
   }
-  if (!plugins) {
+  if (!plugins || !plugins.length) {
     console.error('Specify plugins.');
     showHelpAndExit(1);
   }

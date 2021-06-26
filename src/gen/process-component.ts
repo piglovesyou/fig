@@ -48,18 +48,16 @@ export async function processComponent<CursorType>(
   const { node, name } = componentInfo;
   if (!isValidComponentNode(node)) throw new Error('never');
   const { plugins } = genContext;
-  if (!plugins?.length)
-    throw new Error('Never. Plugins should be instantiated.');
 
   const { baseFullDir } = genContext;
-  const componetsDir = join(
+  const outFullDir = join(
     baseFullDir,
     node.type === 'FRAME'
       ? genContext.config.pagesDir
       : genContext.config.componentsDir
   );
-  await makeDir(componetsDir);
-  const fullBasePath = join(componetsDir, name);
+  await makeDir(outFullDir);
+  const fullBasePath = join(outFullDir, name);
 
   let rootAst: File;
   let rootCursor: CursorType | null = null;
