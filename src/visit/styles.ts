@@ -2,15 +2,6 @@ import { relative } from 'path';
 import { CSSProperties } from 'react';
 import slash from 'slash';
 import {
-  backgroundSize,
-  colorString,
-  dropShadow,
-  getLastVisible,
-  innerShadow,
-  paintToLinearGradient,
-  paintToRadialGradient,
-} from '../core/style-utils';
-import {
   ComposableNode,
   EffectShadow,
   isLayoutableNode,
@@ -19,6 +10,15 @@ import {
 } from '../types/ast';
 import { GenContext } from '../types/gen';
 import { VisitContext } from '../types/visit';
+import {
+  backgroundSize,
+  colorString,
+  dropShadow,
+  getLastVisible,
+  innerShadow,
+  paintToLinearGradient,
+  paintToRadialGradient,
+} from '../utils/style-utils';
 
 function applyAutolayoutConstraintsStyle({ node, styles }: VisitContext) {
   if (!isLayoutableNode(node) || !node.layoutMode)

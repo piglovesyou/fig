@@ -1,9 +1,9 @@
 import { isAbsolute, join } from 'path';
 import { FigConfig } from '../core/config';
-import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { Canvas, FigmaFile } from '../types/fig';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { FigPlugin } from '../types/plugin';
+import { isValidComponentNode, walkNodeTree } from '../utils/node-utils';
 import { appendComponentsMap, ComponentsMap } from './components-map';
 import { makeComponentName } from './utils';
 import { appendVectorListIfNecessary } from './vectors-map';

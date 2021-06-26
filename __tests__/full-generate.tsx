@@ -1,9 +1,9 @@
 import { join } from 'path';
 import * as api from '../src/core/api';
 import { createConfig } from '../src/core/config';
-import { shouldRefresh } from '../src/core/env';
 import { gen } from '../src/gen/gen';
 import { readFile, writeFile } from '../src/utils/fs';
+import { shouldRefresh } from '../src/__tools/env';
 import { readJson } from '../src/__tools/fns';
 
 const outDir = join(__dirname, '__generated__');

@@ -14,7 +14,6 @@ import {
 import escape from 'escape-html';
 import { ComponentInfo, GenContext } from '../../types/gen';
 import { ParentVisitContext, VisitContext } from '../../types/visit';
-import { makeTextContent } from '../../visit/text';
 import {
   appendJsxNode,
   findTempRefJsxElement,
@@ -24,6 +23,7 @@ import {
   parseExpression,
   TEMP_REF_ATTR,
 } from './ast-utils';
+import { makeTextContent } from './text';
 import { ReactCursorType } from './types';
 
 export function erasePlaceholderElement(

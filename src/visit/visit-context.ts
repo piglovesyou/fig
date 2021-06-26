@@ -1,8 +1,10 @@
-import { CSSProperties } from 'react';
+import * as CSS from 'csstype';
 import { ComposableNode, Rectangle } from '../types/ast';
 import { Bound } from '../types/fig';
 import { GenContext } from '../types/gen';
 import { ParentVisitContext, VisitContext } from '../types/visit';
+
+export interface CSSProperties extends CSS.Properties<string | number> {}
 
 function makeBounds(parentNode: ComposableNode, nodeBounds: Rectangle) {
   const nx2 = nodeBounds!.x + nodeBounds!.width;
