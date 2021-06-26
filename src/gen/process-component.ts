@@ -1,11 +1,45 @@
 import { File } from '@babel/types';
 import makeDir from 'make-dir';
 import { join } from 'path';
+import { ComposableNode } from '../types/ast';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { EmptyVisitContext } from '../types/visit';
 import { readFile, writeFile } from '../utils/fs';
 import { isValidComponentNode, walkNodeTree } from '../utils/node-utils';
 import { visitNode } from '../visit/visit';
+
+export async function createComponent<CursorType>(
+  node: ComposableNode,
+  componentInfo: ComponentInfo,
+  genContext: GenContext
+) {
+  let rootCursor: CursorType | null = null;
+  const { plugins } = genContext;
+  // Create mode.
+  for (const plugin of plugins)
+    if (plugin.createLayout)
+      rootCursor = (await plugin.createLayout(
+        rootCursor,
+        componentInfo,
+        genContext
+      )) as CursorType;
+  if (!rootCursor) throw new Error('Never. Plugin must assign cursor');
+
+  const parentContext: EmptyVisitContext<unknown> = {
+    cursor: rootCursor,
+  };
+  walkNodeTree(
+    node,
+    (node, parentContext) => {
+      return visitNode(node, parentContext, genContext);
+    },
+    parentContext
+  );
+
+  for (const plugin of plugins)
+    await plugin.afterWalkTree?.(rootCursor, componentInfo, genContext);
+  return rootCursor;
+}
 
 export async function processComponent<CursorType>(
   componentInfo: ComponentInfo,
@@ -39,29 +73,7 @@ export async function processComponent<CursorType>(
     // rootAst = parseAsRoot(content);
     throw new Error('Implement');
   } else {
-    // Create mode.
-    for (const plugin of plugins)
-      if (plugin.createLayout)
-        rootCursor = (await plugin.createLayout(
-          rootCursor,
-          componentInfo,
-          genContext
-        )) as CursorType;
-    if (!rootCursor) throw new Error('Never. Plugin must assign cursor');
-
-    const parentContext: EmptyVisitContext<unknown> = {
-      cursor: rootCursor,
-    };
-    walkNodeTree(
-      node,
-      (node, parentContext) => {
-        return visitNode(node, parentContext, genContext);
-      },
-      parentContext
-    );
-
-    for (const plugin of plugins)
-      await plugin.afterWalkTree?.(rootCursor, componentInfo, genContext);
+    rootCursor = await createComponent(node, componentInfo, genContext);
   }
 
   for (const plugin of plugins)
