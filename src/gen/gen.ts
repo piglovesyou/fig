@@ -171,6 +171,13 @@ async function genWithFileKey(
     {
       title: `Generating HTML samples`,
       task: taskGenHtml,
+      skip(ctx) {
+        const {
+          genContext: { plugins },
+        } = ctx;
+        const shouldRenderHtml = plugins.some(({ renderHtml }) => renderHtml);
+        return !shouldRenderHtml;
+      },
     },
   ]).run({ fileKey, token, config, cwd } as ListrContext);
 
