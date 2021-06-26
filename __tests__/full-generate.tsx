@@ -14,6 +14,7 @@ const caseArgs: CaseArg[] = [
   ['basic', 'Home_2$2', 'QAIja81RKgYhQnIIJ0h9PJ'],
   ['patagonia', 'Home_1$4', 'pC6EOjjdZpS7PVsPTgjNLL'],
   // ['something', 'Examples_455$10446', 'm4iAiVrBRqE5pAYXSTXvz7'],
+  // ['minimum', 'MyFrame_1$2', 'YiawDxsoqZYkiufOizx367'],
 ];
 
 const originalRequestFile = api.requestFile;
