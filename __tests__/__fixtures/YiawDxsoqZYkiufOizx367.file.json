@@ -1,0 +1,574 @@
+{
+  "document": {
+    "id": "0:0",
+    "name": "Document",
+    "type": "DOCUMENT",
+    "children": [
+      {
+        "id": "0:1",
+        "name": "Page 1",
+        "type": "CANVAS",
+        "children": [
+          {
+            "id": "1:2",
+            "name": "My Frame",
+            "type": "FRAME",
+            "blendMode": "PASS_THROUGH",
+            "children": [
+              {
+                "id": "4:5",
+                "name": "My Component",
+                "type": "INSTANCE",
+                "blendMode": "PASS_THROUGH",
+                "children": [
+                  {
+                    "id": "I4:5;1:4",
+                    "name": "Ellipse 1",
+                    "type": "ELLIPSE",
+                    "blendMode": "PASS_THROUGH",
+                    "absoluteBoundingBox": {
+                      "x": -146,
+                      "y": -141,
+                      "width": 24,
+                      "height": 24
+                    },
+                    "preserveRatio": true,
+                    "constraints": {
+                      "vertical": "TOP",
+                      "horizontal": "LEFT"
+                    },
+                    "layoutAlign": "INHERIT",
+                    "layoutGrow": 0,
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "IMAGE",
+                        "scaleMode": "FILL",
+                        "imageRef": "084234627b95c98da75ab49d4e3bb94dc46f5cec"
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "effects": []
+                  },
+                  {
+                    "id": "I4:5;4:2",
+                    "name": "Cameron Williamson",
+                    "type": "TEXT",
+                    "blendMode": "PASS_THROUGH",
+                    "absoluteBoundingBox": {
+                      "x": -118,
+                      "y": -136,
+                      "width": 111,
+                      "height": 14
+                    },
+                    "constraints": {
+                      "vertical": "TOP",
+                      "horizontal": "LEFT"
+                    },
+                    "layoutAlign": "INHERIT",
+                    "layoutGrow": 0,
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "SOLID",
+                        "color": {
+                          "r": 0,
+                          "g": 0,
+                          "b": 0,
+                          "a": 1
+                        }
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 1,
+                    "strokeAlign": "OUTSIDE",
+                    "effects": [],
+                    "characters": "Cameron Williamson",
+                    "style": {
+                      "fontFamily": "Roboto",
+                      "fontPostScriptName": null,
+                      "fontWeight": 400,
+                      "textAutoResize": "WIDTH_AND_HEIGHT",
+                      "fontSize": 12,
+                      "textAlignHorizontal": "LEFT",
+                      "textAlignVertical": "TOP",
+                      "letterSpacing": 0,
+                      "lineHeightPx": 14.0625,
+                      "lineHeightPercent": 100,
+                      "lineHeightUnit": "INTRINSIC_%"
+                    },
+                    "characterStyleOverrides": [],
+                    "styleOverrideTable": {}
+                  }
+                ],
+                "absoluteBoundingBox": {
+                  "x": -146,
+                  "y": -141,
+                  "width": 139,
+                  "height": 24
+                },
+                "constraints": {
+                  "vertical": "TOP",
+                  "horizontal": "LEFT"
+                },
+                "layoutAlign": "INHERIT",
+                "layoutGrow": 0,
+                "clipsContent": false,
+                "background": [],
+                "fills": [],
+                "strokes": [],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE",
+                "backgroundColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                },
+                "layoutGrids": [],
+                "layoutMode": "HORIZONTAL",
+                "itemSpacing": 4,
+                "counterAxisAlignItems": "CENTER",
+                "effects": [],
+                "componentId": "4:4"
+              },
+              {
+                "id": "4:8",
+                "name": "My Component",
+                "type": "INSTANCE",
+                "blendMode": "PASS_THROUGH",
+                "children": [
+                  {
+                    "id": "I4:8;1:4",
+                    "name": "Ellipse 1",
+                    "type": "ELLIPSE",
+                    "blendMode": "PASS_THROUGH",
+                    "absoluteBoundingBox": {
+                      "x": -146,
+                      "y": -101,
+                      "width": 24,
+                      "height": 24
+                    },
+                    "preserveRatio": true,
+                    "constraints": {
+                      "vertical": "TOP",
+                      "horizontal": "LEFT"
+                    },
+                    "layoutAlign": "INHERIT",
+                    "layoutGrow": 0,
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "IMAGE",
+                        "scaleMode": "FILL",
+                        "imageRef": "084234627b95c98da75ab49d4e3bb94dc46f5cec"
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "effects": []
+                  },
+                  {
+                    "id": "I4:8;4:2",
+                    "name": "Cameron Williamson",
+                    "type": "TEXT",
+                    "blendMode": "PASS_THROUGH",
+                    "absoluteBoundingBox": {
+                      "x": -118,
+                      "y": -96,
+                      "width": 111,
+                      "height": 14
+                    },
+                    "constraints": {
+                      "vertical": "TOP",
+                      "horizontal": "LEFT"
+                    },
+                    "layoutAlign": "INHERIT",
+                    "layoutGrow": 0,
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "SOLID",
+                        "color": {
+                          "r": 0,
+                          "g": 0,
+                          "b": 0,
+                          "a": 1
+                        }
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 1,
+                    "strokeAlign": "OUTSIDE",
+                    "effects": [],
+                    "characters": "Cameron Williamson",
+                    "style": {
+                      "fontFamily": "Roboto",
+                      "fontPostScriptName": null,
+                      "fontWeight": 400,
+                      "textAutoResize": "WIDTH_AND_HEIGHT",
+                      "fontSize": 12,
+                      "textAlignHorizontal": "LEFT",
+                      "textAlignVertical": "TOP",
+                      "letterSpacing": 0,
+                      "lineHeightPx": 14.0625,
+                      "lineHeightPercent": 100,
+                      "lineHeightUnit": "INTRINSIC_%"
+                    },
+                    "characterStyleOverrides": [],
+                    "styleOverrideTable": {}
+                  }
+                ],
+                "absoluteBoundingBox": {
+                  "x": -146,
+                  "y": -101,
+                  "width": 139,
+                  "height": 24
+                },
+                "constraints": {
+                  "vertical": "TOP",
+                  "horizontal": "LEFT"
+                },
+                "layoutAlign": "INHERIT",
+                "layoutGrow": 0,
+                "clipsContent": false,
+                "background": [],
+                "fills": [],
+                "strokes": [],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE",
+                "backgroundColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                },
+                "layoutGrids": [],
+                "layoutMode": "HORIZONTAL",
+                "itemSpacing": 4,
+                "counterAxisAlignItems": "CENTER",
+                "effects": [],
+                "componentId": "4:4"
+              },
+              {
+                "id": "4:11",
+                "name": "My Component",
+                "type": "INSTANCE",
+                "blendMode": "PASS_THROUGH",
+                "children": [
+                  {
+                    "id": "I4:11;1:4",
+                    "name": "Ellipse 1",
+                    "type": "ELLIPSE",
+                    "blendMode": "PASS_THROUGH",
+                    "absoluteBoundingBox": {
+                      "x": -146,
+                      "y": -61,
+                      "width": 24,
+                      "height": 24
+                    },
+                    "preserveRatio": true,
+                    "constraints": {
+                      "vertical": "TOP",
+                      "horizontal": "LEFT"
+                    },
+                    "layoutAlign": "INHERIT",
+                    "layoutGrow": 0,
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "IMAGE",
+                        "scaleMode": "FILL",
+                        "imageRef": "084234627b95c98da75ab49d4e3bb94dc46f5cec"
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 1,
+                    "strokeAlign": "INSIDE",
+                    "effects": []
+                  },
+                  {
+                    "id": "I4:11;4:2",
+                    "name": "Cameron Williamson",
+                    "type": "TEXT",
+                    "blendMode": "PASS_THROUGH",
+                    "absoluteBoundingBox": {
+                      "x": -118,
+                      "y": -56,
+                      "width": 111,
+                      "height": 14
+                    },
+                    "constraints": {
+                      "vertical": "TOP",
+                      "horizontal": "LEFT"
+                    },
+                    "layoutAlign": "INHERIT",
+                    "layoutGrow": 0,
+                    "fills": [
+                      {
+                        "blendMode": "NORMAL",
+                        "type": "SOLID",
+                        "color": {
+                          "r": 0,
+                          "g": 0,
+                          "b": 0,
+                          "a": 1
+                        }
+                      }
+                    ],
+                    "strokes": [],
+                    "strokeWeight": 1,
+                    "strokeAlign": "OUTSIDE",
+                    "effects": [],
+                    "characters": "Cameron Williamson",
+                    "style": {
+                      "fontFamily": "Roboto",
+                      "fontPostScriptName": null,
+                      "fontWeight": 400,
+                      "textAutoResize": "WIDTH_AND_HEIGHT",
+                      "fontSize": 12,
+                      "textAlignHorizontal": "LEFT",
+                      "textAlignVertical": "TOP",
+                      "letterSpacing": 0,
+                      "lineHeightPx": 14.0625,
+                      "lineHeightPercent": 100,
+                      "lineHeightUnit": "INTRINSIC_%"
+                    },
+                    "characterStyleOverrides": [],
+                    "styleOverrideTable": {}
+                  }
+                ],
+                "absoluteBoundingBox": {
+                  "x": -146,
+                  "y": -61,
+                  "width": 139,
+                  "height": 24
+                },
+                "constraints": {
+                  "vertical": "TOP",
+                  "horizontal": "LEFT"
+                },
+                "layoutAlign": "INHERIT",
+                "layoutGrow": 0,
+                "clipsContent": false,
+                "background": [],
+                "fills": [],
+                "strokes": [],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE",
+                "backgroundColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                },
+                "layoutGrids": [],
+                "layoutMode": "HORIZONTAL",
+                "itemSpacing": 4,
+                "counterAxisAlignItems": "CENTER",
+                "effects": [],
+                "componentId": "4:4"
+              }
+            ],
+            "absoluteBoundingBox": {
+              "x": -162,
+              "y": -157,
+              "width": 171,
+              "height": 136
+            },
+            "constraints": {
+              "vertical": "TOP",
+              "horizontal": "LEFT"
+            },
+            "clipsContent": true,
+            "background": [
+              {
+                "blendMode": "NORMAL",
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
+                }
+              }
+            ],
+            "fills": [
+              {
+                "blendMode": "NORMAL",
+                "type": "SOLID",
+                "color": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
+                }
+              }
+            ],
+            "strokes": [],
+            "strokeWeight": 1,
+            "strokeAlign": "INSIDE",
+            "backgroundColor": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            },
+            "layoutGrids": [],
+            "layoutMode": "VERTICAL",
+            "itemSpacing": 16,
+            "paddingLeft": 16,
+            "paddingRight": 16,
+            "paddingTop": 16,
+            "paddingBottom": 16,
+            "effects": []
+          },
+          {
+            "id": "4:4",
+            "name": "My Component",
+            "type": "COMPONENT",
+            "blendMode": "PASS_THROUGH",
+            "children": [
+              {
+                "id": "1:4",
+                "name": "Ellipse 1",
+                "type": "ELLIPSE",
+                "blendMode": "PASS_THROUGH",
+                "absoluteBoundingBox": {
+                  "x": -162,
+                  "y": -233,
+                  "width": 24,
+                  "height": 24
+                },
+                "preserveRatio": true,
+                "constraints": {
+                  "vertical": "TOP",
+                  "horizontal": "LEFT"
+                },
+                "layoutAlign": "INHERIT",
+                "layoutGrow": 0,
+                "fills": [
+                  {
+                    "blendMode": "NORMAL",
+                    "type": "IMAGE",
+                    "scaleMode": "FILL",
+                    "imageRef": "084234627b95c98da75ab49d4e3bb94dc46f5cec"
+                  }
+                ],
+                "strokes": [],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE",
+                "effects": []
+              },
+              {
+                "id": "4:2",
+                "name": "Cameron Williamson",
+                "type": "TEXT",
+                "blendMode": "PASS_THROUGH",
+                "absoluteBoundingBox": {
+                  "x": -134,
+                  "y": -228,
+                  "width": 111,
+                  "height": 14
+                },
+                "constraints": {
+                  "vertical": "TOP",
+                  "horizontal": "LEFT"
+                },
+                "layoutAlign": "INHERIT",
+                "layoutGrow": 0,
+                "fills": [
+                  {
+                    "blendMode": "NORMAL",
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 1
+                    }
+                  }
+                ],
+                "strokes": [],
+                "strokeWeight": 1,
+                "strokeAlign": "OUTSIDE",
+                "effects": [],
+                "characters": "Cameron Williamson",
+                "style": {
+                  "fontFamily": "Roboto",
+                  "fontPostScriptName": null,
+                  "fontWeight": 400,
+                  "textAutoResize": "WIDTH_AND_HEIGHT",
+                  "fontSize": 12,
+                  "textAlignHorizontal": "LEFT",
+                  "textAlignVertical": "TOP",
+                  "letterSpacing": 0,
+                  "lineHeightPx": 14.0625,
+                  "lineHeightPercent": 100,
+                  "lineHeightUnit": "INTRINSIC_%"
+                },
+                "characterStyleOverrides": [],
+                "styleOverrideTable": {}
+              }
+            ],
+            "absoluteBoundingBox": {
+              "x": -162,
+              "y": -233,
+              "width": 139,
+              "height": 24
+            },
+            "constraints": {
+              "vertical": "TOP",
+              "horizontal": "LEFT"
+            },
+            "clipsContent": false,
+            "background": [],
+            "fills": [],
+            "strokes": [],
+            "strokeWeight": 1,
+            "strokeAlign": "INSIDE",
+            "backgroundColor": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "layoutGrids": [],
+            "layoutMode": "HORIZONTAL",
+            "itemSpacing": 4,
+            "counterAxisAlignItems": "CENTER",
+            "effects": []
+          }
+        ],
+        "backgroundColor": {
+          "r": 0.8980392217636108,
+          "g": 0.8980392217636108,
+          "b": 0.8980392217636108,
+          "a": 1
+        },
+        "prototypeStartNodeID": null,
+        "prototypeDevice": {
+          "type": "NONE",
+          "rotation": "NONE"
+        }
+      }
+    ]
+  },
+  "components": {
+    "4:4": {
+      "key": "04e19d370ee9b23c1c71d1acf425993a434b8ea4",
+      "name": "My Component",
+      "description": ""
+    }
+  },
+  "schemaVersion": 0,
+  "styles": {},
+  "name": "My Minimum Component",
+  "lastModified": "2021-06-26T08:23:24Z",
+  "thumbnailUrl": "https://s3-alpha-sig.figma.com/thumbnails/fbc79651-da14-47a6-8f0f-8f7ac218a587?Expires=1625443200&Signature=RJQJh5ScoPDzRcs44hUEMPVtVrD7e9juEJd4f0KBzAaq~igMVE5K1eCdMUpO31AGUjXTwCjV8~XQCLJyjZ5ZpYmEePtmquzON3qMDtYDW0ICoiY2RrpqxqKKLUuIEN~hG6TLG2Ip0jcsgOgY1JRH81R1Xs969rC6RGwfhXqPIrmpY1ZBc2p5SIs~Pq3lFYW1b4rUfnpQZczn-UxzfUhVXxSEmtEXs2oyQEM7rJZxQUAcKPZeR9NiNjqdlrcWeZLsy2qbreP9Hr5-WOqOQZ-TNpA9Kmw3hCBFDGZbiozbqwhgZubJKUBe2VbMrd-GR7sekVOmWsIVuT79fmkCtF8cDw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+  "version": "941408848",
+  "role": "owner"
+}
