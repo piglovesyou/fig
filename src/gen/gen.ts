@@ -143,19 +143,19 @@ async function taskSyncImages(ctx: ListrContext) {
 }
 
 async function taskFetchFigmaFile(ctx: ListrContext) {
-  const { fileKey, token, cwd, config } = ctx;
-  const figmaFile: FigmaFile = await requestFile(fileKey, token);
+  const { fileKey, cwd, config, figmaFile } = ctx;
   const genContext = await makeGenContext(figmaFile, fileKey, config, cwd);
   Object.assign(ctx, { figmaFile, genContext });
 }
 
-async function genWithFileKey(
+export async function genWithFile(
+  figmaFile: FigmaFile,
   fileKey: string,
   token: string,
   config: FigConfig,
   cwd: string
 ) {
-  const listrCtx = await new Listr<ListrContext>([
+  const listrContext = await new Listr<ListrContext>([
     {
       title: `Fetching Figma file data "${fileKey}"`,
       task: taskFetchFigmaFile,
@@ -179,16 +179,31 @@ async function genWithFileKey(
         return !shouldRenderHtml;
       },
     },
-  ]).run({ fileKey, token, config, cwd } as ListrContext);
+  ]).run({ fileKey, config, token, cwd, figmaFile } as ListrContext);
 
   const {
-    genContext: { imagesMap, plugins },
-    figmaFile,
+    genContext: { plugins },
+  } = listrContext;
+
+  for (const plugin of plugins) await plugin.dispose?.();
+
+  return listrContext;
+}
+
+async function genWithFileKey(
+  fileKey: string,
+  token: string,
+  config: FigConfig,
+  cwd: string
+) {
+  const figmaFile: FigmaFile = await requestFile(fileKey, token);
+  const listrCtx = await genWithFile(figmaFile, fileKey, token, config, cwd);
+
+  const {
+    genContext: { imagesMap },
     frames,
     components,
   } = listrCtx;
-
-  for (const plugin of plugins) await plugin.dispose?.();
 
   printInfo(
     `"${figmaFile.name}" done. ${imagesMap.size} images, ${components.length} components, ${frames.length} pages and HTMLs are synchronized.`
