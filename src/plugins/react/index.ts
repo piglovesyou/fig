@@ -2,7 +2,6 @@ import generate from '@babel/generator';
 import { NodePath } from '@babel/traverse';
 import { isProgram, Program } from '@babel/types';
 import { format } from 'prettier';
-import { GenContext } from '../../types/gen';
 import { FigPlugin } from '../../types/plugin';
 import { ReactCursorType } from './types';
 import {
@@ -14,17 +13,13 @@ import {
   makeLayout,
 } from './visit-utils';
 
-export function createPlugin(
-  genContext: GenContext
-): FigPlugin<ReactCursorType> {
+export function createPlugin(): FigPlugin<ReactCursorType> {
   return {
     createLayout(_, componentInfo, genContext) {
       return makeLayout(componentInfo, genContext);
     },
 
-    postWalkTree(rootCursor) {
-      erasePlaceholderElement(rootCursor);
-    },
+    afterWalkTree: erasePlaceholderElement,
 
     componentFileExtension: 'tsx',
 

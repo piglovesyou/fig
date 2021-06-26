@@ -36,6 +36,7 @@
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.1",
     "cosmiconfig": "^7.0.0",
+    "csstype": "^3.0.8",
     "escape-html": "^1.0.3",
     "globby": "^11.0.3",
     "listr": "^0.14.3",

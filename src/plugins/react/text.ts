@@ -1,8 +1,8 @@
 import { JSXElement } from '@babel/types';
 import { CSSProperties } from 'react';
-import { parseExpression } from '../plugins/react/ast-utils';
-import { Node } from '../types/ast';
-import { applyFontStyle } from './styles';
+import { Node } from '../../types/ast';
+import { applyFontStyle } from '../../visit/styles';
+import { parseExpression } from './ast-utils';
 
 // TODO: Move to plugin
 export function makeTextContent(node: Node<'TEXT'>): JSXElement[] {

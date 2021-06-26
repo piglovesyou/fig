@@ -1,10 +1,10 @@
 import { File } from '@babel/types';
 import makeDir from 'make-dir';
 import { join } from 'path';
-import { isValidComponentNode, walkNodeTree } from '../core/node-utils';
 import { ComponentInfo, GenContext } from '../types/gen';
 import { EmptyVisitContext } from '../types/visit';
 import { readFile, writeFile } from '../utils/fs';
+import { isValidComponentNode, walkNodeTree } from '../utils/node-utils';
 import { visitNode } from '../visit/visit';
 
 export async function processComponent<CursorType>(
@@ -61,7 +61,7 @@ export async function processComponent<CursorType>(
     );
 
     for (const plugin of plugins)
-      await plugin.postWalkTree?.(rootCursor, componentInfo, genContext);
+      await plugin.afterWalkTree?.(rootCursor, componentInfo, genContext);
   }
 
   for (const plugin of plugins)
