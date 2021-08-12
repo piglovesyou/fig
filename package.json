@@ -63,7 +63,7 @@
     "@types/command-line-usage": "5.0.2",
     "@types/escape-html": "1.0.1",
     "@types/gh-pages": "3.2.0",
-    "@types/jest": "26.0.23",
+    "@types/jest": "26.0.24",
     "@types/listr": "0.14.3",
     "@types/lodash": "4.14.170",
     "@types/lodash.chunk": "4.2.6",
