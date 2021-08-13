@@ -37,7 +37,7 @@
     "cosmiconfig": "7.0.0",
     "csstype": "3.0.8",
     "escape-html": "1.0.3",
-    "globby": "11.0.3",
+    "globby": "11.0.4",
     "listr": "0.14.3",
     "lodash.chunk": "4.2.0",
     "lodash.findlast": "4.6.0",
