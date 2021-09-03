@@ -27,7 +27,7 @@
     "@babel/plugin-transform-react-jsx": "7.14.9",
     "@babel/preset-env": "7.14.2",
     "@babel/preset-react": "7.13.13",
-    "@babel/preset-typescript": "7.13.0",
+    "@babel/preset-typescript": "7.15.0",
     "@babel/template": "7.12.13",
     "@babel/traverse": "7.14.2",
     "@babel/types": "7.14.2",
